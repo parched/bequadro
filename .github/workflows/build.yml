@@ -207,8 +207,9 @@ jobs:
               npm publish "$1" --access public --tag "$tag" --provenance
             fi
           }
-          main=$(ls packages/bequadro-[0-9]*.tgz)
-          for package in packages/*.tgz; do
+          # The ./ makes npm publish read each path as a file: it reads packages/<name>.tgz as a GitHub repository
+          main=$(ls ./packages/bequadro-[0-9]*.tgz)
+          for package in ./packages/*.tgz; do
             if [ "$package" != "$main" ]; then
               publish "$package"
             fi
