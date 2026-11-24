@@ -15,7 +15,7 @@ Bequadro (♮) generates C#, TypeScript and Python from [FlatBuffers](https://fl
 
 `flatc` supports more languages and schema features, including explicit field IDs and file identifiers. You can use both tools with schemas that use features supported by both targets. [Bequadro schema support](#schema-support)
 
-**FlatSharp** inspired Bequadro's C# API. FlatSharp generates C# at build time and offers several parsing modes, from lazy access to greedy parsing. Bequadro's Roslyn source generator runs inside the C# compiler, and its parser always loads the full graph into mutable objects that you can use after releasing the input buffer. [FlatSharp](https://github.com/jamescourtney/FlatSharp)
+**[FlatSharp](https://github.com/jamescourtney/FlatSharp)** inspired Bequadro's C# API. FlatSharp generates C# at build time and offers several parsing modes, from lazy access to greedy parsing. Bequadro's Roslyn source generator runs inside the C# compiler, and its parser always loads the full graph into mutable objects that you can use after releasing the input buffer.
 
 ## Example schema
 
