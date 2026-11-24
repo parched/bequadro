@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- The generator compiles these sources too, so they target what the generator does and don't use Roslyn -->
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="bequadro" />
+    <InternalsVisibleTo Include="Bequadro.Cli.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PolySharp" PrivateAssets="all" />
+    <PackageReference Include="System.Collections.Immutable" />
+  </ItemGroup>
+</Project>

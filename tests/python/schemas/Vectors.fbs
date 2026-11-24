@@ -1,0 +1,23 @@
+// PY-008 and PY-010: a vector of every scalar type, in a table with value equality.
+
+namespace PyVectors;
+
+enum Small : short { Low = -300, High = 300 }
+
+table Vectors (bequadro_value_equality)
+{
+    single: float;
+    bools: [bool];
+    bytes: [byte];
+    ubytes: [ubyte];
+    shorts: [short];
+    ushorts: [ushort];
+    ints: [int];
+    uints: [uint];
+    longs: [long];
+    ulongs: [ulong];
+    floats: [float];
+    doubles: [double];
+    smalls: [Small];
+    strings: [string];
+}

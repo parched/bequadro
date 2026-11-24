@@ -1,0 +1,49 @@
+include "Common.fbs";
+
+namespace Bequadro.Tests.Equality;
+
+union Item
+{
+    Unit,
+    Source,
+    Common.Vec3,
+}
+
+union StrictItem (bequadro_exclude_none)
+{
+    Unit,
+    Source,
+}
+
+/// A struct-like table with value equality, with every kind of field.
+table Measure (bequadro_value_equality)
+{
+    name: string;
+    amount: double;
+    optional_count: int = null;
+    color: Common.Color = Blue;
+    position: Common.Vec3;
+    unit: Unit;
+    source: Source;
+    item: Item;
+    strict_item: StrictItem;
+    values: [double];
+    names: [string];
+    units: [Unit];
+    sources: [Source];
+    items: [Item];
+}
+
+/// A table with value equality, referenced from Measure.
+table Unit (bequadro_value_equality)
+{
+    symbol: string (required);
+}
+
+/// A table with the default reference equality.
+table Source
+{
+    name: string;
+}
+
+table Blank (bequadro_value_equality) {}

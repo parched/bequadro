@@ -1,0 +1,12 @@
+{
+  "name": "bequadro-npm-tests",
+  "private": true,
+  "type": "module",
+  "description": "Tests of the npm packages and the Vite plugin, installed from the packed tarballs (CLI-009, CLI-010)",
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "typescript": "7.0.2",
+    "vite": "8.3.6",
+    "vite-7.2": "npm:vite@7.2.7"
+  }
+}

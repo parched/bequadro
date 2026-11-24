@@ -1,0 +1,5 @@
+{
+  // QUA-003: code generated for the generator tests' random schemas
+  "extends": "./tsconfig.json",
+  "include": ["generated-random/**/*.ts"]
+}

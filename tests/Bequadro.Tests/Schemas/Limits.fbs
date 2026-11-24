@@ -1,0 +1,31 @@
+namespace Bequadro.Tests.Limits;
+
+struct S0 { a: double; b: double; }
+struct S1 { a: S0; b: S0; }
+struct S2 { a: S1; b: S1; }
+struct S3 { a: S2; b: S2; }
+struct S4 { a: S3; b: S3; }
+struct S5 { a: S4; b: S4; }
+struct S6 { a: S5; b: S5; }
+struct S7 { a: S6; b: S6; }
+struct S8 { a: S7; b: S7; }
+struct S9 { a: S8; b: S8; }
+struct S10 { a: S9; b: S9; }
+struct S11 { a: S10; b: S10; }
+
+/// The largest struct Bequadro accepts (SCH-006): S0 is 16 bytes and each S{n} doubles it, so this is
+/// 16 * (2^12 - 1) = 65,520 bytes.
+struct Largest { a: S11; b: S10; c: S9; d: S8; e: S7; f: S6; g: S5; h: S4; i: S3; j: S2; k: S1; l: S0; }
+
+table LargestHolder
+{
+    largest: Largest (required);
+}
+
+/// With both fields present, the table's inline fields take more than 65,535 bytes, which a vtable can't describe, so
+/// writing it fails (SER-012). With only `largest`, it fits.
+table TooLarge
+{
+    largest: Largest;
+    extra: S0;
+}

@@ -1,0 +1,25 @@
+[project]
+name = "bequadro-python-tests"
+version = "0"
+description = "Type checks and tests of generated Python (QUA-003)"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = ["pytest==9.2.0", "pyright==1.1.414", "mypy==2.4.1"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+pythonpath = ["."]
+
+[tool.pyright]
+typeCheckingMode = "strict"
+pythonVersion = "3.12"
+include = ["generated", "generated_random", "test"]
+
+[tool.mypy]
+strict = true
+python_version = "3.12"

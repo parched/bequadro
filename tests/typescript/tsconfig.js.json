@@ -1,0 +1,8 @@
+{
+  // TS-001: code generated with --import-extension js, as a tsc project without extension rewriting compiles it
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": false
+  },
+  "include": ["generated-js/**/*.ts"]
+}

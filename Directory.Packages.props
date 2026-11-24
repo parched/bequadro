@@ -1,0 +1,17 @@
+<Project>
+  <ItemGroup>
+    <!-- Generator: an old Roslyn, because the generator needs no newer API and an older reference loads in more compilers (CON-002) -->
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
+    <PackageVersion Include="PolySharp" Version="1.15.0" />
+    <!-- Bequadro.Schema: the version Roslyn 4.12 references, which the compiler provides to the generator -->
+    <PackageVersion Include="System.Collections.Immutable" Version="8.0.0" />
+
+    <!-- Tests -->
+    <PackageVersion Include="AwesomeAssertions" Version="9.6.0" />
+    <PackageVersion Include="FsCheck.Xunit.v3" Version="3.3.3" />
+    <PackageVersion Include="Google.FlatBuffers" Version="25.2.10" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.TrxReport" Version="2.4.1" />
+    <PackageVersion Include="xunit.v3.mtp-v2" Version="3.2.2" />
+  </ItemGroup>
+</Project>

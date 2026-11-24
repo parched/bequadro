@@ -1,0 +1,37 @@
+attribute "category";
+
+namespace Bequadro.Tests.Common;
+
+/// A 3D vector.
+struct Vec3 (category: "Geometry")
+{
+    x: double;
+    y: double;
+    z: double;
+}
+
+enum Color : ubyte
+{
+    Red,
+    Green = 3,
+    /// The default blue.
+    Blue,
+}
+
+/// A struct exercising padding and every scalar width.
+struct Mixed
+{
+    flag: bool;
+    small: byte;
+    tiny: ubyte;
+    medium: short;
+    position: Vec3;
+    count: uint;
+    wide: long;
+    color: Color;
+    ratio: float;
+}
+
+enum Signed : byte { Negative = -2, Zero = 0, Positive = 5 }
+
+enum Big : ulong { Small = 1, Huge = 18446744073709551615 }

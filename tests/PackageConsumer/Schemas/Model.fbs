@@ -1,0 +1,40 @@
+namespace Consumer.Schemas;
+
+enum Layer : ubyte
+{
+    Background,
+    Foreground,
+}
+
+table Circle
+{
+    radius: double = 1;
+}
+
+struct Point
+{
+    x: int;
+    y: int;
+}
+
+/// A lowercase type name, which C# warns about unless it is escaped (CS8981). <Notes> & such.
+table note
+{
+    text: string;
+}
+
+union Shape
+{
+    Circle,
+    Point,
+}
+
+table Model
+{
+    name: string (required);
+    main: Shape (required);
+    shapes: [Shape];
+    revision: uint;
+    layer: Layer;
+    remark: note;
+}

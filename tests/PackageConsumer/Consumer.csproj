@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    CON-001: a project that uses Bequadro the way consumers do, through the package alone. The check in build.py builds
+    and runs a copy of it outside the repository, so nothing from the repository's build files applies, against the
+    package it has just packed (version passed as BequadroVersion).
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net11.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AnalysisMode>All</AnalysisMode>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Checks the generated doc comments -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- A private package folder, so a rebuilt package with the same version is never taken from a stale cache -->
+    <RestorePackagesPath>$(MSBuildThisFileDirectory)packages</RestorePackagesPath>
+    <!-- CON-006: passed to the generator by the package's props file -->
+    <BequadroRequireScalarsWithoutDefault>true</BequadroRequireScalarsWithoutDefault>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bequadro" Version="$(BequadroVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="Schemas/*.fbs" />
+  </ItemGroup>
+</Project>

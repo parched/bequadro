@@ -1,0 +1,4 @@
+.venv/
+generated/
+generated_random/
+__pycache__/

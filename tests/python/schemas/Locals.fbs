@@ -1,0 +1,446 @@
+// PY-003: declarations named like the locals and parameters generated code could use, each referenced from every
+// kind of generated function in its own namespace. The Python tests write and parse each (test_names.py).
+
+// Structs, in the root namespace
+struct data { a: int; }
+struct p { a: int; }
+struct v { a: int; }
+struct owner { a: int; }
+struct name { a: int; }
+struct w { a: int; }
+struct r { a: int; }
+struct t { a: int; }
+struct o { a: int; }
+struct x { a: int; }
+struct c { a: int; }
+struct d { a: int; }
+struct m { a: int; }
+struct self { a: int; }
+struct other { a: int; }
+struct f0 { a: int; }
+struct f1 { a: int; }
+struct o0 { a: int; }
+struct o1 { a: int; }
+struct s0 { a: int; }
+struct s1 { a: int; }
+struct c0 { a: int; }
+struct c1 { a: int; }
+struct t0 { a: int; }
+struct t1 { a: int; }
+struct d0 { a: int; }
+struct d1 { a: int; }
+struct m1 { a: int; }
+struct m2 { a: int; }
+struct value { a: int; }
+struct values { a: int; }
+
+struct UsesStructs
+{
+    s_data: data;
+    s_p: p;
+    s_v: v;
+    s_owner: owner;
+    s_name: name;
+    s_w: w;
+    s_r: r;
+    s_t: t;
+    s_o: o;
+    s_x: x;
+    s_c: c;
+    s_d: d;
+    s_m: m;
+    s_self: self;
+    s_other: other;
+    s_f0: f0;
+    s_f1: f1;
+    s_o0: o0;
+    s_o1: o1;
+    s_s0: s0;
+    s_s1: s1;
+    s_c0: c0;
+    s_c1: c1;
+    s_t0: t0;
+    s_t1: t1;
+    s_d0: d0;
+    s_d1: d1;
+    s_m1: m1;
+    s_m2: m2;
+    s_value: value;
+    s_values: values;
+}
+
+union StructUnion
+{
+    data,
+    p,
+    v,
+    owner,
+    name,
+    w,
+    r,
+    t,
+    o,
+    x,
+    c,
+    d,
+    m,
+    self,
+    other,
+    f0,
+    f1,
+    o0,
+    o1,
+    s0,
+    s1,
+    c0,
+    c1,
+    t0,
+    t1,
+    d0,
+    d1,
+    m1,
+    m2,
+    value,
+    values,
+}
+
+table UsesStructsTable
+{
+    s_data: data;
+    v_data: [data];
+    s_p: p;
+    v_p: [p];
+    s_v: v;
+    v_v: [v];
+    s_owner: owner;
+    v_owner: [owner];
+    s_name: name;
+    v_name: [name];
+    s_w: w;
+    v_w: [w];
+    s_r: r;
+    v_r: [r];
+    s_t: t;
+    v_t: [t];
+    s_o: o;
+    v_o: [o];
+    s_x: x;
+    v_x: [x];
+    s_c: c;
+    v_c: [c];
+    s_d: d;
+    v_d: [d];
+    s_m: m;
+    v_m: [m];
+    s_self: self;
+    v_self: [self];
+    s_other: other;
+    v_other: [other];
+    s_f0: f0;
+    v_f0: [f0];
+    s_f1: f1;
+    v_f1: [f1];
+    s_o0: o0;
+    v_o0: [o0];
+    s_o1: o1;
+    v_o1: [o1];
+    s_s0: s0;
+    v_s0: [s0];
+    s_s1: s1;
+    v_s1: [s1];
+    s_c0: c0;
+    v_c0: [c0];
+    s_c1: c1;
+    v_c1: [c1];
+    s_t0: t0;
+    v_t0: [t0];
+    s_t1: t1;
+    v_t1: [t1];
+    s_d0: d0;
+    v_d0: [d0];
+    s_d1: d1;
+    v_d1: [d1];
+    s_m1: m1;
+    v_m1: [m1];
+    s_m2: m2;
+    v_m2: [m2];
+    s_value: value;
+    v_value: [value];
+    s_values: values;
+    v_values: [values];
+    u: StructUnion;
+    us: [StructUnion];
+}
+
+namespace PyNames.Tables;
+
+table data (bequadro_value_equality) { a: int; }
+table p (bequadro_value_equality) { a: int; }
+table v (bequadro_value_equality) { a: int; }
+table owner (bequadro_value_equality) { a: int; }
+table name (bequadro_value_equality) { a: int; }
+table w (bequadro_value_equality) { a: int; }
+table r (bequadro_value_equality) { a: int; }
+table t (bequadro_value_equality) { a: int; }
+table o (bequadro_value_equality) { a: int; }
+table x (bequadro_value_equality) { a: int; }
+table c (bequadro_value_equality) { a: int; }
+table d (bequadro_value_equality) { a: int; }
+table m (bequadro_value_equality) { a: int; }
+table self (bequadro_value_equality) { a: int; }
+table other (bequadro_value_equality) { a: int; }
+table f0 (bequadro_value_equality) { a: int; }
+table f1 (bequadro_value_equality) { a: int; }
+table o0 (bequadro_value_equality) { a: int; }
+table o1 (bequadro_value_equality) { a: int; }
+table s0 (bequadro_value_equality) { a: int; }
+table s1 (bequadro_value_equality) { a: int; }
+table c0 (bequadro_value_equality) { a: int; }
+table c1 (bequadro_value_equality) { a: int; }
+table t0 (bequadro_value_equality) { a: int; }
+table t1 (bequadro_value_equality) { a: int; }
+table d0 (bequadro_value_equality) { a: int; }
+table d1 (bequadro_value_equality) { a: int; }
+table m1 (bequadro_value_equality) { a: int; }
+table m2 (bequadro_value_equality) { a: int; }
+table value (bequadro_value_equality) { a: int; }
+table values (bequadro_value_equality) { a: int; }
+
+union TableUnion
+{
+    data,
+    p,
+    v,
+    owner,
+    name,
+    w,
+    r,
+    t,
+    o,
+    x,
+    c,
+    d,
+    m,
+    self,
+    other,
+    f0,
+    f1,
+    o0,
+    o1,
+    s0,
+    s1,
+    c0,
+    c1,
+    t0,
+    t1,
+    d0,
+    d1,
+    m1,
+    m2,
+    value,
+    values,
+}
+
+table UsesTables (bequadro_value_equality)
+{
+    t_data: data;
+    v_data: [data];
+    t_p: p;
+    v_p: [p];
+    t_v: v;
+    v_v: [v];
+    t_owner: owner;
+    v_owner: [owner];
+    t_name: name;
+    v_name: [name];
+    t_w: w;
+    v_w: [w];
+    t_r: r;
+    v_r: [r];
+    t_t: t;
+    v_t: [t];
+    t_o: o;
+    v_o: [o];
+    t_x: x;
+    v_x: [x];
+    t_c: c;
+    v_c: [c];
+    t_d: d;
+    v_d: [d];
+    t_m: m;
+    v_m: [m];
+    t_self: self;
+    v_self: [self];
+    t_other: other;
+    v_other: [other];
+    t_f0: f0;
+    v_f0: [f0];
+    t_f1: f1;
+    v_f1: [f1];
+    t_o0: o0;
+    v_o0: [o0];
+    t_o1: o1;
+    v_o1: [o1];
+    t_s0: s0;
+    v_s0: [s0];
+    t_s1: s1;
+    v_s1: [s1];
+    t_c0: c0;
+    v_c0: [c0];
+    t_c1: c1;
+    v_c1: [c1];
+    t_t0: t0;
+    v_t0: [t0];
+    t_t1: t1;
+    v_t1: [t1];
+    t_d0: d0;
+    v_d0: [d0];
+    t_d1: d1;
+    v_d1: [d1];
+    t_m1: m1;
+    v_m1: [m1];
+    t_m2: m2;
+    v_m2: [m2];
+    t_value: value;
+    v_value: [value];
+    t_values: values;
+    v_values: [values];
+    u: TableUnion;
+    us: [TableUnion];
+}
+
+namespace PyNames.Enums;
+
+enum data : byte { A, B }
+enum p : byte { A, B }
+enum v : byte { A, B }
+enum owner : byte { A, B }
+enum name : byte { A, B }
+enum w : byte { A, B }
+enum r : byte { A, B }
+enum t : byte { A, B }
+enum o : byte { A, B }
+enum x : byte { A, B }
+enum c : byte { A, B }
+enum d : byte { A, B }
+enum m : byte { A, B }
+enum self : byte { A, B }
+enum other : byte { A, B }
+enum f0 : byte { A, B }
+enum f1 : byte { A, B }
+enum o0 : byte { A, B }
+enum o1 : byte { A, B }
+enum s0 : byte { A, B }
+enum s1 : byte { A, B }
+enum c0 : byte { A, B }
+enum c1 : byte { A, B }
+enum t0 : byte { A, B }
+enum t1 : byte { A, B }
+enum d0 : byte { A, B }
+enum d1 : byte { A, B }
+enum m1 : byte { A, B }
+enum m2 : byte { A, B }
+enum value : byte { A, B }
+enum values : byte { A, B }
+
+struct UsesEnums
+{
+    e_data: data;
+    e_p: p;
+    e_v: v;
+    e_owner: owner;
+    e_name: name;
+    e_w: w;
+    e_r: r;
+    e_t: t;
+    e_o: o;
+    e_x: x;
+    e_c: c;
+    e_d: d;
+    e_m: m;
+    e_self: self;
+    e_other: other;
+    e_f0: f0;
+    e_f1: f1;
+    e_o0: o0;
+    e_o1: o1;
+    e_s0: s0;
+    e_s1: s1;
+    e_c0: c0;
+    e_c1: c1;
+    e_t0: t0;
+    e_t1: t1;
+    e_d0: d0;
+    e_d1: d1;
+    e_m1: m1;
+    e_m2: m2;
+    e_value: value;
+    e_values: values;
+}
+
+table UsesEnumsTable
+{
+    e_data: data = B;
+    v_data: [data];
+    e_p: p = B;
+    v_p: [p];
+    e_v: v = B;
+    v_v: [v];
+    e_owner: owner = B;
+    v_owner: [owner];
+    e_name: name = B;
+    v_name: [name];
+    e_w: w = B;
+    v_w: [w];
+    e_r: r = B;
+    v_r: [r];
+    e_t: t = B;
+    v_t: [t];
+    e_o: o = B;
+    v_o: [o];
+    e_x: x = B;
+    v_x: [x];
+    e_c: c = B;
+    v_c: [c];
+    e_d: d = B;
+    v_d: [d];
+    e_m: m = B;
+    v_m: [m];
+    e_self: self = B;
+    v_self: [self];
+    e_other: other = B;
+    v_other: [other];
+    e_f0: f0 = B;
+    v_f0: [f0];
+    e_f1: f1 = B;
+    v_f1: [f1];
+    e_o0: o0 = B;
+    v_o0: [o0];
+    e_o1: o1 = B;
+    v_o1: [o1];
+    e_s0: s0 = B;
+    v_s0: [s0];
+    e_s1: s1 = B;
+    v_s1: [s1];
+    e_c0: c0 = B;
+    v_c0: [c0];
+    e_c1: c1 = B;
+    v_c1: [c1];
+    e_t0: t0 = B;
+    v_t0: [t0];
+    e_t1: t1 = B;
+    v_t1: [t1];
+    e_d0: d0 = B;
+    v_d0: [d0];
+    e_d1: d1 = B;
+    v_d1: [d1];
+    e_m1: m1 = B;
+    v_m1: [m1];
+    e_m2: m2 = B;
+    v_m2: [m2];
+    e_value: value = B;
+    v_value: [value];
+    e_values: values = B;
+    v_values: [values];
+    s: UsesEnums;
+}

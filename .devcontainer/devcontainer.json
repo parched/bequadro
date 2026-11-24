@@ -1,0 +1,32 @@
+{
+  "name": "Bequadro",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "remoteUser": "vscode",
+  "mounts": [
+    // Keep state (see containerEnv) across container rebuilds, shared by all worktrees
+    "source=bequadro-persist,target=/persist,type=volume",
+    // Claude and Codex config at their default paths, so dotfiles managers can write to it directly
+    "source=bequadro-persist,target=/home/vscode/.claude,type=volume,subpath=claude",
+    "source=bequadro-persist,target=/home/vscode/.codex,type=volume,subpath=codex"
+  ],
+  // Podman fails to mount a volume subpath that doesn't exist
+  "initializeCommand": "podman volume create --ignore bequadro-persist >/dev/null && podman unshare sh -c 'mkdir -p \"$1/claude\" \"$1/codex\"' sh \"$(podman volume inspect --format '{{.Mountpoint}}' bequadro-persist)\"",
+  "containerEnv": {
+    "DEVCONTAINER_PERSISTENT_DIR": "/persist",
+    // Otherwise Claude Code keeps .claude.json in $HOME, outside the volume
+    "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
+    "HISTFILE": "/persist/bash_history",
+    // uv's cache and the project's virtual environments are on different file systems, so it can't hardlink
+    "UV_LINK_MODE": "copy"
+  },
+  // A new volume is owned by root
+  "postCreateCommand": "sudo chown vscode:vscode /persist && dotnet tool restore && dotnet restore Bequadro.sln",
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-dotnettools.csdevkit", "csharpier.csharpier-vscode"]
+    }
+  }
+}

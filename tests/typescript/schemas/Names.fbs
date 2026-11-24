@@ -1,0 +1,1255 @@
+// TS-002, TS-003, NAM-001: every TypeScript keyword and contextual keyword, and every name generated code uses for
+// its own parameters and locals or for the runtime and built-ins, as each kind of declaration, member and field.
+// names.test.ts checks that the code compiles and works. Written by a script; regenerate it rather than edit it.
+
+namespace Names.Tables;
+
+table abstract (bequadro_value_equality) { x: int = 1; }
+table accessor (bequadro_value_equality) { x: int = 1; }
+table any (bequadro_value_equality) { x: int = 1; }
+table as (bequadro_value_equality) { x: int = 1; }
+table asserts (bequadro_value_equality) { x: int = 1; }
+table assert (bequadro_value_equality) { x: int = 1; }
+table async (bequadro_value_equality) { x: int = 1; }
+table await (bequadro_value_equality) { x: int = 1; }
+table bigint (bequadro_value_equality) { x: int = 1; }
+table boolean (bequadro_value_equality) { x: int = 1; }
+table break (bequadro_value_equality) { x: int = 1; }
+table case (bequadro_value_equality) { x: int = 1; }
+table catch (bequadro_value_equality) { x: int = 1; }
+table class (bequadro_value_equality) { x: int = 1; }
+table const (bequadro_value_equality) { x: int = 1; }
+table constructor (bequadro_value_equality) { x: int = 1; }
+table continue (bequadro_value_equality) { x: int = 1; }
+table debugger (bequadro_value_equality) { x: int = 1; }
+table declare (bequadro_value_equality) { x: int = 1; }
+table default (bequadro_value_equality) { x: int = 1; }
+table defer (bequadro_value_equality) { x: int = 1; }
+table delete (bequadro_value_equality) { x: int = 1; }
+table do (bequadro_value_equality) { x: int = 1; }
+table else (bequadro_value_equality) { x: int = 1; }
+table enum (bequadro_value_equality) { x: int = 1; }
+table export (bequadro_value_equality) { x: int = 1; }
+table extends (bequadro_value_equality) { x: int = 1; }
+table false (bequadro_value_equality) { x: int = 1; }
+table finally (bequadro_value_equality) { x: int = 1; }
+table for (bequadro_value_equality) { x: int = 1; }
+table from (bequadro_value_equality) { x: int = 1; }
+table function (bequadro_value_equality) { x: int = 1; }
+table get (bequadro_value_equality) { x: int = 1; }
+table global (bequadro_value_equality) { x: int = 1; }
+table if (bequadro_value_equality) { x: int = 1; }
+table implements (bequadro_value_equality) { x: int = 1; }
+table import (bequadro_value_equality) { x: int = 1; }
+table in (bequadro_value_equality) { x: int = 1; }
+table infer (bequadro_value_equality) { x: int = 1; }
+table instanceof (bequadro_value_equality) { x: int = 1; }
+table interface (bequadro_value_equality) { x: int = 1; }
+table intrinsic (bequadro_value_equality) { x: int = 1; }
+table is (bequadro_value_equality) { x: int = 1; }
+table keyof (bequadro_value_equality) { x: int = 1; }
+table let (bequadro_value_equality) { x: int = 1; }
+table module (bequadro_value_equality) { x: int = 1; }
+table namespace (bequadro_value_equality) { x: int = 1; }
+table never (bequadro_value_equality) { x: int = 1; }
+table new (bequadro_value_equality) { x: int = 1; }
+table null (bequadro_value_equality) { x: int = 1; }
+table number (bequadro_value_equality) { x: int = 1; }
+table object (bequadro_value_equality) { x: int = 1; }
+table of (bequadro_value_equality) { x: int = 1; }
+table out (bequadro_value_equality) { x: int = 1; }
+table override (bequadro_value_equality) { x: int = 1; }
+table package (bequadro_value_equality) { x: int = 1; }
+table private (bequadro_value_equality) { x: int = 1; }
+table protected (bequadro_value_equality) { x: int = 1; }
+table public (bequadro_value_equality) { x: int = 1; }
+table readonly (bequadro_value_equality) { x: int = 1; }
+table require (bequadro_value_equality) { x: int = 1; }
+table return (bequadro_value_equality) { x: int = 1; }
+table satisfies (bequadro_value_equality) { x: int = 1; }
+table set (bequadro_value_equality) { x: int = 1; }
+table source (bequadro_value_equality) { x: int = 1; }
+table static (bequadro_value_equality) { x: int = 1; }
+table super (bequadro_value_equality) { x: int = 1; }
+table switch (bequadro_value_equality) { x: int = 1; }
+table symbol (bequadro_value_equality) { x: int = 1; }
+table this (bequadro_value_equality) { x: int = 1; }
+table throw (bequadro_value_equality) { x: int = 1; }
+table true (bequadro_value_equality) { x: int = 1; }
+table try (bequadro_value_equality) { x: int = 1; }
+table type (bequadro_value_equality) { x: int = 1; }
+table typeof (bequadro_value_equality) { x: int = 1; }
+table undefined (bequadro_value_equality) { x: int = 1; }
+table unique (bequadro_value_equality) { x: int = 1; }
+table unknown (bequadro_value_equality) { x: int = 1; }
+table using (bequadro_value_equality) { x: int = 1; }
+table var (bequadro_value_equality) { x: int = 1; }
+table void (bequadro_value_equality) { x: int = 1; }
+table while (bequadro_value_equality) { x: int = 1; }
+table with (bequadro_value_equality) { x: int = 1; }
+table yield (bequadro_value_equality) { x: int = 1; }
+table eval (bequadro_value_equality) { x: int = 1; }
+table arguments (bequadro_value_equality) { x: int = 1; }
+table init (bequadro_value_equality) { x: int = 1; }
+table a (bequadro_value_equality) { x: int = 1; }
+table b (bequadro_value_equality) { x: int = 1; }
+table value (bequadro_value_equality) { x: int = 1; }
+table options (bequadro_value_equality) { x: int = 1; }
+table buffer (bequadro_value_equality) { x: int = 1; }
+table writer (bequadro_value_equality) { x: int = 1; }
+table reader (bequadro_value_equality) { x: int = 1; }
+table table (bequadro_value_equality) { x: int = 1; }
+table view (bequadro_value_equality) { x: int = 1; }
+table offset (bequadro_value_equality) { x: int = 1; }
+table owner (bequadro_value_equality) { x: int = 1; }
+table field (bequadro_value_equality) { x: int = 1; }
+table position (bequadro_value_equality) { x: int = 1; }
+table kind (bequadro_value_equality) { x: int = 1; }
+table discriminator (bequadro_value_equality) { x: int = 1; }
+table p (bequadro_value_equality) { x: int = 1; }
+table o (bequadro_value_equality) { x: int = 1; }
+table v (bequadro_value_equality) { x: int = 1; }
+table s (bequadro_value_equality) { x: int = 1; }
+table c (bequadro_value_equality) { x: int = 1; }
+table t (bequadro_value_equality) { x: int = 1; }
+table d (bequadro_value_equality) { x: int = 1; }
+table v0 (bequadro_value_equality) { x: int = 1; }
+table o0 (bequadro_value_equality) { x: int = 1; }
+table s0 (bequadro_value_equality) { x: int = 1; }
+table c0 (bequadro_value_equality) { x: int = 1; }
+table t0 (bequadro_value_equality) { x: int = 1; }
+table d0 (bequadro_value_equality) { x: int = 1; }
+table p0 (bequadro_value_equality) { x: int = 1; }
+table _value (bequadro_value_equality) { x: int = 1; }
+table _reader (bequadro_value_equality) { x: int = 1; }
+table _table (bequadro_value_equality) { x: int = 1; }
+table bq (bequadro_value_equality) { x: int = 1; }
+table n0 (bequadro_value_equality) { x: int = 1; }
+table c_A (bequadro_value_equality) { x: int = 1; }
+table Bytes (bequadro_value_equality) { x: int = 1; }
+table View (bequadro_value_equality) { x: int = 1; }
+table Writer (bequadro_value_equality) { x: int = 1; }
+table Reader (bequadro_value_equality) { x: int = 1; }
+table Uint8Array (bequadro_value_equality) { x: int = 1; }
+table DataView (bequadro_value_equality) { x: int = 1; }
+table Object (bequadro_value_equality) { x: int = 1; }
+table Array (bequadro_value_equality) { x: int = 1; }
+table Math (bequadro_value_equality) { x: int = 1; }
+table Number (bequadro_value_equality) { x: int = 1; }
+table BigInt (bequadro_value_equality) { x: int = 1; }
+table Error (bequadro_value_equality) { x: int = 1; }
+table TypeError (bequadro_value_equality) { x: int = 1; }
+table globalThis (bequadro_value_equality) { x: int = 1; }
+table NaN (bequadro_value_equality) { x: int = 1; }
+table Infinity (bequadro_value_equality) { x: int = 1; }
+table Symbol (bequadro_value_equality) { x: int = 1; }
+table Map (bequadro_value_equality) { x: int = 1; }
+table TextDecoder (bequadro_value_equality) { x: int = 1; }
+table TextEncoder (bequadro_value_equality) { x: int = 1; }
+
+union Any {
+    abstract, accessor, any, as, asserts, assert, async, await, bigint, boolean, break, case,
+    catch, class, const, constructor, continue, debugger, declare, default, defer, delete, do,
+    else, enum, export, extends, false, finally, for, from, function, get, global, if, implements,
+    import, in, infer, instanceof, interface, intrinsic, is, keyof, let, module, namespace, never,
+    new, null, number, object, of, out, override, package, private, protected, public, readonly,
+    require, return, satisfies, set, source, static, super, switch, symbol, this, throw, true, try,
+    type, typeof, undefined, unique, unknown, using, var, void, while, with, yield, eval,
+    arguments, init, a, b, value, options, buffer, writer, reader, table, view, offset, owner,
+    field, position, kind, discriminator, p, o, v, s, c, t, d, v0, o0, s0, c0, t0, d0, p0, _value,
+    _reader, _table, bq, n0, c_A, Bytes, View, Writer, Reader, Uint8Array, DataView, Object, Array,
+    Math, Number, BigInt, Error, TypeError, globalThis, NaN, Infinity, Symbol, Map, TextDecoder,
+    TextEncoder,
+}
+
+table Holder (bequadro_value_equality) {
+    f_abstract: abstract; v_abstract: [abstract]; f_accessor: accessor; v_accessor: [accessor];
+    f_any: any; v_any: [any]; f_as: as; v_as: [as]; f_asserts: asserts; v_asserts: [asserts];
+    f_assert: assert; v_assert: [assert]; f_async: async; v_async: [async];
+    f_await: await; v_await: [await]; f_bigint: bigint; v_bigint: [bigint];
+    f_boolean: boolean; v_boolean: [boolean]; f_break: break; v_break: [break];
+    f_case: case; v_case: [case]; f_catch: catch; v_catch: [catch];
+    f_class: class; v_class: [class]; f_const: const; v_const: [const];
+    f_constructor: constructor; v_constructor: [constructor];
+    f_continue: continue; v_continue: [continue]; f_debugger: debugger; v_debugger: [debugger];
+    f_declare: declare; v_declare: [declare]; f_default: default; v_default: [default];
+    f_defer: defer; v_defer: [defer]; f_delete: delete; v_delete: [delete]; f_do: do; v_do: [do];
+    f_else: else; v_else: [else]; f_enum: enum; v_enum: [enum];
+    f_export: export; v_export: [export]; f_extends: extends; v_extends: [extends];
+    f_false: false; v_false: [false]; f_finally: finally; v_finally: [finally];
+    f_for: for; v_for: [for]; f_from: from; v_from: [from];
+    f_function: function; v_function: [function]; f_get: get; v_get: [get];
+    f_global: global; v_global: [global]; f_if: if; v_if: [if];
+    f_implements: implements; v_implements: [implements]; f_import: import; v_import: [import];
+    f_in: in; v_in: [in]; f_infer: infer; v_infer: [infer];
+    f_instanceof: instanceof; v_instanceof: [instanceof];
+    f_interface: interface; v_interface: [interface];
+    f_intrinsic: intrinsic; v_intrinsic: [intrinsic]; f_is: is; v_is: [is];
+    f_keyof: keyof; v_keyof: [keyof]; f_let: let; v_let: [let];
+    f_module: module; v_module: [module]; f_namespace: namespace; v_namespace: [namespace];
+    f_never: never; v_never: [never]; f_new: new; v_new: [new]; f_null: null; v_null: [null];
+    f_number: number; v_number: [number]; f_object: object; v_object: [object];
+    f_of: of; v_of: [of]; f_out: out; v_out: [out]; f_override: override; v_override: [override];
+    f_package: package; v_package: [package]; f_private: private; v_private: [private];
+    f_protected: protected; v_protected: [protected]; f_public: public; v_public: [public];
+    f_readonly: readonly; v_readonly: [readonly]; f_require: require; v_require: [require];
+    f_return: return; v_return: [return]; f_satisfies: satisfies; v_satisfies: [satisfies];
+    f_set: set; v_set: [set]; f_source: source; v_source: [source];
+    f_static: static; v_static: [static]; f_super: super; v_super: [super];
+    f_switch: switch; v_switch: [switch]; f_symbol: symbol; v_symbol: [symbol];
+    f_this: this; v_this: [this]; f_throw: throw; v_throw: [throw]; f_true: true; v_true: [true];
+    f_try: try; v_try: [try]; f_type: type; v_type: [type]; f_typeof: typeof; v_typeof: [typeof];
+    f_undefined: undefined; v_undefined: [undefined]; f_unique: unique; v_unique: [unique];
+    f_unknown: unknown; v_unknown: [unknown]; f_using: using; v_using: [using];
+    f_var: var; v_var: [var]; f_void: void; v_void: [void]; f_while: while; v_while: [while];
+    f_with: with; v_with: [with]; f_yield: yield; v_yield: [yield]; f_eval: eval; v_eval: [eval];
+    f_arguments: arguments; v_arguments: [arguments]; f_init: init; v_init: [init];
+    f_a: a; v_a: [a]; f_b: b; v_b: [b]; f_value: value; v_value: [value];
+    f_options: options; v_options: [options]; f_buffer: buffer; v_buffer: [buffer];
+    f_writer: writer; v_writer: [writer]; f_reader: reader; v_reader: [reader];
+    f_table: table; v_table: [table]; f_view: view; v_view: [view];
+    f_offset: offset; v_offset: [offset]; f_owner: owner; v_owner: [owner];
+    f_field: field; v_field: [field]; f_position: position; v_position: [position];
+    f_kind: kind; v_kind: [kind]; f_discriminator: discriminator; v_discriminator: [discriminator];
+    f_p: p; v_p: [p]; f_o: o; v_o: [o]; f_v: v; v_v: [v]; f_s: s; v_s: [s]; f_c: c; v_c: [c];
+    f_t: t; v_t: [t]; f_d: d; v_d: [d]; f_v0: v0; v_v0: [v0]; f_o0: o0; v_o0: [o0];
+    f_s0: s0; v_s0: [s0]; f_c0: c0; v_c0: [c0]; f_t0: t0; v_t0: [t0]; f_d0: d0; v_d0: [d0];
+    f_p0: p0; v_p0: [p0]; f__value: _value; v__value: [_value];
+    f__reader: _reader; v__reader: [_reader]; f__table: _table; v__table: [_table];
+    f_bq: bq; v_bq: [bq]; f_n0: n0; v_n0: [n0]; f_c_A: c_A; v_c_A: [c_A];
+    f_Bytes: Bytes; v_Bytes: [Bytes]; f_View: View; v_View: [View];
+    f_Writer: Writer; v_Writer: [Writer]; f_Reader: Reader; v_Reader: [Reader];
+    f_Uint8Array: Uint8Array; v_Uint8Array: [Uint8Array];
+    f_DataView: DataView; v_DataView: [DataView]; f_Object: Object; v_Object: [Object];
+    f_Array: Array; v_Array: [Array]; f_Math: Math; v_Math: [Math];
+    f_Number: Number; v_Number: [Number]; f_BigInt: BigInt; v_BigInt: [BigInt];
+    f_Error: Error; v_Error: [Error]; f_TypeError: TypeError; v_TypeError: [TypeError];
+    f_globalThis: globalThis; v_globalThis: [globalThis]; f_NaN: NaN; v_NaN: [NaN];
+    f_Infinity: Infinity; v_Infinity: [Infinity]; f_Symbol: Symbol; v_Symbol: [Symbol];
+    f_Map: Map; v_Map: [Map]; f_TextDecoder: TextDecoder; v_TextDecoder: [TextDecoder];
+    f_TextEncoder: TextEncoder; v_TextEncoder: [TextEncoder];
+  u_any: Any;
+  anys: [Any];
+}
+
+namespace Names.Structs;
+
+struct abstract { x: int; }
+struct accessor { x: int; }
+struct any { x: int; }
+struct as { x: int; }
+struct asserts { x: int; }
+struct assert { x: int; }
+struct async { x: int; }
+struct await { x: int; }
+struct bigint { x: int; }
+struct boolean { x: int; }
+struct break { x: int; }
+struct case { x: int; }
+struct catch { x: int; }
+struct class { x: int; }
+struct const { x: int; }
+struct constructor { x: int; }
+struct continue { x: int; }
+struct debugger { x: int; }
+struct declare { x: int; }
+struct default { x: int; }
+struct defer { x: int; }
+struct delete { x: int; }
+struct do { x: int; }
+struct else { x: int; }
+struct enum { x: int; }
+struct export { x: int; }
+struct extends { x: int; }
+struct false { x: int; }
+struct finally { x: int; }
+struct for { x: int; }
+struct from { x: int; }
+struct function { x: int; }
+struct get { x: int; }
+struct global { x: int; }
+struct if { x: int; }
+struct implements { x: int; }
+struct import { x: int; }
+struct in { x: int; }
+struct infer { x: int; }
+struct instanceof { x: int; }
+struct interface { x: int; }
+struct intrinsic { x: int; }
+struct is { x: int; }
+struct keyof { x: int; }
+struct let { x: int; }
+struct module { x: int; }
+struct namespace { x: int; }
+struct never { x: int; }
+struct new { x: int; }
+struct null { x: int; }
+struct number { x: int; }
+struct object { x: int; }
+struct of { x: int; }
+struct out { x: int; }
+struct override { x: int; }
+struct package { x: int; }
+struct private { x: int; }
+struct protected { x: int; }
+struct public { x: int; }
+struct readonly { x: int; }
+struct require { x: int; }
+struct return { x: int; }
+struct satisfies { x: int; }
+struct set { x: int; }
+struct source { x: int; }
+struct static { x: int; }
+struct super { x: int; }
+struct switch { x: int; }
+struct symbol { x: int; }
+struct this { x: int; }
+struct throw { x: int; }
+struct true { x: int; }
+struct try { x: int; }
+struct type { x: int; }
+struct typeof { x: int; }
+struct undefined { x: int; }
+struct unique { x: int; }
+struct unknown { x: int; }
+struct using { x: int; }
+struct var { x: int; }
+struct void { x: int; }
+struct while { x: int; }
+struct with { x: int; }
+struct yield { x: int; }
+struct eval { x: int; }
+struct arguments { x: int; }
+struct init { x: int; }
+struct a { x: int; }
+struct b { x: int; }
+struct value { x: int; }
+struct options { x: int; }
+struct buffer { x: int; }
+struct writer { x: int; }
+struct reader { x: int; }
+struct table { x: int; }
+struct view { x: int; }
+struct offset { x: int; }
+struct owner { x: int; }
+struct field { x: int; }
+struct position { x: int; }
+struct kind { x: int; }
+struct discriminator { x: int; }
+struct p { x: int; }
+struct o { x: int; }
+struct v { x: int; }
+struct s { x: int; }
+struct c { x: int; }
+struct t { x: int; }
+struct d { x: int; }
+struct v0 { x: int; }
+struct o0 { x: int; }
+struct s0 { x: int; }
+struct c0 { x: int; }
+struct t0 { x: int; }
+struct d0 { x: int; }
+struct p0 { x: int; }
+struct _value { x: int; }
+struct _reader { x: int; }
+struct _table { x: int; }
+struct bq { x: int; }
+struct n0 { x: int; }
+struct c_A { x: int; }
+struct Bytes { x: int; }
+struct View { x: int; }
+struct Writer { x: int; }
+struct Reader { x: int; }
+struct Uint8Array { x: int; }
+struct DataView { x: int; }
+struct Object { x: int; }
+struct Array { x: int; }
+struct Math { x: int; }
+struct Number { x: int; }
+struct BigInt { x: int; }
+struct Error { x: int; }
+struct TypeError { x: int; }
+struct globalThis { x: int; }
+struct NaN { x: int; }
+struct Infinity { x: int; }
+struct Symbol { x: int; }
+struct Map { x: int; }
+struct TextDecoder { x: int; }
+struct TextEncoder { x: int; }
+
+struct Outer {
+    f_abstract: abstract; f_accessor: accessor; f_any: any; f_as: as; f_asserts: asserts;
+    f_assert: assert; f_async: async; f_await: await; f_bigint: bigint; f_boolean: boolean;
+    f_break: break; f_case: case; f_catch: catch; f_class: class; f_const: const;
+    f_constructor: constructor; f_continue: continue; f_debugger: debugger; f_declare: declare;
+    f_default: default; f_defer: defer; f_delete: delete; f_do: do; f_else: else; f_enum: enum;
+    f_export: export; f_extends: extends; f_false: false; f_finally: finally; f_for: for;
+    f_from: from; f_function: function; f_get: get; f_global: global; f_if: if;
+    f_implements: implements; f_import: import; f_in: in; f_infer: infer; f_instanceof: instanceof;
+    f_interface: interface; f_intrinsic: intrinsic; f_is: is; f_keyof: keyof; f_let: let;
+    f_module: module; f_namespace: namespace; f_never: never; f_new: new; f_null: null;
+    f_number: number; f_object: object; f_of: of; f_out: out; f_override: override;
+    f_package: package; f_private: private; f_protected: protected; f_public: public;
+    f_readonly: readonly; f_require: require; f_return: return; f_satisfies: satisfies; f_set: set;
+    f_source: source; f_static: static; f_super: super; f_switch: switch; f_symbol: symbol;
+    f_this: this; f_throw: throw; f_true: true; f_try: try; f_type: type; f_typeof: typeof;
+    f_undefined: undefined; f_unique: unique; f_unknown: unknown; f_using: using; f_var: var;
+    f_void: void; f_while: while; f_with: with; f_yield: yield; f_eval: eval;
+    f_arguments: arguments; f_init: init; f_a: a; f_b: b; f_value: value; f_options: options;
+    f_buffer: buffer; f_writer: writer; f_reader: reader; f_table: table; f_view: view;
+    f_offset: offset; f_owner: owner; f_field: field; f_position: position; f_kind: kind;
+    f_discriminator: discriminator; f_p: p; f_o: o; f_v: v; f_s: s; f_c: c; f_t: t; f_d: d;
+    f_v0: v0; f_o0: o0; f_s0: s0; f_c0: c0; f_t0: t0; f_d0: d0; f_p0: p0; f__value: _value;
+    f__reader: _reader; f__table: _table; f_bq: bq; f_n0: n0; f_c_A: c_A; f_Bytes: Bytes;
+    f_View: View; f_Writer: Writer; f_Reader: Reader; f_Uint8Array: Uint8Array;
+    f_DataView: DataView; f_Object: Object; f_Array: Array; f_Math: Math; f_Number: Number;
+    f_BigInt: BigInt; f_Error: Error; f_TypeError: TypeError; f_globalThis: globalThis; f_NaN: NaN;
+    f_Infinity: Infinity; f_Symbol: Symbol; f_Map: Map; f_TextDecoder: TextDecoder;
+    f_TextEncoder: TextEncoder;
+}
+
+union Any {
+    abstract, accessor, any, as, asserts, assert, async, await, bigint, boolean, break, case,
+    catch, class, const, constructor, continue, debugger, declare, default, defer, delete, do,
+    else, enum, export, extends, false, finally, for, from, function, get, global, if, implements,
+    import, in, infer, instanceof, interface, intrinsic, is, keyof, let, module, namespace, never,
+    new, null, number, object, of, out, override, package, private, protected, public, readonly,
+    require, return, satisfies, set, source, static, super, switch, symbol, this, throw, true, try,
+    type, typeof, undefined, unique, unknown, using, var, void, while, with, yield, eval,
+    arguments, init, a, b, value, options, buffer, writer, reader, table, view, offset, owner,
+    field, position, kind, discriminator, p, o, v, s, c, t, d, v0, o0, s0, c0, t0, d0, p0, _value,
+    _reader, _table, bq, n0, c_A, Bytes, View, Writer, Reader, Uint8Array, DataView, Object, Array,
+    Math, Number, BigInt, Error, TypeError, globalThis, NaN, Infinity, Symbol, Map, TextDecoder,
+    TextEncoder,
+}
+
+table Holder (bequadro_value_equality) {
+    f_abstract: abstract; v_abstract: [abstract]; f_accessor: accessor; v_accessor: [accessor];
+    f_any: any; v_any: [any]; f_as: as; v_as: [as]; f_asserts: asserts; v_asserts: [asserts];
+    f_assert: assert; v_assert: [assert]; f_async: async; v_async: [async];
+    f_await: await; v_await: [await]; f_bigint: bigint; v_bigint: [bigint];
+    f_boolean: boolean; v_boolean: [boolean]; f_break: break; v_break: [break];
+    f_case: case; v_case: [case]; f_catch: catch; v_catch: [catch];
+    f_class: class; v_class: [class]; f_const: const; v_const: [const];
+    f_constructor: constructor; v_constructor: [constructor];
+    f_continue: continue; v_continue: [continue]; f_debugger: debugger; v_debugger: [debugger];
+    f_declare: declare; v_declare: [declare]; f_default: default; v_default: [default];
+    f_defer: defer; v_defer: [defer]; f_delete: delete; v_delete: [delete]; f_do: do; v_do: [do];
+    f_else: else; v_else: [else]; f_enum: enum; v_enum: [enum];
+    f_export: export; v_export: [export]; f_extends: extends; v_extends: [extends];
+    f_false: false; v_false: [false]; f_finally: finally; v_finally: [finally];
+    f_for: for; v_for: [for]; f_from: from; v_from: [from];
+    f_function: function; v_function: [function]; f_get: get; v_get: [get];
+    f_global: global; v_global: [global]; f_if: if; v_if: [if];
+    f_implements: implements; v_implements: [implements]; f_import: import; v_import: [import];
+    f_in: in; v_in: [in]; f_infer: infer; v_infer: [infer];
+    f_instanceof: instanceof; v_instanceof: [instanceof];
+    f_interface: interface; v_interface: [interface];
+    f_intrinsic: intrinsic; v_intrinsic: [intrinsic]; f_is: is; v_is: [is];
+    f_keyof: keyof; v_keyof: [keyof]; f_let: let; v_let: [let];
+    f_module: module; v_module: [module]; f_namespace: namespace; v_namespace: [namespace];
+    f_never: never; v_never: [never]; f_new: new; v_new: [new]; f_null: null; v_null: [null];
+    f_number: number; v_number: [number]; f_object: object; v_object: [object];
+    f_of: of; v_of: [of]; f_out: out; v_out: [out]; f_override: override; v_override: [override];
+    f_package: package; v_package: [package]; f_private: private; v_private: [private];
+    f_protected: protected; v_protected: [protected]; f_public: public; v_public: [public];
+    f_readonly: readonly; v_readonly: [readonly]; f_require: require; v_require: [require];
+    f_return: return; v_return: [return]; f_satisfies: satisfies; v_satisfies: [satisfies];
+    f_set: set; v_set: [set]; f_source: source; v_source: [source];
+    f_static: static; v_static: [static]; f_super: super; v_super: [super];
+    f_switch: switch; v_switch: [switch]; f_symbol: symbol; v_symbol: [symbol];
+    f_this: this; v_this: [this]; f_throw: throw; v_throw: [throw]; f_true: true; v_true: [true];
+    f_try: try; v_try: [try]; f_type: type; v_type: [type]; f_typeof: typeof; v_typeof: [typeof];
+    f_undefined: undefined; v_undefined: [undefined]; f_unique: unique; v_unique: [unique];
+    f_unknown: unknown; v_unknown: [unknown]; f_using: using; v_using: [using];
+    f_var: var; v_var: [var]; f_void: void; v_void: [void]; f_while: while; v_while: [while];
+    f_with: with; v_with: [with]; f_yield: yield; v_yield: [yield]; f_eval: eval; v_eval: [eval];
+    f_arguments: arguments; v_arguments: [arguments]; f_init: init; v_init: [init];
+    f_a: a; v_a: [a]; f_b: b; v_b: [b]; f_value: value; v_value: [value];
+    f_options: options; v_options: [options]; f_buffer: buffer; v_buffer: [buffer];
+    f_writer: writer; v_writer: [writer]; f_reader: reader; v_reader: [reader];
+    f_table: table; v_table: [table]; f_view: view; v_view: [view];
+    f_offset: offset; v_offset: [offset]; f_owner: owner; v_owner: [owner];
+    f_field: field; v_field: [field]; f_position: position; v_position: [position];
+    f_kind: kind; v_kind: [kind]; f_discriminator: discriminator; v_discriminator: [discriminator];
+    f_p: p; v_p: [p]; f_o: o; v_o: [o]; f_v: v; v_v: [v]; f_s: s; v_s: [s]; f_c: c; v_c: [c];
+    f_t: t; v_t: [t]; f_d: d; v_d: [d]; f_v0: v0; v_v0: [v0]; f_o0: o0; v_o0: [o0];
+    f_s0: s0; v_s0: [s0]; f_c0: c0; v_c0: [c0]; f_t0: t0; v_t0: [t0]; f_d0: d0; v_d0: [d0];
+    f_p0: p0; v_p0: [p0]; f__value: _value; v__value: [_value];
+    f__reader: _reader; v__reader: [_reader]; f__table: _table; v__table: [_table];
+    f_bq: bq; v_bq: [bq]; f_n0: n0; v_n0: [n0]; f_c_A: c_A; v_c_A: [c_A];
+    f_Bytes: Bytes; v_Bytes: [Bytes]; f_View: View; v_View: [View];
+    f_Writer: Writer; v_Writer: [Writer]; f_Reader: Reader; v_Reader: [Reader];
+    f_Uint8Array: Uint8Array; v_Uint8Array: [Uint8Array];
+    f_DataView: DataView; v_DataView: [DataView]; f_Object: Object; v_Object: [Object];
+    f_Array: Array; v_Array: [Array]; f_Math: Math; v_Math: [Math];
+    f_Number: Number; v_Number: [Number]; f_BigInt: BigInt; v_BigInt: [BigInt];
+    f_Error: Error; v_Error: [Error]; f_TypeError: TypeError; v_TypeError: [TypeError];
+    f_globalThis: globalThis; v_globalThis: [globalThis]; f_NaN: NaN; v_NaN: [NaN];
+    f_Infinity: Infinity; v_Infinity: [Infinity]; f_Symbol: Symbol; v_Symbol: [Symbol];
+    f_Map: Map; v_Map: [Map]; f_TextDecoder: TextDecoder; v_TextDecoder: [TextDecoder];
+    f_TextEncoder: TextEncoder; v_TextEncoder: [TextEncoder];
+  outer: Outer;
+  u_any: Any;
+}
+
+namespace Names.Enums;
+
+enum abstract : ubyte { A, B }
+enum accessor : ubyte { A, B }
+enum any : ubyte { A, B }
+enum as : ubyte { A, B }
+enum asserts : ubyte { A, B }
+enum assert : ubyte { A, B }
+enum async : ubyte { A, B }
+enum await : ubyte { A, B }
+enum bigint : ubyte { A, B }
+enum boolean : ubyte { A, B }
+enum break : ubyte { A, B }
+enum case : ubyte { A, B }
+enum catch : ubyte { A, B }
+enum class : ubyte { A, B }
+enum const : ubyte { A, B }
+enum constructor : ubyte { A, B }
+enum continue : ubyte { A, B }
+enum debugger : ubyte { A, B }
+enum declare : ubyte { A, B }
+enum default : ubyte { A, B }
+enum defer : ubyte { A, B }
+enum delete : ubyte { A, B }
+enum do : ubyte { A, B }
+enum else : ubyte { A, B }
+enum enum : ubyte { A, B }
+enum export : ubyte { A, B }
+enum extends : ubyte { A, B }
+enum false : ubyte { A, B }
+enum finally : ubyte { A, B }
+enum for : ubyte { A, B }
+enum from : ubyte { A, B }
+enum function : ubyte { A, B }
+enum get : ubyte { A, B }
+enum global : ubyte { A, B }
+enum if : ubyte { A, B }
+enum implements : ubyte { A, B }
+enum import : ubyte { A, B }
+enum in : ubyte { A, B }
+enum infer : ubyte { A, B }
+enum instanceof : ubyte { A, B }
+enum interface : ubyte { A, B }
+enum intrinsic : ubyte { A, B }
+enum is : ubyte { A, B }
+enum keyof : ubyte { A, B }
+enum let : ubyte { A, B }
+enum module : ubyte { A, B }
+enum namespace : ubyte { A, B }
+enum never : ubyte { A, B }
+enum new : ubyte { A, B }
+enum null : ubyte { A, B }
+enum number : ubyte { A, B }
+enum object : ubyte { A, B }
+enum of : ubyte { A, B }
+enum out : ubyte { A, B }
+enum override : ubyte { A, B }
+enum package : ubyte { A, B }
+enum private : ubyte { A, B }
+enum protected : ubyte { A, B }
+enum public : ubyte { A, B }
+enum readonly : ubyte { A, B }
+enum require : ubyte { A, B }
+enum return : ubyte { A, B }
+enum satisfies : ubyte { A, B }
+enum set : ubyte { A, B }
+enum source : ubyte { A, B }
+enum static : ubyte { A, B }
+enum super : ubyte { A, B }
+enum switch : ubyte { A, B }
+enum symbol : ubyte { A, B }
+enum this : ubyte { A, B }
+enum throw : ubyte { A, B }
+enum true : ubyte { A, B }
+enum try : ubyte { A, B }
+enum type : ubyte { A, B }
+enum typeof : ubyte { A, B }
+enum undefined : ubyte { A, B }
+enum unique : ubyte { A, B }
+enum unknown : ubyte { A, B }
+enum using : ubyte { A, B }
+enum var : ubyte { A, B }
+enum void : ubyte { A, B }
+enum while : ubyte { A, B }
+enum with : ubyte { A, B }
+enum yield : ubyte { A, B }
+enum eval : ubyte { A, B }
+enum arguments : ubyte { A, B }
+enum init : ubyte { A, B }
+enum a : ubyte { A, B }
+enum b : ubyte { A, B }
+enum value : ubyte { A, B }
+enum options : ubyte { A, B }
+enum buffer : ubyte { A, B }
+enum writer : ubyte { A, B }
+enum reader : ubyte { A, B }
+enum table : ubyte { A, B }
+enum view : ubyte { A, B }
+enum offset : ubyte { A, B }
+enum owner : ubyte { A, B }
+enum field : ubyte { A, B }
+enum position : ubyte { A, B }
+enum kind : ubyte { A, B }
+enum discriminator : ubyte { A, B }
+enum p : ubyte { A, B }
+enum o : ubyte { A, B }
+enum v : ubyte { A, B }
+enum s : ubyte { A, B }
+enum c : ubyte { A, B }
+enum t : ubyte { A, B }
+enum d : ubyte { A, B }
+enum v0 : ubyte { A, B }
+enum o0 : ubyte { A, B }
+enum s0 : ubyte { A, B }
+enum c0 : ubyte { A, B }
+enum t0 : ubyte { A, B }
+enum d0 : ubyte { A, B }
+enum p0 : ubyte { A, B }
+enum _value : ubyte { A, B }
+enum _reader : ubyte { A, B }
+enum _table : ubyte { A, B }
+enum bq : ubyte { A, B }
+enum n0 : ubyte { A, B }
+enum c_A : ubyte { A, B }
+enum Bytes : ubyte { A, B }
+enum View : ubyte { A, B }
+enum Writer : ubyte { A, B }
+enum Reader : ubyte { A, B }
+enum Uint8Array : ubyte { A, B }
+enum DataView : ubyte { A, B }
+enum Object : ubyte { A, B }
+enum Array : ubyte { A, B }
+enum Math : ubyte { A, B }
+enum Number : ubyte { A, B }
+enum BigInt : ubyte { A, B }
+enum Error : ubyte { A, B }
+enum TypeError : ubyte { A, B }
+enum globalThis : ubyte { A, B }
+enum NaN : ubyte { A, B }
+enum Infinity : ubyte { A, B }
+enum Symbol : ubyte { A, B }
+enum Map : ubyte { A, B }
+enum TextDecoder : ubyte { A, B }
+enum TextEncoder : ubyte { A, B }
+
+struct Outer {
+    f_abstract: abstract; f_accessor: accessor; f_any: any; f_as: as; f_asserts: asserts;
+    f_assert: assert; f_async: async; f_await: await; f_bigint: bigint; f_boolean: boolean;
+    f_break: break; f_case: case; f_catch: catch; f_class: class; f_const: const;
+    f_constructor: constructor; f_continue: continue; f_debugger: debugger; f_declare: declare;
+    f_default: default; f_defer: defer; f_delete: delete; f_do: do; f_else: else; f_enum: enum;
+    f_export: export; f_extends: extends; f_false: false; f_finally: finally; f_for: for;
+    f_from: from; f_function: function; f_get: get; f_global: global; f_if: if;
+    f_implements: implements; f_import: import; f_in: in; f_infer: infer; f_instanceof: instanceof;
+    f_interface: interface; f_intrinsic: intrinsic; f_is: is; f_keyof: keyof; f_let: let;
+    f_module: module; f_namespace: namespace; f_never: never; f_new: new; f_null: null;
+    f_number: number; f_object: object; f_of: of; f_out: out; f_override: override;
+    f_package: package; f_private: private; f_protected: protected; f_public: public;
+    f_readonly: readonly; f_require: require; f_return: return; f_satisfies: satisfies; f_set: set;
+    f_source: source; f_static: static; f_super: super; f_switch: switch; f_symbol: symbol;
+    f_this: this; f_throw: throw; f_true: true; f_try: try; f_type: type; f_typeof: typeof;
+    f_undefined: undefined; f_unique: unique; f_unknown: unknown; f_using: using; f_var: var;
+    f_void: void; f_while: while; f_with: with; f_yield: yield; f_eval: eval;
+    f_arguments: arguments; f_init: init; f_a: a; f_b: b; f_value: value; f_options: options;
+    f_buffer: buffer; f_writer: writer; f_reader: reader; f_table: table; f_view: view;
+    f_offset: offset; f_owner: owner; f_field: field; f_position: position; f_kind: kind;
+    f_discriminator: discriminator; f_p: p; f_o: o; f_v: v; f_s: s; f_c: c; f_t: t; f_d: d;
+    f_v0: v0; f_o0: o0; f_s0: s0; f_c0: c0; f_t0: t0; f_d0: d0; f_p0: p0; f__value: _value;
+    f__reader: _reader; f__table: _table; f_bq: bq; f_n0: n0; f_c_A: c_A; f_Bytes: Bytes;
+    f_View: View; f_Writer: Writer; f_Reader: Reader; f_Uint8Array: Uint8Array;
+    f_DataView: DataView; f_Object: Object; f_Array: Array; f_Math: Math; f_Number: Number;
+    f_BigInt: BigInt; f_Error: Error; f_TypeError: TypeError; f_globalThis: globalThis; f_NaN: NaN;
+    f_Infinity: Infinity; f_Symbol: Symbol; f_Map: Map; f_TextDecoder: TextDecoder;
+    f_TextEncoder: TextEncoder;
+}
+
+table Holder {
+    f_abstract: abstract = B; v_abstract: [abstract]; o_abstract: abstract = null;
+    f_accessor: accessor = B; v_accessor: [accessor]; o_accessor: accessor = null;
+    f_any: any = B; v_any: [any]; o_any: any = null; f_as: as = B; v_as: [as]; o_as: as = null;
+    f_asserts: asserts = B; v_asserts: [asserts]; o_asserts: asserts = null;
+    f_assert: assert = B; v_assert: [assert]; o_assert: assert = null;
+    f_async: async = B; v_async: [async]; o_async: async = null;
+    f_await: await = B; v_await: [await]; o_await: await = null;
+    f_bigint: bigint = B; v_bigint: [bigint]; o_bigint: bigint = null;
+    f_boolean: boolean = B; v_boolean: [boolean]; o_boolean: boolean = null;
+    f_break: break = B; v_break: [break]; o_break: break = null;
+    f_case: case = B; v_case: [case]; o_case: case = null;
+    f_catch: catch = B; v_catch: [catch]; o_catch: catch = null;
+    f_class: class = B; v_class: [class]; o_class: class = null;
+    f_const: const = B; v_const: [const]; o_const: const = null;
+    f_constructor: constructor = B; v_constructor: [constructor]; o_constructor: constructor = null;
+    f_continue: continue = B; v_continue: [continue]; o_continue: continue = null;
+    f_debugger: debugger = B; v_debugger: [debugger]; o_debugger: debugger = null;
+    f_declare: declare = B; v_declare: [declare]; o_declare: declare = null;
+    f_default: default = B; v_default: [default]; o_default: default = null;
+    f_defer: defer = B; v_defer: [defer]; o_defer: defer = null;
+    f_delete: delete = B; v_delete: [delete]; o_delete: delete = null;
+    f_do: do = B; v_do: [do]; o_do: do = null;
+    f_else: else = B; v_else: [else]; o_else: else = null;
+    f_enum: enum = B; v_enum: [enum]; o_enum: enum = null;
+    f_export: export = B; v_export: [export]; o_export: export = null;
+    f_extends: extends = B; v_extends: [extends]; o_extends: extends = null;
+    f_false: false = B; v_false: [false]; o_false: false = null;
+    f_finally: finally = B; v_finally: [finally]; o_finally: finally = null;
+    f_for: for = B; v_for: [for]; o_for: for = null;
+    f_from: from = B; v_from: [from]; o_from: from = null;
+    f_function: function = B; v_function: [function]; o_function: function = null;
+    f_get: get = B; v_get: [get]; o_get: get = null;
+    f_global: global = B; v_global: [global]; o_global: global = null;
+    f_if: if = B; v_if: [if]; o_if: if = null;
+    f_implements: implements = B; v_implements: [implements]; o_implements: implements = null;
+    f_import: import = B; v_import: [import]; o_import: import = null;
+    f_in: in = B; v_in: [in]; o_in: in = null;
+    f_infer: infer = B; v_infer: [infer]; o_infer: infer = null;
+    f_instanceof: instanceof = B; v_instanceof: [instanceof]; o_instanceof: instanceof = null;
+    f_interface: interface = B; v_interface: [interface]; o_interface: interface = null;
+    f_intrinsic: intrinsic = B; v_intrinsic: [intrinsic]; o_intrinsic: intrinsic = null;
+    f_is: is = B; v_is: [is]; o_is: is = null;
+    f_keyof: keyof = B; v_keyof: [keyof]; o_keyof: keyof = null;
+    f_let: let = B; v_let: [let]; o_let: let = null;
+    f_module: module = B; v_module: [module]; o_module: module = null;
+    f_namespace: namespace = B; v_namespace: [namespace]; o_namespace: namespace = null;
+    f_never: never = B; v_never: [never]; o_never: never = null;
+    f_new: new = B; v_new: [new]; o_new: new = null;
+    f_null: null = B; v_null: [null]; o_null: null = null;
+    f_number: number = B; v_number: [number]; o_number: number = null;
+    f_object: object = B; v_object: [object]; o_object: object = null;
+    f_of: of = B; v_of: [of]; o_of: of = null; f_out: out = B; v_out: [out]; o_out: out = null;
+    f_override: override = B; v_override: [override]; o_override: override = null;
+    f_package: package = B; v_package: [package]; o_package: package = null;
+    f_private: private = B; v_private: [private]; o_private: private = null;
+    f_protected: protected = B; v_protected: [protected]; o_protected: protected = null;
+    f_public: public = B; v_public: [public]; o_public: public = null;
+    f_readonly: readonly = B; v_readonly: [readonly]; o_readonly: readonly = null;
+    f_require: require = B; v_require: [require]; o_require: require = null;
+    f_return: return = B; v_return: [return]; o_return: return = null;
+    f_satisfies: satisfies = B; v_satisfies: [satisfies]; o_satisfies: satisfies = null;
+    f_set: set = B; v_set: [set]; o_set: set = null;
+    f_source: source = B; v_source: [source]; o_source: source = null;
+    f_static: static = B; v_static: [static]; o_static: static = null;
+    f_super: super = B; v_super: [super]; o_super: super = null;
+    f_switch: switch = B; v_switch: [switch]; o_switch: switch = null;
+    f_symbol: symbol = B; v_symbol: [symbol]; o_symbol: symbol = null;
+    f_this: this = B; v_this: [this]; o_this: this = null;
+    f_throw: throw = B; v_throw: [throw]; o_throw: throw = null;
+    f_true: true = B; v_true: [true]; o_true: true = null;
+    f_try: try = B; v_try: [try]; o_try: try = null;
+    f_type: type = B; v_type: [type]; o_type: type = null;
+    f_typeof: typeof = B; v_typeof: [typeof]; o_typeof: typeof = null;
+    f_undefined: undefined = B; v_undefined: [undefined]; o_undefined: undefined = null;
+    f_unique: unique = B; v_unique: [unique]; o_unique: unique = null;
+    f_unknown: unknown = B; v_unknown: [unknown]; o_unknown: unknown = null;
+    f_using: using = B; v_using: [using]; o_using: using = null;
+    f_var: var = B; v_var: [var]; o_var: var = null;
+    f_void: void = B; v_void: [void]; o_void: void = null;
+    f_while: while = B; v_while: [while]; o_while: while = null;
+    f_with: with = B; v_with: [with]; o_with: with = null;
+    f_yield: yield = B; v_yield: [yield]; o_yield: yield = null;
+    f_eval: eval = B; v_eval: [eval]; o_eval: eval = null;
+    f_arguments: arguments = B; v_arguments: [arguments]; o_arguments: arguments = null;
+    f_init: init = B; v_init: [init]; o_init: init = null; f_a: a = B; v_a: [a]; o_a: a = null;
+    f_b: b = B; v_b: [b]; o_b: b = null;
+    f_value: value = B; v_value: [value]; o_value: value = null;
+    f_options: options = B; v_options: [options]; o_options: options = null;
+    f_buffer: buffer = B; v_buffer: [buffer]; o_buffer: buffer = null;
+    f_writer: writer = B; v_writer: [writer]; o_writer: writer = null;
+    f_reader: reader = B; v_reader: [reader]; o_reader: reader = null;
+    f_table: table = B; v_table: [table]; o_table: table = null;
+    f_view: view = B; v_view: [view]; o_view: view = null;
+    f_offset: offset = B; v_offset: [offset]; o_offset: offset = null;
+    f_owner: owner = B; v_owner: [owner]; o_owner: owner = null;
+    f_field: field = B; v_field: [field]; o_field: field = null;
+    f_position: position = B; v_position: [position]; o_position: position = null;
+    f_kind: kind = B; v_kind: [kind]; o_kind: kind = null;
+    f_discriminator: discriminator = B; v_discriminator: [discriminator]; o_discriminator: discriminator = null;
+    f_p: p = B; v_p: [p]; o_p: p = null; f_o: o = B; v_o: [o]; o_o: o = null;
+    f_v: v = B; v_v: [v]; o_v: v = null; f_s: s = B; v_s: [s]; o_s: s = null;
+    f_c: c = B; v_c: [c]; o_c: c = null; f_t: t = B; v_t: [t]; o_t: t = null;
+    f_d: d = B; v_d: [d]; o_d: d = null; f_v0: v0 = B; v_v0: [v0]; o_v0: v0 = null;
+    f_o0: o0 = B; v_o0: [o0]; o_o0: o0 = null; f_s0: s0 = B; v_s0: [s0]; o_s0: s0 = null;
+    f_c0: c0 = B; v_c0: [c0]; o_c0: c0 = null; f_t0: t0 = B; v_t0: [t0]; o_t0: t0 = null;
+    f_d0: d0 = B; v_d0: [d0]; o_d0: d0 = null; f_p0: p0 = B; v_p0: [p0]; o_p0: p0 = null;
+    f__value: _value = B; v__value: [_value]; o__value: _value = null;
+    f__reader: _reader = B; v__reader: [_reader]; o__reader: _reader = null;
+    f__table: _table = B; v__table: [_table]; o__table: _table = null;
+    f_bq: bq = B; v_bq: [bq]; o_bq: bq = null; f_n0: n0 = B; v_n0: [n0]; o_n0: n0 = null;
+    f_c_A: c_A = B; v_c_A: [c_A]; o_c_A: c_A = null;
+    f_Bytes: Bytes = B; v_Bytes: [Bytes]; o_Bytes: Bytes = null;
+    f_View: View = B; v_View: [View]; o_View: View = null;
+    f_Writer: Writer = B; v_Writer: [Writer]; o_Writer: Writer = null;
+    f_Reader: Reader = B; v_Reader: [Reader]; o_Reader: Reader = null;
+    f_Uint8Array: Uint8Array = B; v_Uint8Array: [Uint8Array]; o_Uint8Array: Uint8Array = null;
+    f_DataView: DataView = B; v_DataView: [DataView]; o_DataView: DataView = null;
+    f_Object: Object = B; v_Object: [Object]; o_Object: Object = null;
+    f_Array: Array = B; v_Array: [Array]; o_Array: Array = null;
+    f_Math: Math = B; v_Math: [Math]; o_Math: Math = null;
+    f_Number: Number = B; v_Number: [Number]; o_Number: Number = null;
+    f_BigInt: BigInt = B; v_BigInt: [BigInt]; o_BigInt: BigInt = null;
+    f_Error: Error = B; v_Error: [Error]; o_Error: Error = null;
+    f_TypeError: TypeError = B; v_TypeError: [TypeError]; o_TypeError: TypeError = null;
+    f_globalThis: globalThis = B; v_globalThis: [globalThis]; o_globalThis: globalThis = null;
+    f_NaN: NaN = B; v_NaN: [NaN]; o_NaN: NaN = null;
+    f_Infinity: Infinity = B; v_Infinity: [Infinity]; o_Infinity: Infinity = null;
+    f_Symbol: Symbol = B; v_Symbol: [Symbol]; o_Symbol: Symbol = null;
+    f_Map: Map = B; v_Map: [Map]; o_Map: Map = null;
+    f_TextDecoder: TextDecoder = B; v_TextDecoder: [TextDecoder]; o_TextDecoder: TextDecoder = null;
+    f_TextEncoder: TextEncoder = B; v_TextEncoder: [TextEncoder]; o_TextEncoder: TextEncoder = null;
+  outer: Outer;
+}
+
+namespace Names.Unions;
+
+table Member (bequadro_value_equality) { x: int = 1; }
+struct Point { x: int; }
+
+union abstract { Member, Point }
+union accessor { Member, Point }
+union any { Member, Point }
+union as { Member, Point }
+union asserts { Member, Point }
+union assert { Member, Point }
+union async { Member, Point }
+union await { Member, Point }
+union bigint { Member, Point }
+union boolean { Member, Point }
+union break { Member, Point }
+union case { Member, Point }
+union catch { Member, Point }
+union class { Member, Point }
+union const { Member, Point }
+union constructor { Member, Point }
+union continue { Member, Point }
+union debugger { Member, Point }
+union declare { Member, Point }
+union default { Member, Point }
+union defer { Member, Point }
+union delete { Member, Point }
+union do { Member, Point }
+union else { Member, Point }
+union enum { Member, Point }
+union export { Member, Point }
+union extends { Member, Point }
+union false { Member, Point }
+union finally { Member, Point }
+union for { Member, Point }
+union from { Member, Point }
+union function { Member, Point }
+union get { Member, Point }
+union global { Member, Point }
+union if { Member, Point }
+union implements { Member, Point }
+union import { Member, Point }
+union in { Member, Point }
+union infer { Member, Point }
+union instanceof { Member, Point }
+union interface { Member, Point }
+union intrinsic { Member, Point }
+union is { Member, Point }
+union keyof { Member, Point }
+union let { Member, Point }
+union module { Member, Point }
+union namespace { Member, Point }
+union never { Member, Point }
+union new { Member, Point }
+union null { Member, Point }
+union number { Member, Point }
+union object { Member, Point }
+union of { Member, Point }
+union out { Member, Point }
+union override { Member, Point }
+union package { Member, Point }
+union private { Member, Point }
+union protected { Member, Point }
+union public { Member, Point }
+union readonly { Member, Point }
+union require { Member, Point }
+union return { Member, Point }
+union satisfies { Member, Point }
+union set { Member, Point }
+union source { Member, Point }
+union static { Member, Point }
+union super { Member, Point }
+union switch { Member, Point }
+union symbol { Member, Point }
+union this { Member, Point }
+union throw { Member, Point }
+union true { Member, Point }
+union try { Member, Point }
+union type { Member, Point }
+union typeof { Member, Point }
+union undefined { Member, Point }
+union unique { Member, Point }
+union unknown { Member, Point }
+union using { Member, Point }
+union var { Member, Point }
+union void { Member, Point }
+union while { Member, Point }
+union with { Member, Point }
+union yield { Member, Point }
+union eval { Member, Point }
+union arguments { Member, Point }
+union init { Member, Point }
+union a { Member, Point }
+union b { Member, Point }
+union value { Member, Point }
+union options { Member, Point }
+union buffer { Member, Point }
+union writer { Member, Point }
+union reader { Member, Point }
+union table { Member, Point }
+union view { Member, Point }
+union offset { Member, Point }
+union owner { Member, Point }
+union field { Member, Point }
+union position { Member, Point }
+union kind { Member, Point }
+union discriminator { Member, Point }
+union p { Member, Point }
+union o { Member, Point }
+union v { Member, Point }
+union s { Member, Point }
+union c { Member, Point }
+union t { Member, Point }
+union d { Member, Point }
+union v0 { Member, Point }
+union o0 { Member, Point }
+union s0 { Member, Point }
+union c0 { Member, Point }
+union t0 { Member, Point }
+union d0 { Member, Point }
+union p0 { Member, Point }
+union _value { Member, Point }
+union _reader { Member, Point }
+union _table { Member, Point }
+union bq { Member, Point }
+union n0 { Member, Point }
+union c_A { Member, Point }
+union Bytes { Member, Point }
+union View { Member, Point }
+union Writer { Member, Point }
+union Reader { Member, Point }
+union Uint8Array { Member, Point }
+union DataView { Member, Point }
+union Object { Member, Point }
+union Array { Member, Point }
+union Math { Member, Point }
+union Number { Member, Point }
+union BigInt { Member, Point }
+union Error { Member, Point }
+union TypeError { Member, Point }
+union globalThis { Member, Point }
+union NaN { Member, Point }
+union Infinity { Member, Point }
+union Symbol { Member, Point }
+union Map { Member, Point }
+union TextDecoder { Member, Point }
+union TextEncoder { Member, Point }
+
+table Holder (bequadro_value_equality) {
+    f_abstract: abstract; v_abstract: [abstract]; f_accessor: accessor; v_accessor: [accessor];
+    f_any: any; v_any: [any]; f_as: as; v_as: [as]; f_asserts: asserts; v_asserts: [asserts];
+    f_assert: assert; v_assert: [assert]; f_async: async; v_async: [async];
+    f_await: await; v_await: [await]; f_bigint: bigint; v_bigint: [bigint];
+    f_boolean: boolean; v_boolean: [boolean]; f_break: break; v_break: [break];
+    f_case: case; v_case: [case]; f_catch: catch; v_catch: [catch];
+    f_class: class; v_class: [class]; f_const: const; v_const: [const];
+    f_constructor: constructor; v_constructor: [constructor];
+    f_continue: continue; v_continue: [continue]; f_debugger: debugger; v_debugger: [debugger];
+    f_declare: declare; v_declare: [declare]; f_default: default; v_default: [default];
+    f_defer: defer; v_defer: [defer]; f_delete: delete; v_delete: [delete]; f_do: do; v_do: [do];
+    f_else: else; v_else: [else]; f_enum: enum; v_enum: [enum];
+    f_export: export; v_export: [export]; f_extends: extends; v_extends: [extends];
+    f_false: false; v_false: [false]; f_finally: finally; v_finally: [finally];
+    f_for: for; v_for: [for]; f_from: from; v_from: [from];
+    f_function: function; v_function: [function]; f_get: get; v_get: [get];
+    f_global: global; v_global: [global]; f_if: if; v_if: [if];
+    f_implements: implements; v_implements: [implements]; f_import: import; v_import: [import];
+    f_in: in; v_in: [in]; f_infer: infer; v_infer: [infer];
+    f_instanceof: instanceof; v_instanceof: [instanceof];
+    f_interface: interface; v_interface: [interface];
+    f_intrinsic: intrinsic; v_intrinsic: [intrinsic]; f_is: is; v_is: [is];
+    f_keyof: keyof; v_keyof: [keyof]; f_let: let; v_let: [let];
+    f_module: module; v_module: [module]; f_namespace: namespace; v_namespace: [namespace];
+    f_never: never; v_never: [never]; f_new: new; v_new: [new]; f_null: null; v_null: [null];
+    f_number: number; v_number: [number]; f_object: object; v_object: [object];
+    f_of: of; v_of: [of]; f_out: out; v_out: [out]; f_override: override; v_override: [override];
+    f_package: package; v_package: [package]; f_private: private; v_private: [private];
+    f_protected: protected; v_protected: [protected]; f_public: public; v_public: [public];
+    f_readonly: readonly; v_readonly: [readonly]; f_require: require; v_require: [require];
+    f_return: return; v_return: [return]; f_satisfies: satisfies; v_satisfies: [satisfies];
+    f_set: set; v_set: [set]; f_source: source; v_source: [source];
+    f_static: static; v_static: [static]; f_super: super; v_super: [super];
+    f_switch: switch; v_switch: [switch]; f_symbol: symbol; v_symbol: [symbol];
+    f_this: this; v_this: [this]; f_throw: throw; v_throw: [throw]; f_true: true; v_true: [true];
+    f_try: try; v_try: [try]; f_type: type; v_type: [type]; f_typeof: typeof; v_typeof: [typeof];
+    f_undefined: undefined; v_undefined: [undefined]; f_unique: unique; v_unique: [unique];
+    f_unknown: unknown; v_unknown: [unknown]; f_using: using; v_using: [using];
+    f_var: var; v_var: [var]; f_void: void; v_void: [void]; f_while: while; v_while: [while];
+    f_with: with; v_with: [with]; f_yield: yield; v_yield: [yield]; f_eval: eval; v_eval: [eval];
+    f_arguments: arguments; v_arguments: [arguments]; f_init: init; v_init: [init];
+    f_a: a; v_a: [a]; f_b: b; v_b: [b]; f_value: value; v_value: [value];
+    f_options: options; v_options: [options]; f_buffer: buffer; v_buffer: [buffer];
+    f_writer: writer; v_writer: [writer]; f_reader: reader; v_reader: [reader];
+    f_table: table; v_table: [table]; f_view: view; v_view: [view];
+    f_offset: offset; v_offset: [offset]; f_owner: owner; v_owner: [owner];
+    f_field: field; v_field: [field]; f_position: position; v_position: [position];
+    f_kind: kind; v_kind: [kind]; f_discriminator: discriminator; v_discriminator: [discriminator];
+    f_p: p; v_p: [p]; f_o: o; v_o: [o]; f_v: v; v_v: [v]; f_s: s; v_s: [s]; f_c: c; v_c: [c];
+    f_t: t; v_t: [t]; f_d: d; v_d: [d]; f_v0: v0; v_v0: [v0]; f_o0: o0; v_o0: [o0];
+    f_s0: s0; v_s0: [s0]; f_c0: c0; v_c0: [c0]; f_t0: t0; v_t0: [t0]; f_d0: d0; v_d0: [d0];
+    f_p0: p0; v_p0: [p0]; f__value: _value; v__value: [_value];
+    f__reader: _reader; v__reader: [_reader]; f__table: _table; v__table: [_table];
+    f_bq: bq; v_bq: [bq]; f_n0: n0; v_n0: [n0]; f_c_A: c_A; v_c_A: [c_A];
+    f_Bytes: Bytes; v_Bytes: [Bytes]; f_View: View; v_View: [View];
+    f_Writer: Writer; v_Writer: [Writer]; f_Reader: Reader; v_Reader: [Reader];
+    f_Uint8Array: Uint8Array; v_Uint8Array: [Uint8Array];
+    f_DataView: DataView; v_DataView: [DataView]; f_Object: Object; v_Object: [Object];
+    f_Array: Array; v_Array: [Array]; f_Math: Math; v_Math: [Math];
+    f_Number: Number; v_Number: [Number]; f_BigInt: BigInt; v_BigInt: [BigInt];
+    f_Error: Error; v_Error: [Error]; f_TypeError: TypeError; v_TypeError: [TypeError];
+    f_globalThis: globalThis; v_globalThis: [globalThis]; f_NaN: NaN; v_NaN: [NaN];
+    f_Infinity: Infinity; v_Infinity: [Infinity]; f_Symbol: Symbol; v_Symbol: [Symbol];
+    f_Map: Map; v_Map: [Map]; f_TextDecoder: TextDecoder; v_TextDecoder: [TextDecoder];
+    f_TextEncoder: TextEncoder; v_TextEncoder: [TextEncoder];
+}
+
+namespace Names.Members;
+
+table L0 { x: int; }
+table L1 { x: int; }
+table L2 { x: int; }
+table L3 { x: int; }
+table L4 { x: int; }
+table L5 { x: int; }
+table L6 { x: int; }
+table L7 { x: int; }
+table L8 { x: int; }
+table L9 { x: int; }
+table L10 { x: int; }
+table L11 { x: int; }
+table L12 { x: int; }
+table L13 { x: int; }
+table L14 { x: int; }
+table L15 { x: int; }
+table L16 { x: int; }
+table L17 { x: int; }
+table L18 { x: int; }
+table L19 { x: int; }
+table L20 { x: int; }
+table L21 { x: int; }
+table L22 { x: int; }
+table L23 { x: int; }
+table L24 { x: int; }
+table L25 { x: int; }
+table L26 { x: int; }
+table L27 { x: int; }
+table L28 { x: int; }
+table L29 { x: int; }
+table L30 { x: int; }
+table L31 { x: int; }
+table L32 { x: int; }
+table L33 { x: int; }
+table L34 { x: int; }
+table L35 { x: int; }
+table L36 { x: int; }
+table L37 { x: int; }
+table L38 { x: int; }
+table L39 { x: int; }
+table L40 { x: int; }
+table L41 { x: int; }
+table L42 { x: int; }
+table L43 { x: int; }
+table L44 { x: int; }
+table L45 { x: int; }
+table L46 { x: int; }
+table L47 { x: int; }
+table L48 { x: int; }
+table L49 { x: int; }
+table L50 { x: int; }
+table L51 { x: int; }
+table L52 { x: int; }
+table L53 { x: int; }
+table L54 { x: int; }
+table L55 { x: int; }
+table L56 { x: int; }
+table L57 { x: int; }
+table L58 { x: int; }
+table L59 { x: int; }
+table L60 { x: int; }
+table L61 { x: int; }
+table L62 { x: int; }
+table L63 { x: int; }
+table L64 { x: int; }
+table L65 { x: int; }
+table L66 { x: int; }
+table L67 { x: int; }
+table L68 { x: int; }
+table L69 { x: int; }
+table L70 { x: int; }
+table L71 { x: int; }
+table L72 { x: int; }
+table L73 { x: int; }
+table L74 { x: int; }
+table L75 { x: int; }
+table L76 { x: int; }
+table L77 { x: int; }
+table L78 { x: int; }
+table L79 { x: int; }
+table L80 { x: int; }
+table L81 { x: int; }
+table L82 { x: int; }
+table L83 { x: int; }
+table L84 { x: int; }
+table L85 { x: int; }
+table L86 { x: int; }
+table L87 { x: int; }
+table L88 { x: int; }
+table L89 { x: int; }
+table L90 { x: int; }
+table L91 { x: int; }
+table L92 { x: int; }
+table L93 { x: int; }
+table L94 { x: int; }
+table L95 { x: int; }
+table L96 { x: int; }
+table L97 { x: int; }
+table L98 { x: int; }
+table L99 { x: int; }
+table L100 { x: int; }
+table L101 { x: int; }
+table L102 { x: int; }
+table L103 { x: int; }
+table L104 { x: int; }
+table L105 { x: int; }
+table L106 { x: int; }
+table L107 { x: int; }
+table L108 { x: int; }
+table L109 { x: int; }
+table L110 { x: int; }
+table L111 { x: int; }
+table L112 { x: int; }
+table L113 { x: int; }
+table L114 { x: int; }
+table L115 { x: int; }
+table L116 { x: int; }
+table L117 { x: int; }
+table L118 { x: int; }
+table L119 { x: int; }
+table L120 { x: int; }
+table L121 { x: int; }
+table L122 { x: int; }
+table L123 { x: int; }
+table L124 { x: int; }
+table L125 { x: int; }
+table L126 { x: int; }
+table L127 { x: int; }
+table L128 { x: int; }
+table L129 { x: int; }
+table L130 { x: int; }
+table L131 { x: int; }
+table L132 { x: int; }
+table L133 { x: int; }
+table L134 { x: int; }
+table L135 { x: int; }
+table L136 { x: int; }
+table L137 { x: int; }
+table L138 { x: int; }
+table L139 { x: int; }
+table L140 { x: int; }
+table L141 { x: int; }
+table L142 { x: int; }
+
+enum E : ushort {
+    abstract, accessor, any, as, asserts, assert, async, await, bigint, boolean, break, case,
+    catch, class, const, constructor, continue, debugger, declare, default, defer, delete, do,
+    else, enum, export, extends, false, finally, for, from, function, get, global, if, implements,
+    import, in, infer, instanceof, interface, intrinsic, is, keyof, let, module, namespace, never,
+    new, null, number, object, of, out, override, package, private, protected, public, readonly,
+    require, return, satisfies, set, source, static, string, super, switch, symbol, this, throw,
+    true, try, type, typeof, undefined, unique, unknown, using, var, void, while, with, yield,
+    eval, arguments, init, a, b, value, options, buffer, writer, reader, table, view, offset,
+    owner, field, position, kind, discriminator, p, o, v, s, c, t, d, v0, o0, s0, c0, t0, d0, p0,
+    _value, _reader, _table, bq, n0, c_A, Bytes, View, Writer, Reader, Uint8Array, DataView,
+    Object, Array, Math, Number, BigInt, Error, TypeError, globalThis, NaN, Infinity, Symbol, Map,
+    TextDecoder, TextEncoder,
+}
+
+union U {
+    abstract: L0, accessor: L1, any: L2, as: L3, asserts: L4, assert: L5, async: L6, await: L7,
+    bigint: L8, boolean: L9, break: L10, case: L11, catch: L12, class: L13, const: L14,
+    constructor: L15, continue: L16, debugger: L17, declare: L18, default: L19, defer: L20,
+    delete: L21, do: L22, else: L23, enum: L24, export: L25, extends: L26, false: L27,
+    finally: L28, for: L29, from: L30, function: L31, get: L32, global: L33, if: L34,
+    implements: L35, import: L36, in: L37, infer: L38, instanceof: L39, interface: L40,
+    intrinsic: L41, is: L42, keyof: L43, let: L44, module: L45, namespace: L46, never: L47,
+    new: L48, null: L49, number: L50, object: L51, of: L52, out: L53, override: L54, package: L55,
+    private: L56, protected: L57, public: L58, readonly: L59, require: L60, return: L61,
+    satisfies: L62, set: L63, source: L64, static: L65, string: L66, super: L67, switch: L68,
+    symbol: L69, this: L70, throw: L71, true: L72, try: L73, type: L74, typeof: L75,
+    undefined: L76, unique: L77, unknown: L78, using: L79, var: L80, void: L81, while: L82,
+    with: L83, yield: L84, eval: L85, arguments: L86, init: L87, a: L88, b: L89, value: L90,
+    options: L91, buffer: L92, writer: L93, reader: L94, table: L95, view: L96, offset: L97,
+    owner: L98, field: L99, position: L100, kind: L101, discriminator: L102, p: L103, o: L104,
+    v: L105, s: L106, c: L107, t: L108, d: L109, v0: L110, o0: L111, s0: L112, c0: L113, t0: L114,
+    d0: L115, p0: L116, _value: L117, _reader: L118, _table: L119, bq: L120, n0: L121, c_A: L122,
+    Bytes: L123, View: L124, Writer: L125, Reader: L126, Uint8Array: L127, DataView: L128,
+    Object: L129, Array: L130, Math: L131, Number: L132, BigInt: L133, Error: L134,
+    TypeError: L135, globalThis: L136, NaN: L137, Infinity: L138, Symbol: L139, Map: L140,
+    TextDecoder: L141, TextEncoder: L142,
+}
+
+struct S {
+    abstract: int; accessor: int; any: int; as: int; asserts: int; assert: int; async: int;
+    await: int; bigint: int; boolean: int; break: int; case: int; catch: int; class: int;
+    const: int; constructor: int; continue: int; debugger: int; declare: int; default: int;
+    defer: int; delete: int; do: int; else: int; enum: int; export: int; extends: int; false: int;
+    finally: int; for: int; from: int; function: int; get: int; global: int; if: int;
+    implements: int; import: int; in: int; infer: int; instanceof: int; interface: int;
+    intrinsic: int; is: int; keyof: int; let: int; module: int; namespace: int; never: int;
+    new: int; null: int; number: int; object: int; of: int; out: int; override: int; package: int;
+    private: int; protected: int; public: int; readonly: int; require: int; return: int;
+    satisfies: int; set: int; source: int; static: int; string: int; super: int; switch: int;
+    symbol: int; this: int; throw: int; true: int; try: int; type: int; typeof: int;
+    undefined: int; unique: int; unknown: int; using: int; var: int; void: int; while: int;
+    with: int; yield: int; eval: int; arguments: int; init: int; a: int; b: int; value: int;
+    options: int; buffer: int; writer: int; reader: int; table: int; view: int; offset: int;
+    owner: int; field: int; position: int; kind: int; discriminator: int; p: int; o: int; v: int;
+    s: int; c: int; t: int; d: int; v0: int; o0: int; s0: int; c0: int; t0: int; d0: int; p0: int;
+    _value: int; _reader: int; _table: int; bq: int; n0: int; c_A: int; Bytes: int; View: int;
+    Writer: int; Reader: int; Uint8Array: int; DataView: int; Object: int; Array: int; Math: int;
+    Number: int; BigInt: int; Error: int; TypeError: int; globalThis: int; NaN: int; Infinity: int;
+    Symbol: int; Map: int; TextDecoder: int; TextEncoder: int;
+}
+
+table T (bequadro_value_equality) {
+    abstract: int; accessor: int; any: int; as: int; asserts: int; assert: int; async: int;
+    await: int; bigint: int; boolean: int; break: int; case: int; catch: int; class: int;
+    const: int; constructor: int; continue: int; debugger: int; declare: int; default: int;
+    defer: int; delete: int; do: int; else: int; enum: int; export: int; extends: int; false: int;
+    finally: int; for: int; from: int; function: int; get: int; global: int; if: int;
+    implements: int; import: int; in: int; infer: int; instanceof: int; interface: int;
+    intrinsic: int; is: int; keyof: int; let: int; module: int; namespace: int; never: int;
+    new: int; null: int; number: int; object: int; of: int; out: int; override: int; package: int;
+    private: int; protected: int; public: int; readonly: int; require: int; return: int;
+    satisfies: int; set: int; source: int; static: int; string: int; super: int; switch: int;
+    symbol: int; this: int; throw: int; true: int; try: int; type: int; typeof: int;
+    undefined: int; unique: int; unknown: int; using: int; var: int; void: int; while: int;
+    with: int; yield: int; eval: int; arguments: int; init: int; a: int; b: int; value: int;
+    options: int; buffer: int; writer: int; reader: int; table: int; view: int; offset: int;
+    owner: int; field: int; position: int; kind: int; discriminator: int; p: int; o: int; v: int;
+    s: int; c: int; t: int; d: int; v0: int; o0: int; s0: int; c0: int; t0: int; d0: int; p0: int;
+    _value: int; _reader: int; _table: int; bq: int; n0: int; c_A: int; Bytes: int; View: int;
+    Writer: int; Reader: int; Uint8Array: int; DataView: int; Object: int; Array: int; Math: int;
+    Number: int; BigInt: int; Error: int; TypeError: int; globalThis: int; NaN: int; Infinity: int;
+    Symbol: int; Map: int; TextDecoder: int; TextEncoder: int;
+  enum_value: E;
+  union_value: U;
+  struct_value: S;
+}

@@ -1,0 +1,20 @@
+// PY-011: a vector of unions takes the most generated frames per level of nesting.
+
+namespace Deep;
+
+union U
+{
+    N,
+    V,
+}
+
+table N
+{
+    next: N;
+    kids: [U];
+}
+
+table V
+{
+    x: int;
+}

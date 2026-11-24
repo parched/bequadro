@@ -1,0 +1,35 @@
+// TS-002: two namespaces that refer to each other's values (enum defaults, struct zeros, codecs and equals), so their
+// modules import each other. cycles.test.ts imports each one first in a fresh process. Enums and unions come before
+// their uses, and structs before the structs that contain them, as flatc requires (SCH-012).
+
+namespace Cycles.B;
+
+enum Tint : ubyte { Dim, Bright }
+
+namespace Cycles.A;
+
+enum Color : ubyte { Red, Green }
+
+struct Point { x: int; tint: Cycles.B.Tint; }
+
+union Either { Node, Cycles.B.Leaf, Cycles.B.Pair }
+
+table Node (bequadro_value_equality)
+{
+    tint: Cycles.B.Tint = Bright;
+    point: Point;
+    leaf: Cycles.B.Leaf;
+    either: Either;
+}
+
+namespace Cycles.B;
+
+struct Pair { a: Cycles.A.Point; color: Cycles.A.Color; }
+
+table Leaf (bequadro_value_equality)
+{
+    color: Cycles.A.Color = Green;
+    pair: Pair;
+    node: Cycles.A.Node;
+    either: Cycles.A.Either;
+}

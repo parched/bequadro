@@ -1,0 +1,10 @@
+<Project>
+  <!--
+    CON-006: makes Bequadro's MSBuild properties visible to the generator, which reads them as build_property.* options.
+    Packed into both build/ and buildTransitive/, because the generator also runs in projects that get the package
+    transitively.
+  -->
+  <ItemGroup>
+    <CompilerVisibleProperty Include="BequadroRequireScalarsWithoutDefault" />
+  </ItemGroup>
+</Project>

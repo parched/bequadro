@@ -1,0 +1,52 @@
+{
+  "name": "bequadro",
+  "version": "0.0.0",
+  "description": "Generates TypeScript and Python from FlatBuffers schemas: plain, mutable objects parsed all at once. Includes a Vite plugin.",
+  "keywords": [
+    "flatbuffers",
+    "codegen",
+    "vite-plugin"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/parched/bequadro.git"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json",
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "default": "./dist/vite.js"
+    }
+  },
+  "bin": {
+    "bequadro": "dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20.19"
+  },
+  "peerDependencies": {
+    "vite": ">=7.2"
+  },
+  "peerDependenciesMeta": {
+    "vite": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "typescript": "7.0.2",
+    "vite": "8.3.6"
+  },
+  "scripts": {
+    "build": "tsc -p ."
+  }
+}

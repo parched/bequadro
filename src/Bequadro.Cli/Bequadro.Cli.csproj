@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net11.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>bequadro</AssemblyName>
+    <RootNamespace>Bequadro.Cli</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <PublishAot>true</PublishAot>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <UseSystemResourceKeys>true</UseSystemResourceKeys>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Bequadro.Cli.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bequadro.Schema\Bequadro.Schema.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The runtimes are written into every output directory (CLI-006) -->
+    <EmbeddedResource Include="Runtime\bequadro.ts" LogicalName="bequadro.ts" />
+    <EmbeddedResource Include="Runtime\bequadro.py" LogicalName="bequadro.py" />
+  </ItemGroup>
+</Project>

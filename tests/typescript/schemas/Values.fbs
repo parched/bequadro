@@ -1,0 +1,25 @@
+// TS-008, TS-009, TS-010: a vector of every scalar type and of enums with wide underlying types, which the runtime
+// tests' schemas don't have (runtime.test.ts).
+
+namespace Values;
+
+enum Small : short { Low = -300, High = 300 }
+
+enum Huge : ulong { Zero = 0, Top = 18446744073709551615 }
+
+table Vectors (bequadro_value_equality)
+{
+    bools: [bool];
+    signed_bytes: [byte];
+    bytes: [ubyte];
+    shorts: [short];
+    unsigned_shorts: [ushort];
+    ints: [int];
+    unsigned_ints: [uint];
+    longs: [long];
+    unsigned_longs: [ulong];
+    floats: [float];
+    doubles: [double];
+    smalls: [Small];
+    huges: [Huge];
+}

@@ -1,0 +1,72 @@
+// SER-003, TS-011: a table with 600 fields besides the two that nest it, which the TypeScript writer must nest 64
+// levels deep, through a table field or a vector of unions, without overflowing the default stack (depth.test.ts).
+// Written by a script; regenerate it rather than edit it.
+
+namespace Wide;
+
+union Branch { Wide }
+
+table Wide {
+    next: Wide;
+    kids: [Branch];
+    i0: int; i1: int; i2: int; i3: int; i4: int; i5: int; i6: int; i7: int; i8: int; i9: int;
+    i10: int; i11: int; i12: int; i13: int; i14: int; i15: int; i16: int; i17: int; i18: int; i19: int;
+    i20: int; i21: int; i22: int; i23: int; i24: int; i25: int; i26: int; i27: int; i28: int; i29: int;
+    i30: int; i31: int; i32: int; i33: int; i34: int; i35: int; i36: int; i37: int; i38: int; i39: int;
+    i40: int; i41: int; i42: int; i43: int; i44: int; i45: int; i46: int; i47: int; i48: int; i49: int;
+    i50: int; i51: int; i52: int; i53: int; i54: int; i55: int; i56: int; i57: int; i58: int; i59: int;
+    i60: int; i61: int; i62: int; i63: int; i64: int; i65: int; i66: int; i67: int; i68: int; i69: int;
+    i70: int; i71: int; i72: int; i73: int; i74: int; i75: int; i76: int; i77: int; i78: int; i79: int;
+    i80: int; i81: int; i82: int; i83: int; i84: int; i85: int; i86: int; i87: int; i88: int; i89: int;
+    i90: int; i91: int; i92: int; i93: int; i94: int; i95: int; i96: int; i97: int; i98: int; i99: int;
+    i100: int; i101: int; i102: int; i103: int; i104: int; i105: int; i106: int; i107: int; i108: int; i109: int;
+    i110: int; i111: int; i112: int; i113: int; i114: int; i115: int; i116: int; i117: int; i118: int; i119: int;
+    i120: int; i121: int; i122: int; i123: int; i124: int; i125: int; i126: int; i127: int; i128: int; i129: int;
+    i130: int; i131: int; i132: int; i133: int; i134: int; i135: int; i136: int; i137: int; i138: int; i139: int;
+    i140: int; i141: int; i142: int; i143: int; i144: int; i145: int; i146: int; i147: int; i148: int; i149: int;
+    i150: int; i151: int; i152: int; i153: int; i154: int; i155: int; i156: int; i157: int; i158: int; i159: int;
+    i160: int; i161: int; i162: int; i163: int; i164: int; i165: int; i166: int; i167: int; i168: int; i169: int;
+    i170: int; i171: int; i172: int; i173: int; i174: int; i175: int; i176: int; i177: int; i178: int; i179: int;
+    i180: int; i181: int; i182: int; i183: int; i184: int; i185: int; i186: int; i187: int; i188: int; i189: int;
+    i190: int; i191: int; i192: int; i193: int; i194: int; i195: int; i196: int; i197: int; i198: int; i199: int;
+    i200: int; i201: int; i202: int; i203: int; i204: int; i205: int; i206: int; i207: int; i208: int; i209: int;
+    i210: int; i211: int; i212: int; i213: int; i214: int; i215: int; i216: int; i217: int; i218: int; i219: int;
+    i220: int; i221: int; i222: int; i223: int; i224: int; i225: int; i226: int; i227: int; i228: int; i229: int;
+    i230: int; i231: int; i232: int; i233: int; i234: int; i235: int; i236: int; i237: int; i238: int; i239: int;
+    i240: int; i241: int; i242: int; i243: int; i244: int; i245: int; i246: int; i247: int; i248: int; i249: int;
+    i250: int; i251: int; i252: int; i253: int; i254: int; i255: int; i256: int; i257: int; i258: int; i259: int;
+    i260: int; i261: int; i262: int; i263: int; i264: int; i265: int; i266: int; i267: int; i268: int; i269: int;
+    i270: int; i271: int; i272: int; i273: int; i274: int; i275: int; i276: int; i277: int; i278: int; i279: int;
+    i280: int; i281: int; i282: int; i283: int; i284: int; i285: int; i286: int; i287: int; i288: int; i289: int;
+    i290: int; i291: int; i292: int; i293: int; i294: int; i295: int; i296: int; i297: int; i298: int; i299: int;
+    s0: string; s1: string; s2: string; s3: string; s4: string; s5: string; s6: string; s7: string; s8: string; s9: string;
+    s10: string; s11: string; s12: string; s13: string; s14: string; s15: string; s16: string; s17: string; s18: string; s19: string;
+    s20: string; s21: string; s22: string; s23: string; s24: string; s25: string; s26: string; s27: string; s28: string; s29: string;
+    s30: string; s31: string; s32: string; s33: string; s34: string; s35: string; s36: string; s37: string; s38: string; s39: string;
+    s40: string; s41: string; s42: string; s43: string; s44: string; s45: string; s46: string; s47: string; s48: string; s49: string;
+    s50: string; s51: string; s52: string; s53: string; s54: string; s55: string; s56: string; s57: string; s58: string; s59: string;
+    s60: string; s61: string; s62: string; s63: string; s64: string; s65: string; s66: string; s67: string; s68: string; s69: string;
+    s70: string; s71: string; s72: string; s73: string; s74: string; s75: string; s76: string; s77: string; s78: string; s79: string;
+    s80: string; s81: string; s82: string; s83: string; s84: string; s85: string; s86: string; s87: string; s88: string; s89: string;
+    s90: string; s91: string; s92: string; s93: string; s94: string; s95: string; s96: string; s97: string; s98: string; s99: string;
+    s100: string; s101: string; s102: string; s103: string; s104: string; s105: string; s106: string; s107: string; s108: string; s109: string;
+    s110: string; s111: string; s112: string; s113: string; s114: string; s115: string; s116: string; s117: string; s118: string; s119: string;
+    s120: string; s121: string; s122: string; s123: string; s124: string; s125: string; s126: string; s127: string; s128: string; s129: string;
+    s130: string; s131: string; s132: string; s133: string; s134: string; s135: string; s136: string; s137: string; s138: string; s139: string;
+    s140: string; s141: string; s142: string; s143: string; s144: string; s145: string; s146: string; s147: string; s148: string; s149: string;
+    s150: string; s151: string; s152: string; s153: string; s154: string; s155: string; s156: string; s157: string; s158: string; s159: string;
+    s160: string; s161: string; s162: string; s163: string; s164: string; s165: string; s166: string; s167: string; s168: string; s169: string;
+    s170: string; s171: string; s172: string; s173: string; s174: string; s175: string; s176: string; s177: string; s178: string; s179: string;
+    s180: string; s181: string; s182: string; s183: string; s184: string; s185: string; s186: string; s187: string; s188: string; s189: string;
+    s190: string; s191: string; s192: string; s193: string; s194: string; s195: string; s196: string; s197: string; s198: string; s199: string;
+    s200: string; s201: string; s202: string; s203: string; s204: string; s205: string; s206: string; s207: string; s208: string; s209: string;
+    s210: string; s211: string; s212: string; s213: string; s214: string; s215: string; s216: string; s217: string; s218: string; s219: string;
+    s220: string; s221: string; s222: string; s223: string; s224: string; s225: string; s226: string; s227: string; s228: string; s229: string;
+    s230: string; s231: string; s232: string; s233: string; s234: string; s235: string; s236: string; s237: string; s238: string; s239: string;
+    s240: string; s241: string; s242: string; s243: string; s244: string; s245: string; s246: string; s247: string; s248: string; s249: string;
+    s250: string; s251: string; s252: string; s253: string; s254: string; s255: string; s256: string; s257: string; s258: string; s259: string;
+    s260: string; s261: string; s262: string; s263: string; s264: string; s265: string; s266: string; s267: string; s268: string; s269: string;
+    s270: string; s271: string; s272: string; s273: string; s274: string; s275: string; s276: string; s277: string; s278: string; s279: string;
+    s280: string; s281: string; s282: string; s283: string; s284: string; s285: string; s286: string; s287: string; s288: string; s289: string;
+    s290: string; s291: string; s292: string; s293: string; s294: string; s295: string; s296: string; s297: string; s298: string; s299: string;
+}

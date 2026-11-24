@@ -1,0 +1,18 @@
+// Unions whose struct members overlap (API-006). LayoutTests adds consumer fields to Small.
+namespace Bequadro.Tests.Layout;
+
+struct Small { x: int; }
+
+struct Wide { y: long; }
+
+table Leaf { n: int; }
+
+union WithTable { Small, Wide, Leaf }
+
+union StructsOnly { Small, Wide }
+
+table Holder
+{
+    with_table: WithTable;
+    structs_only: StructsOnly;
+}

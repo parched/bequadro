@@ -1,0 +1,131 @@
+root = true
+
+[*]
+indent_style = space
+spelling_languages = en-us
+
+[*.{csproj,props,targets,config,xml,slnx}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.cs]
+tab_width = 4
+indent_size = 4
+end_of_line = lf
+insert_final_newline = true
+
+csharp_using_directive_placement = outside_namespace:warning
+csharp_prefer_simple_using_statement = true:warning
+csharp_prefer_braces = true:warning
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_style_prefer_method_group_conversion = true:warning
+csharp_style_expression_bodied_methods = when_on_single_line:silent
+csharp_style_expression_bodied_constructors = false:warning
+csharp_style_expression_bodied_operators = false:warning
+csharp_style_expression_bodied_properties = true:warning
+csharp_style_expression_bodied_indexers = true:warning
+csharp_style_expression_bodied_accessors = true:warning
+csharp_style_expression_bodied_lambdas = true:warning
+csharp_style_expression_bodied_local_functions = false:none
+csharp_style_throw_expression = true:warning
+csharp_style_prefer_null_check_over_type_check = true:warning
+csharp_style_prefer_switch_expression = true:warning
+csharp_style_prefer_pattern_matching = true:silent
+csharp_style_pattern_matching_over_as_with_null_check = true:warning
+csharp_style_prefer_not_pattern = true:warning
+csharp_style_prefer_extended_property_pattern = true:warning
+csharp_style_var_for_built_in_types = false:silent
+csharp_style_var_when_type_is_apparent = true:warning
+csharp_style_var_elsewhere = false:silent
+csharp_style_implicit_object_creation_when_type_is_apparent = true:none
+csharp_style_prefer_primary_constructors = true:none
+csharp_style_unused_value_expression_statement_preference = discard_variable:none
+csharp_style_unused_value_assignment_preference = discard_variable:none
+csharp_prefer_static_local_function = true:warning
+csharp_style_prefer_readonly_struct = true:warning
+csharp_style_prefer_readonly_struct_member = true:warning
+csharp_style_prefer_index_operator = true:warning
+csharp_style_prefer_range_operator = true:warning
+csharp_style_inlined_variable_declaration = true:warning
+
+# Naming: private fields are _camelCase, constants and static readonly fields are PascalCase
+dotnet_naming_rule.private_fields_underscore.symbols = private_fields
+dotnet_naming_rule.private_fields_underscore.style = underscore_camel
+dotnet_naming_rule.private_fields_underscore.severity = warning
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+dotnet_naming_style.underscore_camel.capitalization = camel_case
+dotnet_naming_style.underscore_camel.required_prefix = _
+dotnet_naming_rule.constants_pascal.symbols = constants
+dotnet_naming_rule.constants_pascal.style = pascal
+dotnet_naming_rule.constants_pascal.severity = warning
+dotnet_naming_symbols.constants.applicable_kinds = field
+dotnet_naming_symbols.constants.required_modifiers = const
+dotnet_naming_style.pascal.capitalization = pascal_case
+# Rules are evaluated in order of specificity; constants above win over private fields
+
+# Nullable warnings are errors
+dotnet_diagnostic.CS8600.severity = error
+dotnet_diagnostic.CS8601.severity = error
+dotnet_diagnostic.CS8602.severity = error
+dotnet_diagnostic.CS8603.severity = error
+dotnet_diagnostic.CS8604.severity = error
+dotnet_diagnostic.CS8605.severity = error
+
+# Formatting is handled by CSharpier
+dotnet_diagnostic.IDE0055.severity = none
+dotnet_diagnostic.IDE0008.severity = none
+dotnet_diagnostic.IDE0005.severity = warning
+dotnet_diagnostic.IDE0042.severity = none
+
+# CA1002: Do not expose generic lists
+dotnet_diagnostic.CA1002.severity = none
+# CA1034: Nested types should not be visible
+dotnet_diagnostic.CA1034.severity = none
+# CA1062: Validate arguments of public methods (nullable reference types are used instead)
+dotnet_diagnostic.CA1062.severity = none
+# CA1303: Do not pass literals as localized parameters
+dotnet_diagnostic.CA1303.severity = none
+# CA1305/CA1307/CA1309/CA1310: Culture-specific overloads; code generation always uses invariant formatting helpers
+dotnet_diagnostic.CA1305.severity = none
+dotnet_diagnostic.CA1307.severity = none
+dotnet_diagnostic.CA1309.severity = none
+dotnet_diagnostic.CA1310.severity = none
+# CA1515: Consider making public types internal
+dotnet_diagnostic.CA1515.severity = none
+# CA1716: Identifiers should not match keywords
+dotnet_diagnostic.CA1716.severity = none
+# CA1720: Identifier contains type name
+dotnet_diagnostic.CA1720.severity = none
+# CA1724: Type names should not match namespaces
+dotnet_diagnostic.CA1724.severity = none
+# CA1805: Do not initialize unnecessarily
+dotnet_diagnostic.CA1805.severity = none
+# CA1819: Properties should not return arrays (immutable model types use EquatableArray instead)
+dotnet_diagnostic.CA1819.severity = none
+# CA1859: Use concrete types when possible
+dotnet_diagnostic.CA1859.severity = suggestion
+# CA2225: Operator overloads have named alternates
+dotnet_diagnostic.CA2225.severity = none
+
+[tests/**.cs]
+# xUnit1051: Use TestContext.Current.CancellationToken (tests are short, in-memory and not cancelled)
+dotnet_diagnostic.xUnit1051.severity = none
+# CA1707: Identifiers should not contain underscores (test names use Subject_Conditions_Expectation)
+dotnet_diagnostic.CA1707.severity = none
+# CA2007: Do not directly await a Task
+dotnet_diagnostic.CA2007.severity = none
+# CA1861: Avoid constant arrays as arguments
+dotnet_diagnostic.CA1861.severity = none
+# CA1812: Avoid uninstantiated internal classes
+dotnet_diagnostic.CA1812.severity = none
+# CA1822: Mark members as static
+dotnet_diagnostic.CA1822.severity = none
+# CA5394: Do not use insecure randomness
+dotnet_diagnostic.CA5394.severity = none
+
+[src/Bequadro/**.cs]
+# CA1000: Do not declare static members on generic types (FlatBufferSerializer<T>.Instance is the intended pattern)
+dotnet_diagnostic.CA1000.severity = none

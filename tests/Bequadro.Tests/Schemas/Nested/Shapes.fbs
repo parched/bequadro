@@ -1,0 +1,68 @@
+include "../Common.fbs";
+
+namespace Bequadro.Tests.Shapes;
+
+table Circle
+{
+    center: Common.Vec3 (required);
+    radius: double = 1;
+}
+
+table Polygon
+{
+    points: [Common.Vec3] (required);
+}
+
+struct Marker
+{
+    id: int;
+}
+
+union Shape
+{
+    Circle,
+    Poly: Polygon,
+    Marker,
+}
+
+struct Tag
+{
+    code: ushort;
+    weight: double;
+}
+
+/// A union with the strict behaviors: no NONE value, and unknown discriminators are rejected.
+union StrictShape (bequadro_exclude_none, bequadro_exhaustive)
+{
+    Circle,
+    Marker,
+    Tag,
+}
+
+/// Only bequadro_exclude_none: no NONE value, but unknown discriminators are still read.
+union NoNoneShape (bequadro_exclude_none)
+{
+    Circle,
+    Marker,
+}
+
+/// Only bequadro_exhaustive: NONE is a value, but unknown discriminators are rejected.
+union ExhaustiveShape (bequadro_exhaustive)
+{
+    Circle,
+    Marker,
+}
+
+table Holder
+{
+    shape: Shape;
+    required_shape: Shape (required);
+    shapes: [Shape];
+    strict: StrictShape;
+    required_strict: StrictShape (required);
+    stricts: [StrictShape];
+    no_none: NoNoneShape;
+    no_nones: [NoNoneShape];
+    exhaustive: ExhaustiveShape;
+    exhaustives: [ExhaustiveShape];
+}

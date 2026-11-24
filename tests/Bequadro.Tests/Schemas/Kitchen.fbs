@@ -1,0 +1,91 @@
+include "Common.fbs";
+include "Nested/Shapes.fbs";
+
+attribute "fs_serializer";
+attribute "guid";
+
+namespace Bequadro.Tests.Kitchen;
+
+/// Every kind of field Bequadro supports.
+table Sink (fs_serializer, guid: "8f4c-test")
+{
+    /// A name.
+    name: string;
+    title: string (required);
+    flag: bool;
+    flag_default_true: bool = true;
+    small: byte = -3;
+    tiny: ubyte = 200;
+    medium: short;
+    unsigned_medium: ushort;
+    count: int = 42;
+    unsigned_count: uint;
+    wide: long = -9223372036854775808;
+    unsigned_wide: ulong = 18446744073709551615;
+    ratio: float = 0.5;
+    precise: double = 0.925;
+    not_a_number: double = nan;
+    infinite: float = -inf;
+    optional_int: int = null;
+    optional_color: Common.Color = null;
+    color: Common.Color = Blue;
+    signed: Common.Signed = Positive;
+    big: Common.Big = Small;
+    position: Common.Vec3;
+    required_position: Common.Vec3 (required);
+    mixed: Common.Mixed;
+    child: Sink;
+    shape: Shapes.Shape;
+    required_shape: Shapes.Shape (required);
+    bools: [bool];
+    bytes: [ubyte];
+    doubles: [double];
+    colors: [Common.Color];
+    strings: [string];
+    vectors: [Common.Vec3];
+    children: [Sink];
+    shapes: [Shapes.Shape];
+    required_children: [Sink] (required);
+    sbytes: [byte];
+    shorts: [short];
+    ushorts: [ushort];
+    ints: [int];
+    uints: [uint];
+    longs: [long];
+    ulongs: [ulong];
+    floats: [float];
+    signeds: [Common.Signed];
+    bigs: [Common.Big];
+}
+
+table Empty {}
+
+/// Negative zero defaults, which flatc keeps (SCH-010). A writer compares a value with them numerically (SER-004).
+table SignedZero
+{
+    negative: double = -0.0;
+    negative_float: float = -0;
+    positive: double;
+}
+
+table Graph
+{
+    nodes: [Node] (required);
+    lines: [Line] (required);
+    root: Node;
+}
+
+table Node
+{
+    name: string;
+    neighbors: [Node];
+    self: Node;
+}
+
+table Line
+{
+    start: Node (required);
+    end: Node (required);
+}
+
+root_type Sink;

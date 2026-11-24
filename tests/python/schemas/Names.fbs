@@ -1,0 +1,67 @@
+// PY-003: names Python can't use as written, other than those of generated locals (Locals.fbs). test_names.py
+// writes and parses each, and pyright and mypy check the generated code.
+
+/// Named like the runtime module and the root namespace's module, which the output package's __init__.py would
+/// otherwise replace with these classes when it re-exports the root namespace.
+table bequadro { a: int; }
+table bequadro_root { a: int; }
+
+namespace PyNames;
+
+/// Named like the nested namespace PyNames.Shared: a Python package's declarations and its subpackages share one
+/// scope, so the namespace is renamed.
+table Shared { a: int; }
+
+/// Values named like the public attributes of int, which members of an IntEnum would override, and the names enum
+/// and type checkers reserve.
+enum IntAttributes : int
+{
+    as_integer_ratio,
+    bit_count,
+    bit_length,
+    conjugate,
+    denominator,
+    from_bytes,
+    imag,
+    is_integer,
+    numerator,
+    real,
+    to_bytes,
+    mro,
+    name,
+    value,
+}
+
+/// Named like the name `from __future__ import annotations` binds in every generated module.
+table annotations
+{
+    a: int;
+}
+
+table UsesNames
+{
+    field_annotations: annotations;
+    attribute: IntAttributes = imag;
+    attributes: [IntAttributes];
+    nested: PyNames.Sub.annotations.Inner;
+}
+
+namespace PyNames.Sub;
+
+/// A declaration, so that this namespace's package starts with `from __future__ import annotations` too.
+table InSub {}
+
+/// A namespace segment named like the name that import binds in its parent package.
+namespace PyNames.Sub.annotations;
+
+table Inner
+{
+    a: int;
+}
+
+namespace PyNames.Shared;
+
+table InShared
+{
+    a: int;
+}

@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net11.0</TargetFramework>
+    <IsAotCompatible>true</IsAotCompatible>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <PackageId>Bequadro</PackageId>
+    <Description>An incremental source generator and runtime for FlatBuffers schemas (.fbs).</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Authors>James Duley</Authors>
+    <PackageTags>flatbuffers;source-generator;serialization</PackageTags>
+    <PackageProjectUrl>https://github.com/parched/bequadro</PackageProjectUrl>
+    <!-- CON-007: the repository and commit in the package, Source Link, and a symbol package for nuget.org -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Bequadro.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The generator ships inside this package; it is not a runtime dependency. -->
+    <ProjectReference
+      Include="..\Bequadro.Generator\Bequadro.Generator.csproj"
+      ReferenceOutputAssembly="false"
+      PrivateAssets="all"
+    />
+    <None
+      Include="$(ArtifactsPath)\bin\Bequadro.Generator\$(Configuration.ToLowerInvariant())\Bequadro.Generator.dll"
+      Pack="true"
+      PackagePath="analyzers/dotnet/cs"
+      Visible="false"
+    />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="build\Bequadro.props" Pack="true" PackagePath="build;buildTransitive" />
+  </ItemGroup>
+</Project>

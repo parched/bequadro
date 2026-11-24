@@ -1,0 +1,6 @@
+<Project>
+  <!-- Tests use CallerFilePath to locate snapshots, requirements and the fixture output directory. -->
+  <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
+    <DeterministicSourcePaths>false</DeterministicSourcePaths>
+  </PropertyGroup>
+</Project>

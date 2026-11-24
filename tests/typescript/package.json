@@ -1,0 +1,11 @@
+{
+  "name": "bequadro-typescript-tests",
+  "private": true,
+  "type": "module",
+  "description": "Type checks and tests of generated TypeScript (QUA-003)",
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "typescript": "7.0.2",
+    "typescript-5.8": "npm:typescript@5.8.3"
+  }
+}

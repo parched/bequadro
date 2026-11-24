@@ -1,0 +1,220 @@
+# Checks everything on Linux x64, builds and tests the npm package for every platform on that platform, and when a
+# GitHub release is published, attaches the standalone CLI binaries (CLI-001), publishes the NuGet package to nuget.org
+# (CON-007), and publishes the npm packages to npm (CLI-009). Native AOT
+# can't cross-compile between operating systems, and each platform has a GitHub-hosted runner, so each platform package
+# is built and tested natively.
+#
+# Every action is pinned to a commit, because this workflow publishes; the comment names the release it is. Publishing
+# can be re-run after a partial failure: each publish job skips what is already published.
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_NOLOGO: 1
+  # CON-007: for a release, build.py checks its tag's format and builds every package with the version the tag names.
+  # Other builds are 0.0.0-unreleased.
+  BEQUADRO_RELEASE_TAG: ${{ github.event_name == 'release' && github.ref_name || '' }}
+
+jobs:
+  check:
+    name: Check (linux-x64)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with:
+          global-json-file: global.json
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26.13.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: 0.13.8
+      - name: Install the Native AOT prerequisites
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends clang zlib1g-dev
+      # --check leaves the NuGet package it tested in artifacts/package, and the main npm package and
+      # @bequadro/linux-x64 it tested in artifacts/npm, which are uploaded for publishing
+      - run: uv run build.py --check --pack
+      # CLI-009: the packages on the oldest Node they support, as build.py installed them in tests/npm
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 20.19.0
+      - run: node tests/npm/smoke.mjs
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: nuget
+          path: |
+            artifacts/package/*.nupkg
+            artifacts/package/*.snupkg
+          if-no-files-found: error
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: npm-linux-x64
+          path: artifacts/npm/*.tgz
+          if-no-files-found: error
+
+  npm:
+    name: npm package (${{ matrix.platform }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { platform: linux-arm64, runner: ubuntu-24.04-arm }
+          - { platform: win32-x64, runner: windows-2025 }
+          - { platform: win32-arm64, runner: windows-11-arm }
+          - { platform: darwin-x64, runner: macos-15-intel }
+          - { platform: darwin-arm64, runner: macos-15 }
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with:
+          global-json-file: global.json
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26.13.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: 0.13.8
+      - name: Install the Native AOT prerequisites
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends clang zlib1g-dev
+      - run: uv run build.py --check-npm
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: npm-${{ matrix.platform }}
+          path: artifacts/npm/bequadro-${{ matrix.platform }}-*.tgz
+          if-no-files-found: error
+
+  attach-cli:
+    name: Attach CLI binaries to the GitHub release
+    needs: [check, npm]
+    if: github.event_name == 'release'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: 0.13.8
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: npm-*
+          path: packages
+          merge-multiple: true
+      - run: uv run build.py --stage-release-cli packages
+      - name: Upload release assets
+        run: |
+          uploaded=$(gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name')
+          for binary in artifacts/release-cli/*; do
+            if grep -Fxq -- "${binary##*/}" <<< "$uploaded"; then
+              echo "${binary##*/} is already attached."
+            else
+              gh release upload "$GITHUB_REF_NAME" "$binary" --repo "$GITHUB_REPOSITORY"
+            fi
+          done
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  publish-nuget:
+    name: Publish to nuget.org
+    needs: [check, npm]
+    if: github.event_name == 'release'
+    runs-on: ubuntu-24.04
+    environment: nuget
+    permissions:
+      # Trusted publishing: NuGet/login exchanges the job's OIDC token for a short-lived API key
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: nuget
+          path: packages
+      - name: Check that the tag matches the package version
+        run: |
+          if [ ! -f "packages/Bequadro.${GITHUB_REF_NAME#v}.nupkg" ]; then
+            echo "There is no package for $GITHUB_REF_NAME:" packages/*.nupkg >&2
+            exit 1
+          fi
+      - uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+        id: login
+        with:
+          user: ${{ vars.NUGET_USER }}
+      # Pushes the .snupkg next to it too. --skip-duplicate lets a re-run finish a push that failed part way, such as
+      # after the .nupkg went up but the .snupkg didn't.
+      - run: >-
+          dotnet nuget push "packages/*.nupkg" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json
+          --skip-duplicate
+        env:
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+
+  publish-npm:
+    name: Publish to npm
+    needs: [check, npm]
+    if: github.event_name == 'release'
+    runs-on: ubuntu-24.04
+    environment: npm
+    permissions:
+      # Trusted publishing: npm exchanges the job's OIDC token for a short-lived one, and signs the provenance with it
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: npm-*
+          path: packages
+          merge-multiple: true
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26.13.1
+          registry-url: https://registry.npmjs.org
+      - name: Check that the tag matches the package version
+        run: |
+          version=$(tar -xOzf packages/bequadro-[0-9]*.tgz package/package.json | jq -r .version)
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "The tag $GITHUB_REF_NAME doesn't match the package version $version." >&2
+            exit 1
+          fi
+      # The platform packages (@bequadro/<platform>, packed as bequadro-<platform>-<version>.tgz) first, so the main
+      # package never refers to versions that don't exist yet. A package whose version is already on npm is skipped, so
+      # a re-run finishes a publish that failed part way. A prerelease gets the dist-tag next, not latest, so that
+      # npm install bequadro doesn't install it.
+      - name: Publish
+        run: |
+          tag=latest
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then tag=next; fi
+          publish() {
+            local manifest name version
+            manifest=$(tar -xOzf "$1" package/package.json)
+            name=$(jq -r .name <<< "$manifest")
+            version=$(jq -r .version <<< "$manifest")
+            if [ "$(npm view "$name@$version" version 2>/dev/null)" = "$version" ]; then
+              echo "$name@$version is already published."
+            else
+              npm publish "$1" --access public --tag "$tag" --provenance
+            fi
+          }
+          main=$(ls packages/bequadro-[0-9]*.tgz)
+          for package in packages/*.tgz; do
+            if [ "$package" != "$main" ]; then
+              publish "$package"
+            fi
+          done
+          publish "$main"
+        env:
+          # Only for packages that don't exist on npm yet, which trusted publishing can't publish (see AGENTS.md). Once
+          # every package has a trusted publisher, the secret is deleted, and npm uses the job's OIDC token.
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
