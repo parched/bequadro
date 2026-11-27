@@ -10,6 +10,7 @@ namespace Bequadro.Cli;
 /// <param name="Inputs">The input files and directories, as given.</param>
 /// <param name="Schema">Settings for the schema set.</param>
 /// <param name="ImportExtension">TypeScript only: the extension of relative imports, <c>ts</c> or <c>js</c>.</param>
+/// <param name="Stubs">Python only: whether to write a <c>.pyi</c> stub next to each namespace module.</param>
 /// <param name="Check">Whether to compare with the output directory instead of writing it.</param>
 internal sealed record GenerateOptions(
     Target Target,
@@ -17,5 +18,6 @@ internal sealed record GenerateOptions(
     IReadOnlyList<string> Inputs,
     SchemaOptions Schema,
     string ImportExtension,
+    bool Stubs,
     bool Check
 );

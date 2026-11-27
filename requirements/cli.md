@@ -33,6 +33,7 @@ Acceptance criteria:
   | `--out <directory>` | The output directory (CLI-005). Required. |
   | `--require-scalars-without-default` | The CLI equivalent of `BequadroRequireScalarsWithoutDefault` (CON-006): scalar and enum table fields without a default in the schema must be given when constructing (TS-004, PY-004). |
   | `--import-extension ts` / `--import-extension js` | TypeScript only: the extension of relative imports in generated code (TS-001). Defaults to `ts`. |
+  | `--no-stubs` | Python only: doesn't write the type stubs of PY-012. |
   | `--check` | Compares what would be generated with the output directory without writing anything (CLI-005). |
 
 - `bequadro --help` prints usage, and so does `bequadro generate` with `--help` or `-h` anywhere among its options. `bequadro --version` prints the version, which is the version of the NuGet package built from the same source, and takes no other arguments.

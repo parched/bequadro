@@ -20,6 +20,7 @@ internal static class CommandLine
           --require-scalars-without-default    Scalar and enum fields without a default must be given when
                                                constructing.
           --import-extension <ts|js>           TypeScript only: the extension of relative imports. Default: ts.
+          --no-stubs                           Python only: don't write .pyi stubs next to the modules.
           --check                              Compare with the output directory instead of writing it.
           --help                               Show this help.
 
@@ -124,6 +125,7 @@ internal static class CommandLine
         string? output = null;
         string? importExtension = null;
         var requireScalars = false;
+        var stubs = true;
         var check = false;
         var inputs = new List<string>();
         var seen = new HashSet<string>(StringComparer.Ordinal);
@@ -162,6 +164,9 @@ internal static class CommandLine
                 case "--require-scalars-without-default":
                     requireScalars = true;
                     break;
+                case "--no-stubs":
+                    stubs = false;
+                    break;
                 case "--check":
                     check = true;
                     break;
@@ -196,12 +201,18 @@ internal static class CommandLine
             throw new UsageException("--import-extension only applies to --target typescript.");
         }
 
+        if (!stubs && target != Target.Python)
+        {
+            throw new UsageException("--no-stubs only applies to --target python.");
+        }
+
         return new GenerateOptions(
             target.Value,
             output,
             inputs,
             new SchemaOptions(RequireScalarsWithoutDefault: requireScalars),
             importExtension ?? "ts",
+            stubs,
             check
         );
     }

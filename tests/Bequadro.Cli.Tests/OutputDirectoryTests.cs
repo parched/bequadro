@@ -402,10 +402,14 @@ public sealed class OutputDirectoryTests : IDisposable
             .Should()
             .Equal(
                 $"would create {Path.Combine("B", "__init__.py")}",
+                $"would create {Path.Combine("B", "__init__.pyi")}",
                 "would update bequadro_schema.py",
-                $"would delete {Path.Combine("A", "__init__.py")}"
+                $"would delete {Path.Combine("A", "__init__.py")}",
+                $"would delete {Path.Combine("A", "__init__.pyi")}"
             );
-        _cli.OutputFiles().Should().Equal("A/__init__.py", "__init__.py", "bequadro.py", "bequadro_schema.py");
+        _cli.OutputFiles()
+            .Should()
+            .Equal("A/__init__.py", "A/__init__.pyi", "__init__.py", "bequadro.py", "bequadro_schema.py");
         _cli.Run([.. python, "a.fbs"]).Code.Should().Be(ExitCode.Success);
         _cli.Run([.. python, "--check", "a.fbs"]).Should().Be((ExitCode.Success, "", ""));
     }

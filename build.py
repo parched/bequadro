@@ -6,6 +6,7 @@
 # ///
 
 import argparse
+import ast
 import json
 import os
 import platform
@@ -380,8 +381,76 @@ def check_python(root: Path, cli: Path) -> None:
     print(f"Generated Python for {count} random schemas without errors", flush=True)
     for version in PYTHON_VERSIONS:
         run("uv", "run", "--python", version, "pytest", "-q", cwd=tests)
+    # pyright checks both the modules and their stubs, and resolves imports to the stubs. mypy reads only the stub of
+    # a module that has one, so it checks the modules in a copy without them
     run("uv", "run", "pyright", cwd=tests)
-    run("uv", "run", "mypy", "generated", "generated_random", "test", cwd=tests)
+    packages = ("generated", "generated_random")
+    run("uv", "run", "mypy", *packages, "test", cwd=tests)
+    without_stubs = tests / "without_stubs"
+    shutil.rmtree(without_stubs, ignore_errors=True)
+    for source in (*packages, "test"):
+        shutil.copytree(tests / source, without_stubs / source, ignore=shutil.ignore_patterns("*.pyi"))
+    run("uv", "run", "mypy", "--config-file", tests / "pyproject.toml", *packages, "test", cwd=without_stubs)
+    check_stubtest(tests, packages)
+    for package in packages:
+        check_stub_unions(tests, package)
+
+
+def stubs(root: Path, package: str) -> list[tuple[str, Path]]:
+    """The generated stubs in a package under root, with the names of their modules."""
+    result: list[tuple[str, Path]] = []
+    for stub in sorted((root / package).rglob("*.pyi")):
+        parts = stub.relative_to(root).with_suffix("").parts
+        result.append((".".join(parts[:-1] if parts[-1] == "__init__" else parts), stub))
+    return result
+
+
+def check_stubtest(root: Path, packages: tuple[str, ...]) -> None:
+    """PY-012: stubtest's allowlist suppresses every diagnostic for an object. Compare its concise reports in full
+    so the dataclass receiver's name can't hide a real mismatch elsewhere in the same constructor."""
+    expected = {report for package in packages for report in expected_stubtest_reports(root, package)}
+    # Only stubtest diagnostics belong in the comparison. uv may warn about the build script's active environment.
+    command = ["uv", "run", "--quiet", "python", "-m", "mypy.stubtest", "--concise", *packages]
+    result = subprocess.run(command, cwd=root, capture_output=True, text=True)
+    if result.stderr:
+        print(result.stderr, end="", file=sys.stderr)
+    actual = set(result.stdout.splitlines())
+    if actual != expected:
+        differences = sorted(actual - expected) + [f"Missing expected report: {report}" for report in sorted(expected - actual)]
+        raise RuntimeError("Unexpected stubtest result:\n" + "\n".join(differences))
+    if result.returncode != (1 if expected else 0) or (result.returncode and result.stderr):
+        raise RuntimeError(f"stubtest exited with code {result.returncode}; see its output above")
+
+
+def expected_stubtest_reports(root: Path, package: str) -> list[str]:
+    """stubtest doesn't unwrap a type statement at runtime. A single-case alias is compared to a class, and a
+    multi-case alias to a union. The receiver of a dataclass with a self field is renamed by dataclasses."""
+    reports: list[str] = []
+    for module, stub in stubs(root, package):
+        for node in ast.parse(stub.read_text(encoding="utf-8")).body:
+            if isinstance(node, ast.TypeAlias):
+                message = "is not a Union" if isinstance(node.value, ast.BinOp) else "is inconsistent, runtime is not a type"
+                reports.append(f"{module}.{node.name.id} {message}")
+            elif isinstance(node, ast.ClassDef) and any(
+                isinstance(field, ast.AnnAssign) and isinstance(field.target, ast.Name) and field.target.id == "self" for field in node.body
+            ):
+                reports.append(
+                    f'{module}.{node.name}.__init__ is inconsistent, stub parameter "self" differs from runtime parameter "__dataclass_self__"'
+                )
+    return reports
+
+
+def check_stub_unions(root: Path, package: str) -> None:
+    """PY-012: stubtest can't compare unions (see expected_stubtest_reports), so each stub must have the same `type`
+    statements as its module."""
+
+    def unions(path: Path) -> list[str]:
+        return [ast.unparse(node) for node in ast.parse(path.read_text(encoding="utf-8")).body if isinstance(node, ast.TypeAlias)]
+
+    for _, stub in stubs(root, package):
+        module = stub.with_suffix(".py")
+        if unions(stub) != unions(module):
+            raise Exception(f"The unions in {stub} differ from those in {module}")
 
 
 def main() -> None:

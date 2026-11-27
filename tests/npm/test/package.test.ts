@@ -269,6 +269,7 @@ test("generate passes every option", () => {
       out: "-out",
       importExtension: "js",
       requireScalarsWithoutDefault: true,
+      noStubs: true,
       check: true,
     }),
     [
@@ -280,6 +281,7 @@ test("generate passes every option", () => {
       "--import-extension",
       "js",
       "--require-scalars-without-default",
+      "--no-stubs",
       "--check",
       "a.fbs",
       "./-b.fbs",

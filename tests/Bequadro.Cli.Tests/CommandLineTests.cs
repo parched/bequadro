@@ -57,6 +57,16 @@ public sealed class CommandLineTests : IDisposable
         "a.fbs"
     )]
     [InlineData(
+        "--no-stubs only applies to --target python.",
+        "generate",
+        "--target",
+        "typescript",
+        "--no-stubs",
+        "--out",
+        "out",
+        "a.fbs"
+    )]
+    [InlineData(
         "Input 'missing.fbs' does not exist.",
         "generate",
         "--target",

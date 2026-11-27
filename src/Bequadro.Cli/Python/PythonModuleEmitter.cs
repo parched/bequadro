@@ -16,9 +16,15 @@ namespace Bequadro.Cli.Python;
 /// <remarks>
 /// Enums come before the imports of other namespaces, so that when namespaces import each other in a cycle, the
 /// module that is imported first already has its enums, which class bodies use as field defaults. Then come structs and
-/// tables, then unions, then the codecs of all of them.
+/// tables, then unions, then the codecs of all of them. With <c>stub</c>, it emits the module's stub (PY-012) instead:
+/// the same declarations, without <c>from __future__ import annotations</c> or the bodies of <c>__eq__</c>, then the
+/// type of <c>__bequadro__</c> instead of the codecs, which it doesn't generate.
 /// </remarks>
-internal sealed class PythonModuleEmitter(string ns, Dictionary<string, DeclarationModel> declarations)
+internal sealed class PythonModuleEmitter(
+    string ns,
+    Dictionary<string, DeclarationModel> declarations,
+    bool stub = false
+)
 {
     private readonly Dictionary<string, string> _aliases = new(StringComparer.Ordinal);
     private int _index;
@@ -45,8 +51,12 @@ internal sealed class PythonModuleEmitter(string ns, Dictionary<string, Declarat
                 ? "\"\"\"The root namespace's declarations, which the package re-exports.\"\"\""
                 : $"\"\"\"Namespace {ns}.\"\"\""
         );
-        w.Line();
-        w.Line("from __future__ import annotations");
+        if (!stub)
+        {
+            w.Line();
+            w.Line("from __future__ import annotations");
+        }
+
         w.Line();
         var enums = models.OfType<EnumModel>().ToList();
         var memberNames = enums.SelectMany(e => e.Members).Select(m => m.Name).ToHashSet(StringComparer.Ordinal);
@@ -83,42 +93,71 @@ internal sealed class PythonModuleEmitter(string ns, Dictionary<string, Declarat
 
         // Unions come after the classes: mypy resolves a name in a type statement that comes before the class it names
         // to a built-in with that name, such as eval
+        foreach (var model in models)
+        {
+            switch (model)
+            {
+                case StructModel structModel:
+                    EmitStruct(w, structModel);
+                    break;
+                case TableModel table:
+                    EmitTable(w, table);
+                    break;
+            }
+        }
+
+        var unions = models.OfType<UnionModel>().ToList();
+        foreach (var union in unions)
+        {
+            EmitUnion(w, union);
+        }
+
+        if (stub)
+        {
+            // Generated modules reach each other's union codecs through it
+            if (unions.Count > 0)
+            {
+                w.Line();
+                w.Line();
+                w.Line("__bequadro__: dict[str, _bq.UnionCodec]");
+            }
+
+            return w.ToString();
+        }
+
         // The codecs come after all the declarations, so that a reader sees the API without them. Class bodies don't
         // use codecs, so they can be assigned to the classes at the end
         var codecs = new SourceWriter("    ");
-        var unions = new List<(UnionModel Model, string Write, string Read)>();
         foreach (var model in models)
         {
             var index = _index++;
             switch (model)
             {
                 case StructModel structModel:
-                    EmitStruct(w, structModel);
                     EmitStructCodec(codecs, structModel, index);
                     break;
                 case TableModel table:
-                    EmitTable(w, table);
                     EmitTableCodec(codecs, table, index);
                     break;
             }
         }
 
+        var unionCodecs = new List<(UnionModel Model, string Write, string Read)>();
         foreach (var model in models)
         {
             var index = _index++;
             if (model is UnionModel union)
             {
-                EmitUnion(w, union);
-                unions.Add(EmitUnionCodec(codecs, union, index));
+                unionCodecs.Add(EmitUnionCodec(codecs, union, index));
             }
         }
 
-        if (unions.Count > 0)
+        if (unionCodecs.Count > 0)
         {
             codecs.Line();
             codecs.Line();
             codecs.Line("__bequadro__: dict[str, _bq.UnionCodec] = {");
-            foreach (var (model, write, read) in unions)
+            foreach (var (model, write, read) in unionCodecs)
             {
                 codecs.Line($"    \"{model.Name}\": _bq.UnionCodec({Literal(model.SchemaFullName)}, {write}, {read}),");
             }
@@ -170,9 +209,17 @@ internal sealed class PythonModuleEmitter(string ns, Dictionary<string, Declarat
 
     // Enums (PY-006)
 
-    private static void EmitEnum(SourceWriter w, EnumModel model, string typing)
+    private void EmitEnum(SourceWriter w, EnumModel model, string typing)
     {
-        w.Line($"class {model.Name}(_bq.IntEnum):");
+        // mypy excludes these names from its member count and reports a stub enum without members.
+        var ignore = stub && model.Members.All(m => NeedsEnumAnnotation(m.Name));
+        if (stub && model.Members.Any(m => NeedsEnumAnnotation(m.Name)))
+        {
+            // Like every populated enum it cannot be subclassed. This also resolves Self to the enum in stubtest.
+            w.Line("@_bq.final");
+        }
+
+        w.Line($"class {model.Name}(_bq.IntEnum):" + (ignore ? "  # type: ignore[misc]" : ""));
         w.Indent();
         Docstring(w, model.Documentation, model.RenamedFrom);
         foreach (var member in model.Members)
@@ -710,9 +757,16 @@ internal sealed class PythonModuleEmitter(string ns, Dictionary<string, Declarat
 
     // Equality (PY-010)
 
-    private static void EmitEquality(SourceWriter w, string name, IReadOnlyList<string> comparisons)
+    private void EmitEquality(SourceWriter w, string name, IReadOnlyList<string> comparisons)
     {
         w.Line();
+        if (stub)
+        {
+            w.Line("def __eq__(_bq_self, _bq_other: object) -> bool: ...");
+            w.Line("__hash__ = None  # type: ignore[assignment]");
+            return;
+        }
+
         w.Line("def __eq__(_bq_self, _bq_other: object) -> bool:");
         w.Indent();
         w.Line($"if not isinstance(_bq_other, {name}):");

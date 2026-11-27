@@ -27,7 +27,7 @@ internal static class Generator
         var files = options.Target switch
         {
             Target.TypeScript => TypeScriptTarget.Generate(schemaSet.Bind.Declarations, schemaSet.Fingerprint, options),
-            Target.Python => PythonTarget.Generate(schemaSet.Bind.Declarations, schemaSet.Fingerprint),
+            Target.Python => PythonTarget.Generate(schemaSet.Bind.Declarations, schemaSet.Fingerprint, options),
             _ => throw new UsageException($"Unknown target {options.Target}."),
         };
 

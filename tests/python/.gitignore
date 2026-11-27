@@ -2,3 +2,4 @@
 generated/
 generated_random/
 __pycache__/
+without_stubs/

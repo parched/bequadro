@@ -50,7 +50,7 @@ for (const d of result.diagnostics) {
 }
 ```
 
-`generate` resolves with the exit code (0 for success, 1 for schema errors or out-of-date output with `check`, 2 for usage and file errors), the parsed diagnostics, and the output. It rejects only if the executable can't be run, or is killed by a signal. `binaryPath()` returns the executable's path, `generateArguments(options)` the command-line arguments `generate` passes it, `parseDiagnostics(stderr)` parses diagnostics from the CLI's standard error, and `platformPackages` maps each supported `${process.platform}-${process.arch}` to its platform package.
+`generate` takes an option for each command-line option: `target`, `inputs`, `out`, `importExtension`, `requireScalarsWithoutDefault`, `noStubs` (Python only: no `.pyi` stubs) and `check`, and `cwd` for the working directory. It resolves with the exit code (0 for success, 1 for schema errors or out-of-date output with `check`, 2 for usage and file errors), the parsed diagnostics, and the output. It rejects only if the executable can't be run, or is killed by a signal. `binaryPath()` returns the executable's path, `generateArguments(options)` the command-line arguments `generate` passes it, `parseDiagnostics(stderr)` parses diagnostics from the CLI's standard error, and `platformPackages` maps each supported `${process.platform}-${process.arch}` to its platform package.
 
 ## Platforms
 

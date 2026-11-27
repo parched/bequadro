@@ -62,6 +62,8 @@ export interface GenerateOptions {
   readonly importExtension?: "ts" | "js" | undefined;
   /** Scalar and enum table fields without a default must be given when constructing. */
   readonly requireScalarsWithoutDefault?: boolean | undefined;
+  /** Python only: don't write type stubs. */
+  readonly noStubs?: boolean | undefined;
   /** Compare with the output directory instead of writing. */
   readonly check?: boolean | undefined;
   /** The directory relative paths are resolved against. Defaults to the current directory. */
@@ -96,6 +98,9 @@ export function generateArguments(options: GenerateOptions): string[] {
   }
   if (options.requireScalarsWithoutDefault === true) {
     args.push("--require-scalars-without-default");
+  }
+  if (options.noStubs === true) {
+    args.push("--no-stubs");
   }
   if (options.check === true) {
     args.push("--check");

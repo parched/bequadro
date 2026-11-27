@@ -337,7 +337,7 @@ public sealed class TypeScriptTests : IDisposable
     /// </summary>
     [Theory]
     [InlineData("typescript", 52)]
-    [InlineData("python", 54)]
+    [InlineData("python", 104)]
     public async Task Generate_FiftyFilesFourHundredDeclarations_CompletesWithinBudget(string target, int files)
     {
         for (var i = 0; i < 50; i++)

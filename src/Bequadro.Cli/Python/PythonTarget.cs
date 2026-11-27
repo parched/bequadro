@@ -5,7 +5,7 @@ using Bequadro.Schema.Semantics;
 namespace Bequadro.Cli.Python;
 
 /// <summary>
-/// Generates Python: one package per namespace (PY-002), plus the runtime (CLI-006).
+/// Generates Python: one package per namespace (PY-002), with its stub (PY-012), plus the runtime (CLI-006).
 /// </summary>
 internal static class PythonTarget
 {
@@ -22,7 +22,11 @@ internal static class PythonTarget
     /// </summary>
     public const string FingerprintFile = "bequadro_schema.py";
 
-    public static IReadOnlyList<GeneratedFile> Generate(EquatableArray<DeclarationModel> models, string? fingerprint)
+    public static IReadOnlyList<GeneratedFile> Generate(
+        EquatableArray<DeclarationModel> models,
+        string? fingerprint,
+        GenerateOptions options
+    )
     {
         var renamed = ModelRenamer.Rename(models, PythonNamingRules.Instance);
         var declarations = renamed.Items.ToDictionary(m => m.FullName, StringComparer.Ordinal);
@@ -38,8 +42,13 @@ internal static class PythonTarget
         files.Add(new GeneratedFile("__init__.py", RootInit(root)));
         foreach (var module in modules)
         {
-            var emitter = new PythonModuleEmitter(module.Key, declarations);
-            files.Add(new GeneratedFile(ModulePath(module.Key), emitter.Emit(module.ToList())));
+            var path = ModulePath(module.Key);
+            files.Add(new GeneratedFile(path, new PythonModuleEmitter(module.Key, declarations).Emit(module.ToList())));
+            if (options.Stubs)
+            {
+                var stub = new PythonModuleEmitter(module.Key, declarations, stub: true).Emit(module.ToList());
+                files.Add(new GeneratedFile(path + "i", stub));
+            }
         }
 
         // Every namespace on the way to one with declarations is a package too

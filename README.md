@@ -419,6 +419,7 @@ def describe(shape: Shape | None) -> str:
 - **Errors.** `parse` raises `FlatBufferDataError` and `write` raises `FlatBufferWriteError`, both `ValueError`s. `write` checks each value's type and range, and names the field when one is wrong.
 - **Recursion limit.** `write` and `parse` recurse once per level of nesting, so they raise the process's recursion limit (`sys.setrecursionlimit`) enough for 64 levels above the caller's stack, and leave it raised. They never lower it.
 - **Type checking.** Generated code passes `pyright --strict` and `mypy --strict`.
+- **Stubs.** Each namespace module gets a `.pyi` stub next to it, with the module's classes, fields, defaults, docstrings and unions but none of the serialization code. Type checkers and editors read the stub in place of the module, so "go to definition" and searches for a name land on the API. Pass `--no-stubs` to leave them out.
 
 ## Schema Fingerprint
 

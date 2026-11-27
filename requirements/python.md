@@ -9,6 +9,7 @@ Acceptance criteria:
 - Generated code and the runtime run on CPython 3.12 or later, and use only the standard library.
 - They pass `pyright` in `strict` mode and `mypy --strict` without errors. Generated modules start with `# pyright: reportPrivateUsage=false, reportUnusedClass=false`, because schema names may start with an underscore, which makes them private to pyright, while generated code has to use them across classes and modules.
 - Every generated module starts with `from __future__ import annotations`.
+- The modules pass with their stubs (PY-012) present, and pass mypy with them absent: mypy reads a module's stub in place of the module, so only then does it check the module. The consumer tests also pass mypy against both forms of the API.
 
 Design decisions:
 
@@ -22,6 +23,7 @@ Acceptance criteria:
 - The output directory is a package. Namespace `a.b.c` is the package `a/b/c/__init__.py` under it. The root namespace's declarations are in the module `bequadro_root.py`, and the output directory's own `__init__.py` re-exports them, so they are imported from the package itself. Every package on the way gets an `__init__.py`, so intermediate namespaces are importable even when they have no declarations. Namespace segments are used as written.
 - The runtime is the module `bequadro.py` in the output directory (CLI-006). It exports the public runtime API: `write`, `parse` (PY-011), the error classes, `Table`, `Struct`, `IntEnum` and `UnionUnknown`.
 - The module `bequadro_schema.py` in the output directory holds the schema set's fingerprint as `FINGERPRINT` (SER-015).
+- Each namespace module has a type stub next to it (PY-012), unless `--no-stubs` is given.
 - Generated modules import the runtime and each other only with relative imports, so the output directory can be placed in any package. With `--out src/app/schema`, namespace `MyGame` is imported as `app.schema.MyGame`.
 - Namespace packages may import each other in cycles. Importing any of them first works whatever the cycles. Each module defines its enums before it imports other namespaces, so that the module imported first already has the enums that class bodies use as defaults.
 - A module defines its enums, then its structs and tables, then its unions, each in declaration order. The codecs that write and parse them follow at the end, after a comment saying that they aren't part of the API.
@@ -247,3 +249,19 @@ Design decisions:
 - A vector element's path is only formatted for an error, and a scalar vector whose elements are all of types that `struct` converts exactly as the checks above do is packed in one call, which checks the ranges in C. The checks and messages are the same either way.
 - Surrogates are handled by an encoding error handler, so the common case is a single `str.encode`. A string with surrogates can only come from Python code, never from parsing, so the handler follows .NET instead of rejecting it.
 - NaN bits are documented rather than normalized: normalizing would cost a check on every float, and change bits that parse-then-write otherwise keeps, while a signalling NaN in a 32-bit field is rare and its quiet bit is the only difference.
+
+## PY-012 Type Stubs
+
+Acceptance criteria:
+
+- Next to each namespace module (`a/b/c/__init__.py`, `bequadro_root.py`), the CLI writes a stub (`__init__.pyi`, `bequadro_root.pyi`) with the module's API: the same enums, classes with their fields, defaults and docstrings, and union type aliases, in the same order, without codecs. A class with value equality declares `__eq__` without a body, and sets `__hash__ = None`. A module that declares unions also declares its `__bequadro__` dictionary of union codecs. Stubs don't import `from __future__ import annotations`, which they don't need. A stub enum whose members all need an enum annotation (PY-006) has `# type: ignore[misc]` on its class line, for mypy's diagnostic that the enum has no members. A stub enum with any such member is marked `@final` so mypy resolves `Self` to the populated enum.
+- `--no-stubs` writes no stubs (CLI-002), and so deletes the stubs of an earlier run (CLI-005). The Node API's `generate` takes it as `noStubs` (CLI-009).
+- Stubs match their modules: mypy's `stubtest` finds no differences, apart from those it reports wrongly: that a union of several members isn't a union, and that a union of one member isn't a type, because it doesn't understand `type` statements, and that the first parameter of `__init__` differs for a dataclass with a field named `self`, which the dataclass names `__dataclass_self__`. Each exception matches the full diagnostic for its object. Another mismatch on the same constructor fails the check. Because stubtest can't compare unions, each stub's `type` statements are also checked to be the same as its module's.
+- Stubs pass `pyright` in `strict` mode and `mypy --strict` without errors, and so do the modules when their imports resolve to the stubs (PY-001).
+
+Design decisions:
+
+- Stubs are on by default. Type checkers and editors read a module's stub instead of the module, so "go to definition" and searches for a declared name lead to the API alone, which is what people and coding agents reading generated code need. Codecs mention a module's declared names many more times than the API does.
+- Only namespace modules get stubs. The fingerprint module and the packages that only re-export declarations or join namespaces hold nothing but API already, and a stub for the runtime would hide the helpers that generated modules use from type checkers.
+- A stub is the module's API section, written by the same code, so the two can't diverge except where stubs differ by design.
+- mypy doesn't count the names that need an enum annotation (PY-006) as members of the enum, so it reports an enum with only such names as having none.
