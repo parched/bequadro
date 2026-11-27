@@ -47,6 +47,7 @@
 - Target `net11.0` with Native AOT. Don't add dependencies that aren't AOT-compatible, and keep the publish free of trimming and AOT warnings.
 - Report usage errors and unreadable or unwritable files by throwing `UsageException`, which becomes exit code 2. Schema problems are diagnostics, never exceptions.
 - Emit each target's code with `SourceWriter`. Generated code should look hand-written in its language: TypeScript with 2-space indentation.
+- Don't cite requirement IDs in generated code or in the runtimes in `Runtime/`, which users read without the requirements (CLI-005).
 
 ## TypeScript (`src/Bequadro.Cli/Runtime/bequadro.ts`, `tests/typescript`)
 

@@ -112,6 +112,39 @@ public sealed class OutputDirectoryTests : IDisposable
         runtime.Should().Contain("export class FlatBufferDataError extends Error");
     }
 
+    [Theory]
+    [InlineData("typescript")]
+    [InlineData("python")]
+    public void Generate_AnyTarget_WritesNoRequirementIds(string target)
+    {
+        _cli.Write(
+            "a.fbs",
+            """
+            namespace A;
+            enum E : byte { X }
+            struct P { x: float; }
+            table L {}
+            union U { L }
+            /// A table.
+            table T { s: string; v: [ubyte]; u: U; e: E; p: P; }
+            root_type T;
+            """
+        );
+
+        _cli.Run("generate", "--target", target, "--out", "out", "a.fbs").Code.Should().Be(ExitCode.Success);
+
+        foreach (var file in _cli.OutputFiles())
+        {
+            _cli.Read(Path.Combine("out", file))
+                .Should()
+                .NotMatchRegex(
+                    @"\b[A-Z]{2,3}-[0-9]{3}\b",
+                    "{0} is read by users, who don't have the requirements",
+                    file
+                );
+        }
+    }
+
     [Fact]
     public void Generate_Files_AreUtf8WithoutAByteOrderMark()
     {
