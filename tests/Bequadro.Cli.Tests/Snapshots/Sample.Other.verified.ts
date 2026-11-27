@@ -28,6 +28,8 @@ export const UsesGeometry = {
   },
 };
 
+// The codecs that write and parse the declarations above. They aren't part of the API.
+
 export const $c_UsesGeometry: $bq.TableCodec<UsesGeometry, UsesGeometryInit> = {
   name: "Sample.Other.UsesGeometry",
   write($writer: $bq.Writer, $value: UsesGeometryInit): number {

@@ -16,6 +16,9 @@ class UsesGeometry(_bq.Table):
     color: _bq_n0.Color = _bq_n0.Color.Red
 
 
+# The codecs that write and parse the declarations above. They aren't part of the API.
+
+
 def _bq_write_UsesGeometry_0(_bq_w: _bq.Writer, _bq_v: UsesGeometry) -> int:
     _bq_f0 = _bq_v.drawing
     _bq_o0 = 0 if _bq_f0 is None else _bq_w.write_table(_bq_n0.Drawing.__bequadro__, _bq_f0, "Sample.Other.UsesGeometry", "drawing")

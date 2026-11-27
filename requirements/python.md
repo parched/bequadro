@@ -24,12 +24,14 @@ Acceptance criteria:
 - The module `bequadro_schema.py` in the output directory holds the schema set's fingerprint as `FINGERPRINT` (SER-015).
 - Generated modules import the runtime and each other only with relative imports, so the output directory can be placed in any package. With `--out src/app/schema`, namespace `MyGame` is imported as `app.schema.MyGame`.
 - Namespace packages may import each other in cycles. Importing any of them first works whatever the cycles. Each module defines its enums before it imports other namespaces, so that the module imported first already has the enums that class bodies use as defaults.
+- A module defines its enums, then its structs and tables, then its unions, each in declaration order. The codecs that write and parse them follow at the end, after a comment saying that they aren't part of the API.
 
 Design decisions:
 
 - Each namespace is a package rather than a module, because a namespace can contain both declarations and nested namespaces.
 - The root namespace's declarations have a module of their own, because a package can't import its own `__init__.py` relatively, and other namespaces need to import them.
 - Relative imports, so generated code doesn't need to know the name of the package it is placed in.
+- Codecs last, so that people and coding agents reading a module find its API at the start, without the codecs in between, which make up most of the file.
 
 ## PY-003 Naming
 

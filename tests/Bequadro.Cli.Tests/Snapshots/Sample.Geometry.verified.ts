@@ -55,24 +55,6 @@ export const Point = {
   },
 };
 
-export const $c_Point: $bq.StructCodec<Point, PointInit> = {
-  name: "Sample.Geometry.Point",
-  size: 16,
-  alignment: 8,
-  write($view: $bq.View, $offset: number, $value: PointInit, $owner: string, $field: string): void {
-    $bq.writeStructField($view, $bq.Float64, $offset, $value.x, $owner, $field + ".x");
-    $bq.writeStructField($view, $bq.Bool, $offset + 8, $value.flag, $owner, $field + ".flag");
-    $bq.writeStructField($view, $bq.Uint8, $offset + 9, $value.color, $owner, $field + ".color");
-  },
-  read($view: $bq.View, $offset: number): Point {
-    return {
-      x: $bq.cast<number>($bq.readStructField($view, $bq.Float64, $offset)),
-      flag: $bq.cast<boolean>($bq.readStructField($view, $bq.Bool, $offset + 8)),
-      color: $bq.cast<Color>($bq.readStructField($view, $bq.Uint8, $offset + 9)),
-    };
-  },
-};
-
 export interface Box {
   min: Point;
   max: Point;
@@ -102,24 +84,6 @@ export const Box = {
   },
 };
 
-export const $c_Box: $bq.StructCodec<Box, BoxInit> = {
-  name: "Sample.Geometry.Box",
-  size: 40,
-  alignment: 8,
-  write($view: $bq.View, $offset: number, $value: BoxInit, $owner: string, $field: string): void {
-    $bq.writeNestedStruct($c_Point, $view, $offset, $value.min, $owner, $field, ".min");
-    $bq.writeNestedStruct($c_Point, $view, $offset + 16, $value.max, $owner, $field, ".max");
-    $bq.writeStructField($view, $bq.Int32, $offset + 32, $value.id, $owner, $field + ".id");
-  },
-  read($view: $bq.View, $offset: number): Box {
-    return {
-      min: $c_Point.read($view, $offset),
-      max: $c_Point.read($view, $offset + 16),
-      id: $bq.cast<number>($bq.readStructField($view, $bq.Int32, $offset + 32)),
-    };
-  },
-};
-
 export interface Label {
   text?: string | undefined;
 }
@@ -142,26 +106,6 @@ export const Label = {
   },
 };
 
-export const $c_Label: $bq.TableCodec<Label, LabelInit> = {
-  name: "Sample.Geometry.Label",
-  write($writer: $bq.Writer, $value: LabelInit): number {
-    const $o0 = $writer.writeString($value.text, "Sample.Geometry.Label", "text");
-    $writer.startTable(1);
-    $writer.addOffset(0, $o0);
-    return $writer.endTable("Sample.Geometry.Label");
-  },
-  empty(): Label {
-    return $bq.cast<Label>({
-      text: undefined,
-    });
-  },
-  fill($reader: $bq.Reader, $table: number, $value: Label): void {
-    let $p: number;
-    $p = $reader.field($table, 0);
-    if ($p !== 0) $value.text = $reader.readString($p);
-  },
-};
-
 export type Shape =
   | { readonly kind: "Label"; value: Label }
   | { readonly kind: "Boxed"; value: Box }
@@ -179,27 +123,6 @@ export const Shape = {
       case "Label": return $b.kind === "Label" && $a.value === $b.value;
       case "Boxed": return $b.kind === "Boxed" && Box.equals($a.value, $b.value);
       case "unknown": return $b.kind === "unknown" && $a.discriminator === $b.discriminator;
-    }
-  },
-};
-
-export const $c_Shape: $bq.UnionCodec<Shape, ShapeInit> = {
-  name: "Sample.Geometry.Shape",
-  allowsNone: true,
-  write($writer: $bq.Writer, $value: ShapeInit | undefined): readonly [number, number] {
-    if ($value == null) return [0, 0];
-    switch ($value.kind) {
-      case "Label": return [1, $writer.writeTable($c_Label, $bq.memberValue($value.value, "Sample.Geometry.Shape", "Label"))];
-      case "Boxed": return [2, $writer.writeStruct($c_Box, $value.value, "Sample.Geometry.Shape", "Boxed")];
-      default: return $bq.unwritableUnion("Sample.Geometry.Shape", $value);
-    }
-  },
-  read($reader: $bq.Reader, $type: number, $position: number): Shape | undefined {
-    switch ($type) {
-      case 0: return undefined;
-      case 1: return { kind: "Label", value: $reader.readTable($c_Label, $position) };
-      case 2: return { kind: "Boxed", value: $reader.readStructAt($c_Box, $position) };
-      default: return { kind: "unknown", discriminator: $type };
     }
   },
 };
@@ -230,29 +153,6 @@ export const Strict = {
       case "Label": return $b.kind === "Label" && $a.value === $b.value;
       case "Point": return $b.kind === "Point" && Point.equals($a.value, $b.value);
       case "Boxed": return $b.kind === "Boxed" && Box.equals($a.value, $b.value);
-    }
-  },
-};
-
-export const $c_Strict: $bq.UnionCodec<Strict, StrictInit> = {
-  name: "Sample.Geometry.Strict",
-  allowsNone: false,
-  write($writer: $bq.Writer, $value: StrictInit | undefined): readonly [number, number] {
-    if ($value == null) return [0, 0];
-    switch ($value.kind) {
-      case "Label": return [1, $writer.writeTable($c_Label, $bq.memberValue($value.value, "Sample.Geometry.Strict", "Label"))];
-      case "Point": return [2, $writer.writeStruct($c_Point, $value.value, "Sample.Geometry.Strict", "Point")];
-      case "Boxed": return [5, $writer.writeStruct($c_Box, $value.value, "Sample.Geometry.Strict", "Boxed")];
-      default: return $bq.unwritableUnion("Sample.Geometry.Strict", $value);
-    }
-  },
-  read($reader: $bq.Reader, $type: number, $position: number): Strict | undefined {
-    switch ($type) {
-      case 0: throw $reader.unionNoneNotAllowed("Sample.Geometry.Strict");
-      case 1: return { kind: "Label", value: $reader.readTable($c_Label, $position) };
-      case 2: return { kind: "Point", value: $reader.readStructAt($c_Point, $position) };
-      case 5: return { kind: "Boxed", value: $reader.readStructAt($c_Box, $position) };
-      default: throw $reader.unknownUnionType("Sample.Geometry.Strict", $type);
     }
   },
 };
@@ -351,6 +251,197 @@ export const Drawing = {
   },
   parse($buffer: $bq.Bytes, $options?: $bq.ParseOptions): Drawing {
     return $bq.parse($c_Drawing, $buffer, $options);
+  },
+};
+
+/**
+ * Value equality.
+ */
+export interface Measure {
+  name: string;
+  amount: number;
+  limit?: number | undefined;
+  origin?: Point | undefined;
+  label?: Label | undefined;
+  measure?: Measure | undefined;
+  shape?: Shape | undefined;
+  weights?: number[] | undefined;
+  measures?: Measure[] | undefined;
+}
+
+/**
+ * Value equality.
+ */
+export interface MeasureInit {
+  name: string;
+  amount?: number | undefined;
+  limit?: number | undefined;
+  origin?: PointInit | undefined;
+  label?: LabelInit | undefined;
+  measure?: MeasureInit | undefined;
+  shape?: ShapeInit | undefined;
+  weights?: readonly number[] | undefined;
+  measures?: readonly MeasureInit[] | undefined;
+}
+
+/**
+ * Value equality.
+ */
+export const Measure = {
+  create($init: { name: string; amount?: number | undefined; limit?: number | undefined; origin?: Point | undefined; label?: Label | undefined; measure?: Measure | undefined; shape?: Shape | undefined; weights?: number[] | undefined; measures?: Measure[] | undefined; }): Measure {
+    return {
+      name: $init.name,
+      amount: $init.amount ?? 0,
+      limit: $init.limit,
+      origin: $init.origin,
+      label: $init.label,
+      measure: $init.measure,
+      shape: $init.shape,
+      weights: $init.weights,
+      measures: $init.measures,
+    };
+  },
+  write($value: MeasureInit, $options?: $bq.WriteOptions): $bq.OwnedBytes {
+    return $bq.write($c_Measure, $value, $options);
+  },
+  parse($buffer: $bq.Bytes, $options?: $bq.ParseOptions): Measure {
+    return $bq.parse($c_Measure, $buffer, $options);
+  },
+  equals($a: Measure, $b: Measure): boolean {
+    return (
+      $a === $b ||
+      (
+        $a.name === $b.name
+        && $bq.equalNumbers($a.amount, $b.amount)
+        && $a.limit === $b.limit
+        && $bq.equalOptional($a.origin, $b.origin, Point.equals)
+        && $a.label === $b.label
+        && $bq.equalOptional($a.measure, $b.measure, Measure.equals)
+        && Shape.equals($a.shape, $b.shape)
+        && $bq.equalVectors($a.weights, $b.weights, $bq.equalNumbers)
+        && $bq.equalVectors($a.measures, $b.measures, Measure.equals)
+      )
+    );
+  },
+};
+
+export interface Empty {
+}
+
+export interface EmptyInit {
+}
+
+export const Empty = {
+  create(): Empty {
+    return {};
+  },
+  write($value: EmptyInit, $options?: $bq.WriteOptions): $bq.OwnedBytes {
+    return $bq.write($c_Empty, $value, $options);
+  },
+  parse($buffer: $bq.Bytes, $options?: $bq.ParseOptions): Empty {
+    return $bq.parse($c_Empty, $buffer, $options);
+  },
+};
+
+// The codecs that write and parse the declarations above. They aren't part of the API.
+
+export const $c_Point: $bq.StructCodec<Point, PointInit> = {
+  name: "Sample.Geometry.Point",
+  size: 16,
+  alignment: 8,
+  write($view: $bq.View, $offset: number, $value: PointInit, $owner: string, $field: string): void {
+    $bq.writeStructField($view, $bq.Float64, $offset, $value.x, $owner, $field + ".x");
+    $bq.writeStructField($view, $bq.Bool, $offset + 8, $value.flag, $owner, $field + ".flag");
+    $bq.writeStructField($view, $bq.Uint8, $offset + 9, $value.color, $owner, $field + ".color");
+  },
+  read($view: $bq.View, $offset: number): Point {
+    return {
+      x: $bq.cast<number>($bq.readStructField($view, $bq.Float64, $offset)),
+      flag: $bq.cast<boolean>($bq.readStructField($view, $bq.Bool, $offset + 8)),
+      color: $bq.cast<Color>($bq.readStructField($view, $bq.Uint8, $offset + 9)),
+    };
+  },
+};
+
+export const $c_Box: $bq.StructCodec<Box, BoxInit> = {
+  name: "Sample.Geometry.Box",
+  size: 40,
+  alignment: 8,
+  write($view: $bq.View, $offset: number, $value: BoxInit, $owner: string, $field: string): void {
+    $bq.writeNestedStruct($c_Point, $view, $offset, $value.min, $owner, $field, ".min");
+    $bq.writeNestedStruct($c_Point, $view, $offset + 16, $value.max, $owner, $field, ".max");
+    $bq.writeStructField($view, $bq.Int32, $offset + 32, $value.id, $owner, $field + ".id");
+  },
+  read($view: $bq.View, $offset: number): Box {
+    return {
+      min: $c_Point.read($view, $offset),
+      max: $c_Point.read($view, $offset + 16),
+      id: $bq.cast<number>($bq.readStructField($view, $bq.Int32, $offset + 32)),
+    };
+  },
+};
+
+export const $c_Label: $bq.TableCodec<Label, LabelInit> = {
+  name: "Sample.Geometry.Label",
+  write($writer: $bq.Writer, $value: LabelInit): number {
+    const $o0 = $writer.writeString($value.text, "Sample.Geometry.Label", "text");
+    $writer.startTable(1);
+    $writer.addOffset(0, $o0);
+    return $writer.endTable("Sample.Geometry.Label");
+  },
+  empty(): Label {
+    return $bq.cast<Label>({
+      text: undefined,
+    });
+  },
+  fill($reader: $bq.Reader, $table: number, $value: Label): void {
+    let $p: number;
+    $p = $reader.field($table, 0);
+    if ($p !== 0) $value.text = $reader.readString($p);
+  },
+};
+
+export const $c_Shape: $bq.UnionCodec<Shape, ShapeInit> = {
+  name: "Sample.Geometry.Shape",
+  allowsNone: true,
+  write($writer: $bq.Writer, $value: ShapeInit | undefined): readonly [number, number] {
+    if ($value == null) return [0, 0];
+    switch ($value.kind) {
+      case "Label": return [1, $writer.writeTable($c_Label, $bq.memberValue($value.value, "Sample.Geometry.Shape", "Label"))];
+      case "Boxed": return [2, $writer.writeStruct($c_Box, $value.value, "Sample.Geometry.Shape", "Boxed")];
+      default: return $bq.unwritableUnion("Sample.Geometry.Shape", $value);
+    }
+  },
+  read($reader: $bq.Reader, $type: number, $position: number): Shape | undefined {
+    switch ($type) {
+      case 0: return undefined;
+      case 1: return { kind: "Label", value: $reader.readTable($c_Label, $position) };
+      case 2: return { kind: "Boxed", value: $reader.readStructAt($c_Box, $position) };
+      default: return { kind: "unknown", discriminator: $type };
+    }
+  },
+};
+
+export const $c_Strict: $bq.UnionCodec<Strict, StrictInit> = {
+  name: "Sample.Geometry.Strict",
+  allowsNone: false,
+  write($writer: $bq.Writer, $value: StrictInit | undefined): readonly [number, number] {
+    if ($value == null) return [0, 0];
+    switch ($value.kind) {
+      case "Label": return [1, $writer.writeTable($c_Label, $bq.memberValue($value.value, "Sample.Geometry.Strict", "Label"))];
+      case "Point": return [2, $writer.writeStruct($c_Point, $value.value, "Sample.Geometry.Strict", "Point")];
+      case "Boxed": return [5, $writer.writeStruct($c_Box, $value.value, "Sample.Geometry.Strict", "Boxed")];
+      default: return $bq.unwritableUnion("Sample.Geometry.Strict", $value);
+    }
+  },
+  read($reader: $bq.Reader, $type: number, $position: number): Strict | undefined {
+    switch ($type) {
+      case 0: throw $reader.unionNoneNotAllowed("Sample.Geometry.Strict");
+      case 1: return { kind: "Label", value: $reader.readTable($c_Label, $position) };
+      case 2: return { kind: "Point", value: $reader.readStructAt($c_Point, $position) };
+      case 5: return { kind: "Boxed", value: $reader.readStructAt($c_Box, $position) };
+      default: throw $reader.unknownUnionType("Sample.Geometry.Strict", $type);
+    }
   },
 };
 
@@ -473,77 +564,6 @@ export const $c_Drawing: $bq.TableCodec<Drawing, DrawingInit> = {
   },
 };
 
-/**
- * Value equality.
- */
-export interface Measure {
-  name: string;
-  amount: number;
-  limit?: number | undefined;
-  origin?: Point | undefined;
-  label?: Label | undefined;
-  measure?: Measure | undefined;
-  shape?: Shape | undefined;
-  weights?: number[] | undefined;
-  measures?: Measure[] | undefined;
-}
-
-/**
- * Value equality.
- */
-export interface MeasureInit {
-  name: string;
-  amount?: number | undefined;
-  limit?: number | undefined;
-  origin?: PointInit | undefined;
-  label?: LabelInit | undefined;
-  measure?: MeasureInit | undefined;
-  shape?: ShapeInit | undefined;
-  weights?: readonly number[] | undefined;
-  measures?: readonly MeasureInit[] | undefined;
-}
-
-/**
- * Value equality.
- */
-export const Measure = {
-  create($init: { name: string; amount?: number | undefined; limit?: number | undefined; origin?: Point | undefined; label?: Label | undefined; measure?: Measure | undefined; shape?: Shape | undefined; weights?: number[] | undefined; measures?: Measure[] | undefined; }): Measure {
-    return {
-      name: $init.name,
-      amount: $init.amount ?? 0,
-      limit: $init.limit,
-      origin: $init.origin,
-      label: $init.label,
-      measure: $init.measure,
-      shape: $init.shape,
-      weights: $init.weights,
-      measures: $init.measures,
-    };
-  },
-  write($value: MeasureInit, $options?: $bq.WriteOptions): $bq.OwnedBytes {
-    return $bq.write($c_Measure, $value, $options);
-  },
-  parse($buffer: $bq.Bytes, $options?: $bq.ParseOptions): Measure {
-    return $bq.parse($c_Measure, $buffer, $options);
-  },
-  equals($a: Measure, $b: Measure): boolean {
-    return (
-      $a === $b ||
-      (
-        $a.name === $b.name
-        && $bq.equalNumbers($a.amount, $b.amount)
-        && $a.limit === $b.limit
-        && $bq.equalOptional($a.origin, $b.origin, Point.equals)
-        && $a.label === $b.label
-        && $bq.equalOptional($a.measure, $b.measure, Measure.equals)
-        && Shape.equals($a.shape, $b.shape)
-        && $bq.equalVectors($a.weights, $b.weights, $bq.equalNumbers)
-        && $bq.equalVectors($a.measures, $b.measures, Measure.equals)
-      )
-    );
-  },
-};
-
 export const $c_Measure: $bq.TableCodec<Measure, MeasureInit> = {
   name: "Sample.Geometry.Measure",
   write($writer: $bq.Writer, $value: MeasureInit): number {
@@ -599,24 +619,6 @@ export const $c_Measure: $bq.TableCodec<Measure, MeasureInit> = {
     if ($p !== 0) $value.weights = $reader.readScalarVector<number>($bq.Float32, $p);
     $p = $reader.field($table, 9);
     if ($p !== 0) $value.measures = $reader.readTableVector($c_Measure, $p);
-  },
-};
-
-export interface Empty {
-}
-
-export interface EmptyInit {
-}
-
-export const Empty = {
-  create(): Empty {
-    return {};
-  },
-  write($value: EmptyInit, $options?: $bq.WriteOptions): $bq.OwnedBytes {
-    return $bq.write($c_Empty, $value, $options);
-  },
-  parse($buffer: $bq.Bytes, $options?: $bq.ParseOptions): Empty {
-    return $bq.parse($c_Empty, $buffer, $options);
   },
 };
 

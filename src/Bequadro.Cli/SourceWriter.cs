@@ -25,6 +25,8 @@ internal sealed class SourceWriter(string indentUnit)
         _builder.Append('\n');
     }
 
+    public bool IsEmpty => _builder.Length == 0;
+
     public void Indent() => _indent++;
 
     public void Unindent() => _indent--;

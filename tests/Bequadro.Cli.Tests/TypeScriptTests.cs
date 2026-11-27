@@ -129,6 +129,23 @@ public sealed class TypeScriptTests : IDisposable
     }
 
     [Fact]
+    public void Generate_Module_PutsTheCodecsAfterTheApi()
+    {
+        _cli.Write("sample.fbs", Schema);
+
+        _cli.GenerateTypeScript("sample.fbs").Code.Should().Be(ExitCode.Success);
+
+        var parts = _cli.Read("out/Sample/Geometry.ts").Split($"\n// {OutputDirectory.CodecsComment}\n");
+        parts.Should().HaveCount(2);
+        parts[0]
+            .Should()
+            .NotContain("$c_Point:")
+            .And.Contain("export const Point =")
+            .And.Contain("export type Shape =");
+        parts[1].Should().Contain("export const $c_Point:").And.NotMatchRegex(@"\nexport (?!const \$c_)");
+    }
+
+    [Fact]
     public void Generate_ImportExtensionJs_ImportsWithJs()
     {
         _cli.Write("sample.fbs", Schema);

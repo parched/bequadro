@@ -46,10 +46,18 @@ internal sealed class TypeScriptModuleEmitter
             _aliases[referenced[i]] = "$n" + i.ToString(CultureInfo.InvariantCulture);
         }
 
+        // The declarations come first and their codecs last, so that a reader sees the API without the codecs. The
+        // companions only use the codecs inside functions, which run after the module has been evaluated
         var body = new SourceWriter("  ");
+        var codecs = new SourceWriter("  ");
         foreach (var model in models)
         {
             body.Line();
+            if (model is not EnumModel)
+            {
+                codecs.Line();
+            }
+
             switch (model)
             {
                 case EnumModel enumModel:
@@ -57,14 +65,23 @@ internal sealed class TypeScriptModuleEmitter
                     break;
                 case StructModel structModel:
                     EmitStruct(body, structModel);
+                    EmitStructCodec(codecs, structModel);
                     break;
                 case TableModel table:
                     EmitTable(body, table);
+                    EmitTableCodec(codecs, table);
                     break;
                 case UnionModel union:
                     EmitUnion(body, union);
+                    EmitUnionCodec(codecs, union);
                     break;
             }
+        }
+
+        if (!codecs.IsEmpty)
+        {
+            body.Line();
+            body.Line("// " + OutputDirectory.CodecsComment);
         }
 
         var file = new SourceWriter("  ");
@@ -85,7 +102,7 @@ internal sealed class TypeScriptModuleEmitter
             file.Line($"{kind} * as {alias} from \"{Import(TypeScriptTarget.ModulePath(ns))}\";");
         }
 
-        return file + body.ToString();
+        return file + body.ToString() + codecs;
     }
 
     private string Import(string target) => TypeScriptTarget.ImportSpecifier(_path, target, _options.ImportExtension);
@@ -124,7 +141,6 @@ internal sealed class TypeScriptModuleEmitter
     {
         _usesRuntime = true;
         var name = model.Name;
-        var schemaName = Literal(model.SchemaFullName);
 
         Doc(w, model.Documentation, model.RenamedFrom);
         w.Open($"export interface {name} {{");
@@ -179,10 +195,13 @@ internal sealed class TypeScriptModuleEmitter
         w.Line(");");
         w.Close("},");
         w.Close("};");
-        w.Line();
+    }
 
+    private void EmitStructCodec(SourceWriter w, StructModel model)
+    {
+        var name = model.Name;
         w.Open($"export const {CodecName(name)}: $bq.StructCodec<{name}, {model.DerivedName}> = {{");
-        w.Line($"name: {schemaName},");
+        w.Line($"name: {Literal(model.SchemaFullName)},");
         w.Line($"size: {model.Size},");
         w.Line($"alignment: {model.Alignment},");
         w.Open(
@@ -286,9 +305,12 @@ internal sealed class TypeScriptModuleEmitter
         }
 
         w.Close("};");
-        w.Line();
+    }
 
-        w.Open($"export const {CodecName(name)}: $bq.TableCodec<{name}, {input}> = {{");
+    private void EmitTableCodec(SourceWriter w, TableModel model)
+    {
+        var name = model.Name;
+        w.Open($"export const {CodecName(name)}: $bq.TableCodec<{name}, {model.DerivedName}> = {{");
         w.Line($"name: {Literal(model.SchemaFullName)},");
         EmitTableWrite(w, model);
         w.Open($"empty(): {name} {{");
@@ -609,7 +631,6 @@ internal sealed class TypeScriptModuleEmitter
     {
         _usesRuntime = true;
         var name = model.Name;
-        var union = Literal(model.SchemaFullName);
 
         foreach (var (typeName, input) in new[] { (name, false), (model.DerivedName!, true) })
         {
@@ -658,8 +679,12 @@ internal sealed class TypeScriptModuleEmitter
         w.Close("}");
         w.Close("},");
         w.Close("};");
-        w.Line();
+    }
 
+    private void EmitUnionCodec(SourceWriter w, UnionModel model)
+    {
+        var name = model.Name;
+        var union = Literal(model.SchemaFullName);
         w.Open($"export const {CodecName(name)}: $bq.UnionCodec<{name}, {model.DerivedName}> = {{");
         w.Line($"name: {union},");
         w.Line($"allowsNone: {(model.AllowsNone ? "true" : "false")},");

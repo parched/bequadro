@@ -25,11 +25,13 @@ Acceptance criteria:
 - The module `bequadro_schema.ts` in the output directory exports the schema set's fingerprint as `fingerprint` (SER-015).
 - A module imports the runtime and the other namespace modules it refers to with relative imports, and imports types with `import type`.
 - Namespace modules may refer to each other in cycles. Importing any module first works whatever the cycles, because no module uses an import while it is being evaluated.
+- A module declares the schema's declarations and their companions first, in declaration order. The codecs that write and parse them follow at the end, after a comment saying that they aren't part of the API.
 - Generated code means the same whatever the schema's names: it refers to the runtime and to JavaScript built-ins only through names that a schema identifier can't spell, such as names containing `$`, and names its own parameters and locals that way too (`$init`, `$value`, `$writer`), so a declaration can't shadow them or be shadowed by them.
 
 Design decisions:
 
 - One module per namespace keeps imports short (`import { Monster } from "./schema/MyGame.ts"`), and mirrors the C# namespace. One module per declaration, as `flatc` writes, would make users import from hundreds of paths.
+- Codecs last, so that people and coding agents reading a module find its API at the start, without the codecs in between, which make up most of the file.
 - The parameters of the companions' public functions start with `$` too (`create($init)`, `write($value, $options)`), although editors show them in signatures, so that the rule has no exceptions to get wrong. With `create(init)`, an enum named `init` whose value was a field's default was read from the parameter instead.
 
 ## TS-003 Naming

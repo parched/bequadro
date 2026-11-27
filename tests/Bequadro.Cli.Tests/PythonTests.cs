@@ -46,6 +46,19 @@ public sealed class PythonTests : IDisposable
     }
 
     [Fact]
+    public void Generate_Module_PutsTheCodecsAfterTheApi()
+    {
+        _cli.Write("sample.fbs", TypeScriptTests.Schema);
+
+        GeneratePython("sample.fbs").Code.Should().Be(ExitCode.Success);
+
+        var parts = _cli.Read("out/Sample/Geometry/__init__.py").Split($"\n# {OutputDirectory.CodecsComment}\n");
+        parts.Should().HaveCount(2);
+        parts[0].Should().NotContain("_bq_write_").And.Contain("class Point(").And.Contain("type Shape =");
+        parts[1].Should().Contain("def _bq_write_Point_").And.NotMatchRegex(@"\n(class |type |@)");
+    }
+
+    [Fact]
     public void Generate_RootNamespace_IsAModuleThePackageReExports()
     {
         _cli.Write("schema.fbs", "table Root {} enum E : ubyte { A } namespace N; table T { root: Root; }");

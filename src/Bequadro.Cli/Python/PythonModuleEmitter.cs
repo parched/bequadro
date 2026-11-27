@@ -16,7 +16,7 @@ namespace Bequadro.Cli.Python;
 /// <remarks>
 /// Enums come before the imports of other namespaces, so that when namespaces import each other in a cycle, the
 /// module that is imported first already has its enums, which class bodies use as field defaults. Then come structs and
-/// tables, then unions.
+/// tables, then unions, then the codecs of all of them.
 /// </remarks>
 internal sealed class PythonModuleEmitter(string ns, Dictionary<string, DeclarationModel> declarations)
 {
@@ -83,6 +83,9 @@ internal sealed class PythonModuleEmitter(string ns, Dictionary<string, Declarat
 
         // Unions come after the classes: mypy resolves a name in a type statement that comes before the class it names
         // to a built-in with that name, such as eval
+        // The codecs come after all the declarations, so that a reader sees the API without them. Class bodies don't
+        // use codecs, so they can be assigned to the classes at the end
+        var codecs = new SourceWriter("    ");
         var unions = new List<(UnionModel Model, string Write, string Read)>();
         foreach (var model in models)
         {
@@ -90,10 +93,12 @@ internal sealed class PythonModuleEmitter(string ns, Dictionary<string, Declarat
             switch (model)
             {
                 case StructModel structModel:
-                    EmitStruct(w, structModel, index);
+                    EmitStruct(w, structModel);
+                    EmitStructCodec(codecs, structModel, index);
                     break;
                 case TableModel table:
-                    EmitTable(w, table, index);
+                    EmitTable(w, table);
+                    EmitTableCodec(codecs, table, index);
                     break;
             }
         }
@@ -103,24 +108,32 @@ internal sealed class PythonModuleEmitter(string ns, Dictionary<string, Declarat
             var index = _index++;
             if (model is UnionModel union)
             {
-                unions.Add(EmitUnion(w, union, index));
+                EmitUnion(w, union);
+                unions.Add(EmitUnionCodec(codecs, union, index));
             }
         }
 
         if (unions.Count > 0)
         {
-            w.Line();
-            w.Line();
-            w.Line("__bequadro__: dict[str, _bq.UnionCodec] = {");
+            codecs.Line();
+            codecs.Line();
+            codecs.Line("__bequadro__: dict[str, _bq.UnionCodec] = {");
             foreach (var (model, write, read) in unions)
             {
-                w.Line($"    \"{model.Name}\": _bq.UnionCodec({Literal(model.SchemaFullName)}, {write}, {read}),");
+                codecs.Line($"    \"{model.Name}\": _bq.UnionCodec({Literal(model.SchemaFullName)}, {write}, {read}),");
             }
 
-            w.Line("}");
+            codecs.Line("}");
         }
 
-        return w.ToString();
+        if (!codecs.IsEmpty)
+        {
+            w.Line();
+            w.Line();
+            w.Line("# " + OutputDirectory.CodecsComment);
+        }
+
+        return w.ToString() + codecs;
     }
 
     private static IEnumerable<TypeModel> ReferencedTypes(DeclarationModel model)
@@ -189,12 +202,9 @@ internal sealed class PythonModuleEmitter(string ns, Dictionary<string, Declarat
 
     // Structs (PY-005)
 
-    private void EmitStruct(SourceWriter w, StructModel model, int index)
+    private void EmitStruct(SourceWriter w, StructModel model)
     {
         var name = model.Name;
-        var write = $"_bq_write_{name}_{index}";
-        var read = $"_bq_read_{name}_{index}";
-
         ClassHeader(w, name, "_bq.Struct", model.Documentation, model.RenamedFrom);
         foreach (var field in model.Fields)
         {
@@ -210,7 +220,13 @@ internal sealed class PythonModuleEmitter(string ns, Dictionary<string, Declarat
 
         EmitEquality(w, name, model.Fields.Select(f => FieldEquals(f.Type, f.Name)).ToList());
         w.Unindent();
+    }
 
+    private void EmitStructCodec(SourceWriter w, StructModel model, int index)
+    {
+        var name = model.Name;
+        var write = $"_bq_write_{name}_{index}";
+        var read = $"_bq_read_{name}_{index}";
         var schemaName = Literal(model.SchemaFullName);
         var runs = ScalarRuns(model);
         w.Line();
@@ -330,13 +346,9 @@ internal sealed class PythonModuleEmitter(string ns, Dictionary<string, Declarat
 
     // Tables (PY-004)
 
-    private void EmitTable(SourceWriter w, TableModel model, int index)
+    private void EmitTable(SourceWriter w, TableModel model)
     {
         var name = model.Name;
-        var write = $"_bq_write_{name}_{index}";
-        var fill = $"_bq_fill_{name}_{index}";
-        var table = Literal(model.SchemaFullName);
-
         ClassHeader(w, name, "_bq.Table", model.Documentation, model.RenamedFrom);
         foreach (var field in model.Fields)
         {
@@ -362,7 +374,14 @@ internal sealed class PythonModuleEmitter(string ns, Dictionary<string, Declarat
         }
 
         w.Unindent();
+    }
 
+    private void EmitTableCodec(SourceWriter w, TableModel model, int index)
+    {
+        var name = model.Name;
+        var write = $"_bq_write_{name}_{index}";
+        var fill = $"_bq_fill_{name}_{index}";
+        var table = Literal(model.SchemaFullName);
         EmitTableWrite(w, model, write, table);
         EmitTableFill(w, model, fill, table);
         w.Line();
@@ -619,13 +638,8 @@ internal sealed class PythonModuleEmitter(string ns, Dictionary<string, Declarat
 
     // Unions (PY-007)
 
-    private (UnionModel, string, string) EmitUnion(SourceWriter w, UnionModel model, int index)
+    private void EmitUnion(SourceWriter w, UnionModel model)
     {
-        var name = model.Name;
-        var write = $"_bq_write_{name}_{index}";
-        var read = $"_bq_read_{name}_{index}";
-        var union = Literal(model.SchemaFullName);
-
         var cases = model.Members.Select(m => TypeRef(m.Type)).ToList();
         if (model.AllowsUnknown)
         {
@@ -634,8 +648,16 @@ internal sealed class PythonModuleEmitter(string ns, Dictionary<string, Declarat
 
         w.Line();
         w.Line();
-        w.Line($"type {name} = {string.Join(" | ", cases)}");
+        w.Line($"type {model.Name} = {string.Join(" | ", cases)}");
         Docstring(w, model.Documentation, model.RenamedFrom, blankAfter: false);
+    }
+
+    private (UnionModel, string, string) EmitUnionCodec(SourceWriter w, UnionModel model, int index)
+    {
+        var name = model.Name;
+        var write = $"_bq_write_{name}_{index}";
+        var read = $"_bq_read_{name}_{index}";
+        var union = Literal(model.SchemaFullName);
 
         w.Line();
         w.Line();

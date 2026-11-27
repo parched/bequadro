@@ -41,31 +41,6 @@ class Point(_bq.Struct):
     __hash__ = None  # type: ignore[assignment]
 
 
-_bq_layout_Point_2_0 = _bq.layout("d?B")
-
-
-def _bq_write_Point_2(_bq_data: bytearray, _bq_p: int, _bq_v: Point, _bq_owner: str, _bq_name: str) -> None:
-    _bq_layout_Point_2_0.pack_into(
-        _bq_data,
-        _bq_p,
-        _bq.check(_bq.FLOAT64, _bq_v.x, _bq_owner, _bq_name + ".x"),
-        _bq.check(_bq.BOOL, _bq_v.flag, _bq_owner, _bq_name + ".flag"),
-        _bq.check(_bq.UINT8, _bq_v.color, _bq_owner, _bq_name + ".color"),
-    )
-
-
-def _bq_read_Point_2(_bq_data: memoryview, _bq_p: int) -> Point:
-    _bq_u0 = _bq_layout_Point_2_0.unpack_from(_bq_data, _bq_p)
-    return Point(
-        x=_bq_u0[0],
-        flag=_bq_u0[1],
-        color=Color(_bq_u0[2]),
-    )
-
-
-Point.__bequadro__ = _bq.StructCodec("Sample.Geometry.Point", Point, 16, 8, _bq_write_Point_2, _bq_read_Point_2)
-
-
 @_bq.final
 @_bq.dataclass(slots=True, kw_only=True, eq=False)
 class Box(_bq.Struct):
@@ -85,52 +60,10 @@ class Box(_bq.Struct):
     __hash__ = None  # type: ignore[assignment]
 
 
-_bq_layout_Box_3_0 = _bq.layout("i")
-
-
-def _bq_write_Box_3(_bq_data: bytearray, _bq_p: int, _bq_v: Box, _bq_owner: str, _bq_name: str) -> None:
-    _bq.write_nested_struct(Point.__bequadro__, _bq_data, _bq_p, _bq_v.min, _bq_owner, _bq_name + ".min")
-    _bq.write_nested_struct(Point.__bequadro__, _bq_data, _bq_p + 16, _bq_v.max, _bq_owner, _bq_name + ".max")
-    _bq_layout_Box_3_0.pack_into(
-        _bq_data,
-        _bq_p + 32,
-        _bq.check(_bq.INT32, _bq_v.id, _bq_owner, _bq_name + ".id"),
-    )
-
-
-def _bq_read_Box_3(_bq_data: memoryview, _bq_p: int) -> Box:
-    _bq_u0 = _bq_layout_Box_3_0.unpack_from(_bq_data, _bq_p + 32)
-    return Box(
-        min=Point.__bequadro__.read(_bq_data, _bq_p),
-        max=Point.__bequadro__.read(_bq_data, _bq_p + 16),
-        id=_bq_u0[0],
-    )
-
-
-Box.__bequadro__ = _bq.StructCodec("Sample.Geometry.Box", Box, 40, 8, _bq_write_Box_3, _bq_read_Box_3)
-
-
 @_bq.final
 @_bq.dataclass(slots=True, kw_only=True, eq=False)
 class Label(_bq.Table):
     text: str | None = None
-
-
-def _bq_write_Label_4(_bq_w: _bq.Writer, _bq_v: Label) -> int:
-    _bq_f0 = _bq_v.text
-    _bq_o0 = 0 if _bq_f0 is None else _bq_w.write_string(_bq_f0, "Sample.Geometry.Label", "text")
-    _bq_w.start_table(1)
-    if _bq_o0 != 0:
-        _bq_w.add_offset(0, _bq_o0)
-    return _bq_w.end_table("Sample.Geometry.Label")
-
-
-def _bq_fill_Label_4(_bq_r: _bq.Reader, _bq_t: int, _bq_o: Label) -> None:
-    _bq_p = _bq_r.field(_bq_t, 0)
-    _bq_o.text = None if _bq_p == 0 else _bq_r.read_string(_bq_p)
-
-
-Label.__bequadro__ = _bq.TableCodec("Sample.Geometry.Label", Label, _bq_write_Label_4, _bq_fill_Label_4)
 
 
 @_bq.final
@@ -161,6 +94,122 @@ class Drawing(_bq.Table):
     stricts: list[Strict] | None = None
     visible: bool = True
     big: int = 18446744073709551615
+
+
+@_bq.final
+@_bq.dataclass(slots=True, kw_only=True, eq=False)
+class Measure(_bq.Table):
+    """Value equality."""
+
+    name: str
+    amount: float = 0.0
+    limit: int | None = None
+    origin: Point | None = None
+    label: Label | None = None
+    measure: Measure | None = None
+    shape: Shape | None = None
+    weights: list[float] | None = None
+    measures: list[Measure] | None = None
+
+    def __eq__(_bq_self, _bq_other: object) -> bool:
+        if not isinstance(_bq_other, Measure):
+            return NotImplemented
+        return (
+            _bq_self.name == _bq_other.name
+            and _bq.equal_floats(_bq_self.amount, _bq_other.amount)
+            and _bq_self.limit == _bq_other.limit
+            and _bq_self.origin == _bq_other.origin
+            and _bq_self.label is _bq_other.label
+            and _bq_self.measure == _bq_other.measure
+            and _bq_self.shape == _bq_other.shape
+            and _bq.equal_vectors(_bq_self.weights, _bq_other.weights, _bq.equal_float32s)
+            and _bq.equal_vectors(_bq_self.measures, _bq_other.measures, _bq.equal_values)
+        )
+
+    __hash__ = None  # type: ignore[assignment]
+
+
+@_bq.final
+@_bq.dataclass(slots=True, kw_only=True, eq=False)
+class Empty(_bq.Table):
+    pass
+
+
+type Shape = Label | Box | _bq.UnionUnknown
+
+
+type Strict = Label | Point | Box
+"""Strict, with overlapping struct members."""
+
+
+# The codecs that write and parse the declarations above. They aren't part of the API.
+
+
+_bq_layout_Point_2_0 = _bq.layout("d?B")
+
+
+def _bq_write_Point_2(_bq_data: bytearray, _bq_p: int, _bq_v: Point, _bq_owner: str, _bq_name: str) -> None:
+    _bq_layout_Point_2_0.pack_into(
+        _bq_data,
+        _bq_p,
+        _bq.check(_bq.FLOAT64, _bq_v.x, _bq_owner, _bq_name + ".x"),
+        _bq.check(_bq.BOOL, _bq_v.flag, _bq_owner, _bq_name + ".flag"),
+        _bq.check(_bq.UINT8, _bq_v.color, _bq_owner, _bq_name + ".color"),
+    )
+
+
+def _bq_read_Point_2(_bq_data: memoryview, _bq_p: int) -> Point:
+    _bq_u0 = _bq_layout_Point_2_0.unpack_from(_bq_data, _bq_p)
+    return Point(
+        x=_bq_u0[0],
+        flag=_bq_u0[1],
+        color=Color(_bq_u0[2]),
+    )
+
+
+Point.__bequadro__ = _bq.StructCodec("Sample.Geometry.Point", Point, 16, 8, _bq_write_Point_2, _bq_read_Point_2)
+
+
+_bq_layout_Box_3_0 = _bq.layout("i")
+
+
+def _bq_write_Box_3(_bq_data: bytearray, _bq_p: int, _bq_v: Box, _bq_owner: str, _bq_name: str) -> None:
+    _bq.write_nested_struct(Point.__bequadro__, _bq_data, _bq_p, _bq_v.min, _bq_owner, _bq_name + ".min")
+    _bq.write_nested_struct(Point.__bequadro__, _bq_data, _bq_p + 16, _bq_v.max, _bq_owner, _bq_name + ".max")
+    _bq_layout_Box_3_0.pack_into(
+        _bq_data,
+        _bq_p + 32,
+        _bq.check(_bq.INT32, _bq_v.id, _bq_owner, _bq_name + ".id"),
+    )
+
+
+def _bq_read_Box_3(_bq_data: memoryview, _bq_p: int) -> Box:
+    _bq_u0 = _bq_layout_Box_3_0.unpack_from(_bq_data, _bq_p + 32)
+    return Box(
+        min=Point.__bequadro__.read(_bq_data, _bq_p),
+        max=Point.__bequadro__.read(_bq_data, _bq_p + 16),
+        id=_bq_u0[0],
+    )
+
+
+Box.__bequadro__ = _bq.StructCodec("Sample.Geometry.Box", Box, 40, 8, _bq_write_Box_3, _bq_read_Box_3)
+
+
+def _bq_write_Label_4(_bq_w: _bq.Writer, _bq_v: Label) -> int:
+    _bq_f0 = _bq_v.text
+    _bq_o0 = 0 if _bq_f0 is None else _bq_w.write_string(_bq_f0, "Sample.Geometry.Label", "text")
+    _bq_w.start_table(1)
+    if _bq_o0 != 0:
+        _bq_w.add_offset(0, _bq_o0)
+    return _bq_w.end_table("Sample.Geometry.Label")
+
+
+def _bq_fill_Label_4(_bq_r: _bq.Reader, _bq_t: int, _bq_o: Label) -> None:
+    _bq_p = _bq_r.field(_bq_t, 0)
+    _bq_o.text = None if _bq_p == 0 else _bq_r.read_string(_bq_p)
+
+
+Label.__bequadro__ = _bq.TableCodec("Sample.Geometry.Label", Label, _bq_write_Label_4, _bq_fill_Label_4)
 
 
 def _bq_write_Drawing_7(_bq_w: _bq.Writer, _bq_v: Drawing) -> int:
@@ -320,39 +369,6 @@ def _bq_fill_Drawing_7(_bq_r: _bq.Reader, _bq_t: int, _bq_o: Drawing) -> None:
 Drawing.__bequadro__ = _bq.TableCodec("Sample.Geometry.Drawing", Drawing, _bq_write_Drawing_7, _bq_fill_Drawing_7)
 
 
-@_bq.final
-@_bq.dataclass(slots=True, kw_only=True, eq=False)
-class Measure(_bq.Table):
-    """Value equality."""
-
-    name: str
-    amount: float = 0.0
-    limit: int | None = None
-    origin: Point | None = None
-    label: Label | None = None
-    measure: Measure | None = None
-    shape: Shape | None = None
-    weights: list[float] | None = None
-    measures: list[Measure] | None = None
-
-    def __eq__(_bq_self, _bq_other: object) -> bool:
-        if not isinstance(_bq_other, Measure):
-            return NotImplemented
-        return (
-            _bq_self.name == _bq_other.name
-            and _bq.equal_floats(_bq_self.amount, _bq_other.amount)
-            and _bq_self.limit == _bq_other.limit
-            and _bq_self.origin == _bq_other.origin
-            and _bq_self.label is _bq_other.label
-            and _bq_self.measure == _bq_other.measure
-            and _bq_self.shape == _bq_other.shape
-            and _bq.equal_vectors(_bq_self.weights, _bq_other.weights, _bq.equal_float32s)
-            and _bq.equal_vectors(_bq_self.measures, _bq_other.measures, _bq.equal_values)
-        )
-
-    __hash__ = None  # type: ignore[assignment]
-
-
 def _bq_write_Measure_8(_bq_w: _bq.Writer, _bq_v: Measure) -> int:
     _bq_f0 = _bq.required(_bq_v.name, "Sample.Geometry.Measure", "name")
     _bq_o0 = _bq_w.write_string(_bq_f0, "Sample.Geometry.Measure", "name")
@@ -421,12 +437,6 @@ def _bq_fill_Measure_8(_bq_r: _bq.Reader, _bq_t: int, _bq_o: Measure) -> None:
 Measure.__bequadro__ = _bq.TableCodec("Sample.Geometry.Measure", Measure, _bq_write_Measure_8, _bq_fill_Measure_8)
 
 
-@_bq.final
-@_bq.dataclass(slots=True, kw_only=True, eq=False)
-class Empty(_bq.Table):
-    pass
-
-
 def _bq_write_Empty_9(_bq_w: _bq.Writer, _bq_v: Empty) -> int:
     _bq_w.start_table(0)
     return _bq_w.end_table("Sample.Geometry.Empty")
@@ -437,9 +447,6 @@ def _bq_fill_Empty_9(_bq_r: _bq.Reader, _bq_t: int, _bq_o: Empty) -> None:
 
 
 Empty.__bequadro__ = _bq.TableCodec("Sample.Geometry.Empty", Empty, _bq_write_Empty_9, _bq_fill_Empty_9)
-
-
-type Shape = Label | Box | _bq.UnionUnknown
 
 
 def _bq_write_Shape_15(_bq_w: _bq.Writer, _bq_v: object) -> tuple[int, int]:
@@ -463,10 +470,6 @@ def _bq_read_Shape_15(_bq_r: _bq.Reader, _bq_d: int, _bq_p: int) -> Shape | None
         _bq_m2: Box = _bq_r.read_struct_at(Box.__bequadro__, _bq_p)
         return _bq_m2
     return _bq.UnionUnknown(discriminator=_bq_d)
-
-
-type Strict = Label | Point | Box
-"""Strict, with overlapping struct members."""
 
 
 def _bq_write_Strict_16(_bq_w: _bq.Writer, _bq_v: object) -> tuple[int, int]:
