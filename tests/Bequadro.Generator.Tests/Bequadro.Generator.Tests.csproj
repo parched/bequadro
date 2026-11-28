@@ -10,7 +10,7 @@
     <PackageReference Include="AwesomeAssertions" />
     <PackageReference Include="FsCheck.Xunit.v3" />
     <!-- In-memory compilations of generated code need a compiler that understands C# unions (C# 15) -->
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="5.9.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="5.12.0" />
     <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
     <PackageReference Include="xunit.v3.mtp-v2" />
   </ItemGroup>

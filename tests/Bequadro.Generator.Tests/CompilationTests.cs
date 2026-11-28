@@ -172,20 +172,12 @@ public class CompilationTests
                 + " union S (bequadro_exclude_none, bequadro_exhaustive) { A, B, P }"
                 + " union X (bequadro_exclude_none) { A, B, P } union Y (bequadro_exhaustive) { A, B, P }"
         );
-        // Roslyn 5.9 (the newest test package more than two weeks old) still gates unions behind Preview; they are
-        // released in the .NET 11 SDK compiler (5.12). Use the harness's Latest once the package is updated.
-        var options = GeneratorHarness.ParseOptions.WithLanguageVersion(
-            Microsoft.CodeAnalysis.CSharp.LanguageVersion.Preview
+        var compilation = result.Output.AddSyntaxTrees(
+            Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(
+                $"namespace N; public static class Use {{ public static int Run({union} u) => u switch {{ {arms} }}; }}",
+                GeneratorHarness.ParseOptions
+            )
         );
-        var compilation = result
-            .Output.RemoveAllSyntaxTrees()
-            .AddSyntaxTrees(result.Output.SyntaxTrees.Select(t => t.WithRootAndOptions(t.GetRoot(), options)))
-            .AddSyntaxTrees(
-                Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(
-                    $"namespace N; public static class Use {{ public static int Run({union} u) => u switch {{ {arms} }}; }}",
-                    options
-                )
-            );
 
         var warnings = compilation.GetDiagnostics().Where(d => d.Severity >= DiagnosticSeverity.Warning).ToList();
 
