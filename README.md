@@ -443,17 +443,35 @@ Bequadro supports the parts of the schema language that most schemas use:
 - namespaces and relative or absolute `include`s (there are no include search paths);
 - scalar and enum defaults, and optional scalars;
 - `required`;
+- `deprecated` on table fields ([Deprecated Fields](#deprecated-fields));
 - user attributes declared with `attribute`;
 - the union attributes `bequadro_exclude_none` and `bequadro_exhaustive` ([Unions](#unions));
 - the table attribute `bequadro_value_equality` ([Value Equality](#value-equality)).
 
-Anything that would change the wire format but isn't implemented is reported as an error, never silently ignored. That covers `id`, `deprecated`, `key`, `bit_flags`, `force_align`, `nested_flatbuffer`, `flexbuffer`, `hash`, `original_order`, `offset64`, `vector64`, fixed-size arrays, strings in unions, `file_identifier` and `rpc_service`.
+Anything that would change the wire format but isn't implemented is reported as an error, never silently ignored. That covers `id`, `key`, `bit_flags`, `force_align`, `nested_flatbuffer`, `flexbuffer`, `hash`, `original_order`, `offset64`, `vector64`, fixed-size arrays, strings in unions, `file_identifier` and `rpc_service`.
 
 For interoperability with an official FlatBuffers implementation, check that its target supports the schema features you use, such as vectors of unions. Declare any `bequadro_*` attributes with `attribute` before use when sharing schemas with `flatc`. [FlatBuffers schema docs](https://flatbuffers.dev/schema/)
 
 Like `flatc`, which reads a file from top to bottom, Bequadro requires an enum or union to be declared before it is used, a struct before a struct that contains it, and an `attribute` declaration before the attribute is used. A table or struct may be used before its declaration. A `///` comment must be on a line of its own.
 
 Include every schema file in the C# project's `AdditionalFiles` or in the CLI inputs, including files referenced by `include`.
+
+### Deprecated Fields
+
+To remove a table field without breaking existing buffers, mark it `deprecated` instead of deleting it:
+
+```fbs
+table Section
+{
+    depth: double;
+    label: string (deprecated);
+    angle: double;
+}
+```
+
+All three targets omit `label` from the generated API and skip it when writing. Its slot and generated name stay reserved, so `angle` keeps its slot and other fields keep their names. New readers ignore `label` in older buffers. Older readers treat the missing optional `label` as absent in new buffers. Only table fields can be deprecated (BQ2025).
+
+If the field was `required`, update or retire every reader that still requires it before deploying writers that omit it. Those readers reject a buffer with the field missing.
 
 ## Diagnostics
 

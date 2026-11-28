@@ -1,6 +1,7 @@
 """QUA-003, SER-005: parsing a buffer the C# tests wrote and writing it back gives exactly the bytes C# writes. The
 fixtures come from CrossLanguageFixtureTests, which build.py runs first."""
 
+import dataclasses
 import json
 from collections.abc import Callable
 from pathlib import Path
@@ -8,7 +9,7 @@ from pathlib import Path
 import pytest
 
 from generated import bequadro
-from generated.Bequadro_.Tests import Equality, Kitchen, Limits
+from generated.Bequadro_.Tests import Equality, Evolution, Kitchen, Limits
 
 FIXTURES = Path(__file__).parents[3] / "artifacts" / "cross-language"
 
@@ -29,6 +30,7 @@ REWRITES: dict[str, Rewrite] = {
     "Bequadro.Tests.Kitchen.Node": _rewrite(Kitchen.Node),
     "Bequadro.Tests.Equality.Measure": _rewrite(Equality.Measure),
     "Bequadro.Tests.Limits.LargestHolder": _rewrite(Limits.LargestHolder),
+    "Bequadro.Tests.Evolution.After": _rewrite(Evolution.After),
 }
 
 
@@ -51,6 +53,7 @@ TABLES: dict[str, type[bequadro.Table]] = {
     "Bequadro.Tests.Kitchen.Node": Kitchen.Node,
     "Bequadro.Tests.Equality.Measure": Equality.Measure,
     "Bequadro.Tests.Limits.LargestHolder": Limits.LargestHolder,
+    "Bequadro.Tests.Evolution.After": Evolution.After,
 }
 
 
@@ -98,3 +101,10 @@ def test_parsing_a_buffer_built_with_the_official_builder_reads_every_field_kind
     assert sink.strings == ["x", "yz"]
     assert sink.children is not None
     assert sink.children[0] is sink.children[1] is sink.child
+
+
+def test_parsing_a_buffer_with_deprecated_fields_reads_the_other_fields() -> None:
+    """SCH-005: a deprecated field isn't generated, and a buffer that has it parses."""
+    after = bequadro.parse(Evolution.After, (FIXTURES / "deprecated-fields.input.bin").read_bytes())
+    assert [field.name for field in dataclasses.fields(after)] == ["kept", "later"]
+    assert (after.kept, after.later) == (7, "after")

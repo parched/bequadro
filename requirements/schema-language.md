@@ -97,11 +97,16 @@ Acceptance criteria:
 - Field IDs (vtable slots) are assigned in declaration order starting at 0. A union field takes two consecutive slots: the `_type` discriminator first, then the value.
 - `required` is valid only on non-scalar fields: strings, structs, tables, unions and vectors. Using it on a scalar or enum field produces BQ2008.
 - Defaults (SCH-010) are valid only on scalar and enum fields. A default on any other field type produces BQ2016.
+- A field with the `deprecated` attribute keeps its slots, two for a union, so the fields after it keep theirs, but no target generates it. Writing never writes it, and parsing ignores it in a buffer written before it was deprecated, as it does a field from a newer schema. It is checked like any other field: its type must resolve, its name must be unique and not clash, and its default must be valid. With `required` as well, it is still not generated, so it is never required.
+- A deprecated field takes part in naming in every target (NAM-002) as if it were generated, so deprecating a field never renames another one.
 - A table may have no fields.
 - `bequadro_value_equality` on the table declaration gives the generated table value equality instead of reference equality (API-005, TS-010, PY-010). It doesn't change the wire format.
 
 Design decisions:
 
+- `deprecated` is how FlatBuffers schemas remove a field without moving the slots of the fields after it, and it is common in schemas that have changed over time. `flatc` checks a deprecated field as any other (`Parser::ParseField`), and its generators leave it out.
+- `required` on a deprecated field is accepted, because a field is usually deprecated by adding the attribute and nothing else, but there is nothing to require of a field that isn't generated. A reader still using the schema from before rejects buffers without the field, so deprecate a required field only once no such reader is left. Bequadro can't check that.
+- Keeping a deprecated field's name claimed costs at most a trailing `_` on a field added later with a clashing name, and keeps the generated names of existing fields stable as the schema changes, as SCH-005's slots keep the wire format stable.
 - The field names `flatc` rejects come from `Parser::ParseField`, which adds the `_type` field and rejects "field name can not be the same as table/struct name", and from `Parser::CheckClash`, called by `Parser::ParseDecl`. A table or struct that a field's name could refer to in another file counts whichever order `flatc` reads the files in, because that order depends on the file `flatc` is given.
 
 ## SCH-006 Structs
@@ -114,7 +119,7 @@ Acceptance criteria:
 - A struct must have at least one field (BQ2010).
 - A struct may not contain itself, directly or indirectly (BQ2011).
 - A struct field may not have the name of a table or struct, as in a table (BQ2023, SCH-005).
-- Struct fields may not have defaults (BQ2016) and may not be `required` (BQ2008).
+- Struct fields may not have defaults (BQ2016) and may not be `required` (BQ2008) or `deprecated` (BQ2025), as `flatc` rejects: a struct's layout has no slots to leave unused.
 - Layout follows the FlatBuffers rules: each field is aligned to its own alignment (scalars to their size, structs to their largest member alignment). Padding is inserted between fields as needed and at the end, so the size is a multiple of the struct's alignment.
 - A struct may be at most 65,520 bytes (BQ2021).
 
@@ -190,9 +195,9 @@ Attributes appear in parentheses after a declaration name, field type or enum va
 
 Acceptance criteria:
 
-- `required` is built in and supported (SCH-005). On a declaration, an enum value or a union member it is accepted and has no effect.
+- `required` and `deprecated` are built in and supported on table fields (SCH-005). On a declaration, an enum value or a union member they are accepted and have no effect. `deprecated` on a struct field produces BQ2025 (SCH-006).
 - Attributes starting with `bequadro_` are Bequadro's own, and take no value. `bequadro_exclude_none` and `bequadro_exhaustive` are valid on union declarations (SCH-008), and `bequadro_value_equality` on table declarations (SCH-005). They need no `attribute` declaration, but may have one, which `flatc` requires. Any other `bequadro_` attribute, one used on any other element, or one given a value, produces BQ2020.
-- These built-in `flatc` attributes would change the wire format or semantics, and produce BQ3001: `id`, `deprecated`, `key`, `bit_flags`, `force_align`, `nested_flatbuffer`, `flexbuffer`, `hash`, `original_order`, `offset64` and `vector64`.
+- These built-in `flatc` attributes would change the wire format or semantics, and produce BQ3001: `id`, `key`, `bit_flags`, `force_align`, `nested_flatbuffer`, `flexbuffer`, `hash`, `original_order`, `offset64` and `vector64`.
 - These built-in `flatc` attributes have no effect on generated code, and are accepted and ignored without being declared: `native_inline`, `native_default`, `native_custom_alloc`, `native_type`, `native_type_pack_name`, `cpp_type`, `cpp_ptr_type`, `cpp_ptr_type_get`, `cpp_str_type`, `cpp_str_flex_ctor`, `shared`, `csharp_partial`, `streaming`, `idempotent`, `private`.
 - Any other attribute must be declared with an `attribute` statement before it is used: earlier in the same file, or in a file it includes, directly or transitively, that isn't in an include cycle with it. Otherwise BQ2005 is reported.
 - Declared (user) attributes are accepted on any element and have no effect on generated code.
@@ -201,7 +206,7 @@ Design decisions:
 
 - `flatc` reads a file's includes before the file, and reports an attribute it hasn't read a declaration of yet ("user define attributes must be declared before use", `Parser::ParseMetaData`). Of two files in an include cycle, it reads the one it isn't given first, so which comes first depends on the file it is given.
 - `flatc` reads an attribute value with no type to convert it to (`Parser::ParseSingleValue`), so it accepts only a string, or an integer token, which it checks as a 32-bit integer.
-- `flatc` checks `required` only on fields, so it accepts it anywhere else. Bequadro accepts it too, as it does the other built-in attributes that have no effect: rejecting it would gain nothing.
+- `flatc` checks `required` and `deprecated` only on fields, so it accepts them anywhere else. Bequadro accepts them too, as it does the other built-in attributes that have no effect: rejecting them would gain nothing.
 - FlatSharp configured C# mapping through `fs_*` attributes. Bequadro uses fixed conventions instead (see [generated-api.md](generated-api.md)), so `fs_*` attributes are only user attributes. Schemas should drop them.
 - User attributes are not emitted as metadata in any language: nothing reads them, and emitting them bloats the generated code.
 - All Bequadro attributes share the `bequadro_` prefix, so they can't clash with other tools' attributes, and a misspelled one is an error instead of being ignored as a user attribute.

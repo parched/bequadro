@@ -23,6 +23,30 @@ public class BinderTests
         table.Fields.Select(f => f.Type.FullName).Should().Equal("A.Geo.P", "A.Geo.P");
     }
 
+    /// <summary>
+    /// SCH-005: a deprecated field keeps its slots, two for a union, so the fields after it keep theirs, and renaming
+    /// removes it before any target generates code.
+    /// </summary>
+    [Fact]
+    public void Bind_DeprecatedFields_KeepTheirSlotsAndAreRemovedByRenaming()
+    {
+        const string Schema =
+            "table A {} union U { A } table T { a: int; b: string (deprecated); u: U (deprecated); c: int; d: A (deprecated); }";
+        var parsed = Bequadro.Schema.Syntax.Parser.Parse("/schemas/schema.fbs", Schema);
+        var bind = Binder.Bind([parsed], Bequadro.Schema.SchemaOptions.Default);
+
+        parsed.Diagnostics.Concat(bind.Diagnostics).Should().BeEmpty();
+        var table = bind.Declarations.OfType<TableModel>().Single(t => t.Name == "T");
+        table
+            .Fields.Select(f => (f.Name, f.Slot, f.IsDeprecated))
+            .Should()
+            .Equal(("a", 0, false), ("b", 1, true), ("u", 3, true), ("c", 4, false), ("d", 5, true));
+
+        var generated = GeneratorHarness.Bind(Schema).Bind.Declarations.OfType<TableModel>().Single(t => t.Name == "T");
+        generated.Fields.Select(f => (f.Name, f.Slot)).Should().Equal(("A", 0), ("C", 4));
+        generated.SlotCount.Should().Be(5);
+    }
+
     [Fact]
     public void Bind_InnerNamespaceDeclaration_ShadowsOuter()
     {

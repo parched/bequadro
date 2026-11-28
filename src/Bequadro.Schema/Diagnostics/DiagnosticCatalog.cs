@@ -75,6 +75,11 @@ internal static class DiagnosticCatalog
             "Duplicate schema file",
             "'{0}' is the same file as '{1}', so it is ignored"
         ),
+        Create(
+            DiagnosticIds.DeprecatedStructField,
+            "Deprecated struct field",
+            "Field '{0}' of struct '{1}' can't be deprecated: only table fields can"
+        ),
         Create(DiagnosticIds.UnsupportedFeature, "Unsupported feature", "{0} is not supported by Bequadro"),
         Create(
             DiagnosticIds.AmbiguousUnionMembers,

@@ -186,6 +186,13 @@ internal sealed record TableFieldModel(
 {
     /// <inheritdoc cref="DeclarationModel.RenamedFrom"/>
     public string? RenamedFrom { get; init; }
+
+    /// <summary>
+    /// Whether the field is <c>deprecated</c>. The binder keeps a deprecated field so that naming treats it as any other
+    /// field, and deprecating a field renames nothing. <see cref="Naming.ModelRenamer"/> then removes it, so code
+    /// generation never sees one. Its slot stays unused.
+    /// </summary>
+    public bool IsDeprecated { get; init; }
 }
 
 /// <param name="Namespace">The schema namespace.</param>
@@ -202,7 +209,8 @@ internal sealed record TableModel(
 ) : DeclarationModel(Namespace, Name, Documentation)
 {
     /// <summary>
-    /// The number of vtable slots, counting two for each union field.
+    /// The number of vtable slots, counting two for each union field, up to the last field in <see cref="Fields"/>.
+    /// After renaming, which drops deprecated fields, that is the last field that isn't deprecated.
     /// </summary>
     public int SlotCount => Fields.Count == 0 ? 0 : Fields.Items.Max(f => f.Slot) + 1;
 }

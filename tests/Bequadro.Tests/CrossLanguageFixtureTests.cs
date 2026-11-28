@@ -68,6 +68,16 @@ public class CrossLanguageFixtureTests
             shareStrings: false
         );
 
+        // SCH-005: a buffer with fields that the table read it with has deprecated
+        var beforeDeprecation = Evolution.Before.Serializer.WriteToArray(DeprecatedFieldTests.FullBefore());
+        AddBuffers(
+            "deprecated-fields",
+            typeof(Evolution.After),
+            beforeDeprecation,
+            Rewrite<Evolution.After>(beforeDeprecation, shareStrings: false),
+            shareStrings: false
+        );
+
         File.WriteAllText(Path.Combine(Directory, "manifest.json"), JsonSerializer.Serialize(manifest, JsonOptions));
 
         WriteParseFixture(
@@ -101,6 +111,7 @@ public class CrossLanguageFixtureTests
                 var root when root == typeof(Node).FullName => Rewrite<Node>(input, shareStrings),
                 var root when root == typeof(Measure).FullName => Rewrite<Measure>(input, shareStrings),
                 var root when root == typeof(LargestHolder).FullName => Rewrite<LargestHolder>(input, shareStrings),
+                var root when root == typeof(Evolution.After).FullName => Rewrite<Evolution.After>(input, shareStrings),
                 var root => throw new InvalidOperationException($"No root type {root}."),
             };
             rewritten.Should().Equal(expected, $"rewriting fixture {name}");

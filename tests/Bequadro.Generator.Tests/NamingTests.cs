@@ -279,6 +279,24 @@ public class NamingTests
         ErrorRecoveryTests.SchemaMembers(after.Output.GetTypeByMetadataName("T")!).Should().Equal("FooBar", "FooBar_");
     }
 
+    /// <summary>
+    /// SCH-005: a deprecated field isn't generated, but still claims its name, so deprecating a field never renames
+    /// another. A <c>required</c> deprecated field isn't required.
+    /// </summary>
+    [Fact]
+    public void Generate_FieldDeprecatedLater_DoesNotRenameOtherFields()
+    {
+        var before = GeneratorHarness.Run("table T { foo_bar: int; fooBar: int; }");
+        var after = GeneratorHarness.Run(
+            "table T { foo_bar: int (deprecated); fooBar: int; s: string (required, deprecated); }"
+        );
+
+        ErrorRecoveryTests.SchemaMembers(before.Output.GetTypeByMetadataName("T")!).Should().Equal("FooBar", "FooBar_");
+        after.GeneratorDiagnostics.Should().BeEmpty();
+        after.CompilationDiagnostics.Should().BeEmpty();
+        ErrorRecoveryTests.SchemaMembers(after.Output.GetTypeByMetadataName("T")!).Should().Equal("FooBar_");
+    }
+
     [Fact]
     public void Generate_RenamedElements_NoteTheSchemaNameInTheirDocumentation()
     {

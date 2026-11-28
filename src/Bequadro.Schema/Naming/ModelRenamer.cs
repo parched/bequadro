@@ -174,19 +174,25 @@ internal static class ModelRenamer
             .ToList();
     }
 
+    /// <summary>
+    /// Names the fields, then removes the deprecated ones (SCH-005). A deprecated field still claims its name, so
+    /// deprecating a field never renames another.
+    /// </summary>
     private static TableModel NameTableFields(TableModel model, NamingRules rules)
     {
         var scope = NewMemberScope(model, rules);
-        var fields = model.Fields.Select(field =>
-        {
-            var candidate = rules.FieldCandidate(field.SchemaName);
-            var name = scope.Claim(candidate, n => rules.IsUsableFieldName(model, n));
-            return field with
+        var fields = model
+            .Fields.Select(field =>
             {
-                Name = name,
-                RenamedFrom = IsRenamed(name, candidate, field.SchemaName) ? field.SchemaName : null,
-            };
-        });
+                var candidate = rules.FieldCandidate(field.SchemaName);
+                var name = scope.Claim(candidate, n => rules.IsUsableFieldName(model, n));
+                return field with
+                {
+                    Name = name,
+                    RenamedFrom = IsRenamed(name, candidate, field.SchemaName) ? field.SchemaName : null,
+                };
+            })
+            .Where(field => !field.IsDeprecated);
         return model with { Fields = fields.ToEquatableArray() };
     }
 

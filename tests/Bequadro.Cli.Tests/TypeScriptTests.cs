@@ -193,6 +193,8 @@ public sealed class TypeScriptTests : IDisposable
     [InlineData("enum as : int { A }", "export const as_ = {")]
     [InlineData("table type {}", "export interface type {")]
     [InlineData("table T { create: int; parse: int; }", "  create: number;\n  parse: number;")]
+    // SCH-005: a deprecated field still claims its name, so deprecating renames nothing
+    [InlineData("table T { foo_bar: int (deprecated); fooBar: int; }", "  fooBar_: number;")]
     public void Generate_Names_FollowTheTypeScriptRules(string schema, string expected)
     {
         _cli.TypeScriptModule(schema).Should().Contain(expected);

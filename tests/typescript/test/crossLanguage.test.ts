@@ -6,6 +6,7 @@ import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { parse, type TableCodec, Writer } from "../generated/bequadro.ts";
 import * as Equality from "../generated/Bequadro_/Tests/Equality.ts";
+import * as Evolution from "../generated/Bequadro_/Tests/Evolution.ts";
 import * as Kitchen from "../generated/Bequadro_/Tests/Kitchen.ts";
 import * as Limits from "../generated/Bequadro_/Tests/Limits.ts";
 
@@ -30,6 +31,8 @@ const rewrites: Readonly<Record<string, Rewrite>> = {
     Equality.Measure.write(Equality.Measure.parse(input, { shareStrings }), { shareStrings }),
   "Bequadro.Tests.Limits.LargestHolder": (input, shareStrings) =>
     Limits.LargestHolder.write(Limits.LargestHolder.parse(input, { shareStrings }), { shareStrings }),
+  "Bequadro.Tests.Evolution.After": (input, shareStrings) =>
+    Evolution.After.write(Evolution.After.parse(input, { shareStrings }), { shareStrings }),
 };
 
 const codecs: Readonly<Record<string, TableCodec<unknown, unknown>>> = {
@@ -38,6 +41,7 @@ const codecs: Readonly<Record<string, TableCodec<unknown, unknown>>> = {
   "Bequadro.Tests.Kitchen.Node": Kitchen.$c_Node,
   "Bequadro.Tests.Equality.Measure": Equality.$c_Measure,
   "Bequadro.Tests.Limits.LargestHolder": Limits.$c_LargestHolder,
+  "Bequadro.Tests.Evolution.After": Evolution.$c_After,
 };
 
 /** A fixture as Node reads it: a Buffer, whose slice is a view, unlike a Uint8Array's (TS-008). */
@@ -106,4 +110,11 @@ test("parsing a buffer built with the official builder reads every field kind", 
     sink.shapes?.map((shape) => shape?.kind),
     ["Poly", "Marker"],
   );
+});
+
+test("parsing a buffer with deprecated fields reads the other fields", () => {
+  const after = Evolution.After.parse(read("deprecated-fields.input.bin"));
+  assert.deepEqual(after, { kept: 7, later: "after" });
+  // @ts-expect-error: SCH-005, a deprecated field isn't generated
+  assert.equal(after.removed, undefined);
 });

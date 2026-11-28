@@ -53,6 +53,7 @@ IDs are stable. Never renumber an ID or reuse a removed one.
 | BQ2022 | Declaration order | A type is used where `flatc`, which reads a file from top to bottom, hasn't read it yet or would resolve the name to another declaration (SCH-012). |
 | BQ2023 | Field name clash | A field has a name `flatc` rejects although no other field has it: that of a union field's hidden `_type` field, one `flatc` generates for another field, or that of a table or struct (SCH-005). |
 | BQ2024 | Duplicate schema file | Two paths in the schema set normalize to the same path. The second is ignored (SCH-003). |
+| BQ2025 | Deprecated struct field | A struct field has the `deprecated` attribute, which only table fields can have (SCH-006). |
 | BQ3001 | Unsupported feature | A valid FlatBuffers feature that Bequadro doesn't implement is used. The message names the feature. |
 | BQ4001 | Generated name conflict | Removed: names are renamed instead (NAM-001). |
 | BQ4002 | Ambiguous union members | Two union members have the same type. `flatc` accepts this, but C# and Python select union members by type (NAM-001). |

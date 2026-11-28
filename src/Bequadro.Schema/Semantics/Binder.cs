@@ -23,7 +23,6 @@ internal sealed class Binder
     private static readonly HashSet<string> UnsupportedAttributes =
     [
         "id",
-        "deprecated",
         "key",
         "bit_flags",
         "force_align",
@@ -35,9 +34,14 @@ internal sealed class Binder
         "vector64",
     ];
 
-    private static readonly HashSet<string> IgnoredBuiltInAttributes =
+    /// <summary>
+    /// Built-in attributes that need no declaration. <c>required</c> and <c>deprecated</c> take effect on fields, and
+    /// are ignored elsewhere; the others never take effect.
+    /// </summary>
+    private static readonly HashSet<string> UndeclaredBuiltInAttributes =
     [
-        "required",
+        RequiredAttribute,
+        DeprecatedAttribute,
         "native_inline",
         "native_default",
         "native_custom_alloc",
@@ -70,6 +74,16 @@ internal sealed class Binder
     /// The label of a union's implicit zero member, and the value flatc gives an enum declared without values.
     /// </summary>
     public const string NoneLabel = "NONE";
+
+    /// <summary>
+    /// The built-in attribute that makes a table field required when writing and parsing (SCH-005).
+    /// </summary>
+    private const string RequiredAttribute = "required";
+
+    /// <summary>
+    /// The built-in attribute that removes a table field from the generated code but keeps its slot (SCH-005).
+    /// </summary>
+    private const string DeprecatedAttribute = "deprecated";
 
     /// <summary>
     /// The suffix of the field flatc adds for a union field's discriminator.
@@ -375,7 +389,7 @@ internal sealed class Binder
                 Report(DiagnosticIds.UnsupportedFeature, attribute.Span, $"The '{attribute.Name}' attribute");
             }
             else if (
-                !IgnoredBuiltInAttributes.Contains(attribute.Name)
+                !UndeclaredBuiltInAttributes.Contains(attribute.Name)
                 && !IsAttributeDeclaredBefore(fileKey, attribute.Name, attribute.Span.Start)
             )
             {
@@ -460,7 +474,7 @@ internal sealed class Binder
                 continue;
             }
 
-            var isRequired = field.Attributes.Any(a => a.Name == "required");
+            var isRequired = field.Attributes.Any(a => a.Name == RequiredAttribute);
             if (isRequired && type.IsInline && type.Kind != TypeKind.Struct)
             {
                 Report(
@@ -493,6 +507,9 @@ internal sealed class Binder
                     defaultValue,
                     field.Documentation
                 )
+                {
+                    IsDeprecated = field.Attributes.Any(a => a.Name == DeprecatedAttribute),
+                }
             );
         }
 
@@ -724,9 +741,15 @@ internal sealed class Binder
         var layout = GetStructLayout(declaration);
         foreach (var field in syntax.Fields)
         {
-            if (field.Attributes.FirstOrDefault(a => a.Name == "required") is { } required)
+            if (field.Attributes.FirstOrDefault(a => a.Name == RequiredAttribute) is { } required)
             {
                 Report(DiagnosticIds.InvalidRequired, required.Span, field.Name, "struct fields cannot be required");
+            }
+
+            // flatc: "can't deprecate fields in a struct", because a struct's layout has no slots to leave empty
+            if (field.Attributes.FirstOrDefault(a => a.Name == DeprecatedAttribute) is { } deprecated)
+            {
+                Report(DiagnosticIds.DeprecatedStructField, deprecated.Span, field.Name, syntax.FullName);
             }
 
             if (field.Default is { } defaultValue)

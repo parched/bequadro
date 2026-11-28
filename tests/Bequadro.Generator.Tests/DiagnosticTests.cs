@@ -57,10 +57,18 @@ public class DiagnosticTests
     [InlineData(DiagnosticIds.DeclarationOrder, "table T { e: «E»; } enum E : byte { A }")]
     [InlineData(DiagnosticIds.FieldNameClash, "table A {} union U { A } table T { u: U; «u_type»: ubyte; }")]
     [InlineData(DiagnosticIds.FieldNameClash, "table T { «T»: int; }")]
+    [InlineData(
+        DiagnosticIds.FieldNameClash,
+        "table A {} union U { A } table T { u: U (deprecated); «u_type»: ubyte; }"
+    )]
+    [InlineData(DiagnosticIds.DeprecatedStructField, "struct S { x: int («deprecated»); }")]
+    [InlineData(DiagnosticIds.UnknownType, "table T { x: «Nope» (deprecated); }")]
+    [InlineData(DiagnosticIds.InvalidDefault, "table T { x: ubyte = «256» (deprecated); }")]
+    [InlineData(DiagnosticIds.InvalidRequired, "table T { «x»: int (required, deprecated); }")]
+    [InlineData(DiagnosticIds.DuplicateMember, "table T { x: int (deprecated); «x»: int; }")]
     [InlineData(DiagnosticIds.UnsupportedFeature, "«file_identifier» \"ABCD\";")]
     [InlineData(DiagnosticIds.UnsupportedFeature, "«rpc_service» S {}")]
     [InlineData(DiagnosticIds.UnsupportedFeature, "table T { x: int («id: 0»); }")]
-    [InlineData(DiagnosticIds.UnsupportedFeature, "table T { x: int («deprecated»); }")]
     [InlineData(DiagnosticIds.UnsupportedFeature, "enum E : ubyte («bit_flags») { A }")]
     [InlineData(DiagnosticIds.UnsupportedFeature, "table T { x: int («key»); }")]
     [InlineData(DiagnosticIds.UnsupportedFeature, "struct S («force_align: 8») { x: int; }")]
@@ -222,6 +230,7 @@ public class DiagnosticTests
 
     [Theory]
     [InlineData("required")]
+    [InlineData("deprecated")]
     [InlineData("native_inline")]
     [InlineData("csharp_partial")]
     public void Bind_IgnoredBuiltInAttribute_NeedsNoDeclaration(string attribute)
@@ -229,6 +238,26 @@ public class DiagnosticTests
         var (_, diagnostics) = GeneratorHarness.Bind($"table T ({attribute}) {{ s: string ({attribute}); }}");
 
         diagnostics.Should().BeEmpty();
+    }
+
+    /// <summary>
+    /// SCH-011: <c>deprecated</c> only takes effect on table fields. As in flatc, it is accepted and ignored on a
+    /// declaration, an enum value and a union member.
+    /// </summary>
+    [Fact]
+    public void Generate_DeprecatedOutsideTableFields_IsIgnored()
+    {
+        var result = GeneratorHarness.Run(
+            "enum E : ubyte (deprecated) { A (deprecated), B } table T (deprecated) { e: E; }"
+                + " struct S (deprecated) { x: int; } union U (deprecated) { T (deprecated), S }"
+        );
+
+        result.GeneratorDiagnostics.Should().BeEmpty();
+        result.CompilationDiagnostics.Should().BeEmpty();
+        ErrorRecoveryTests.SchemaMembers(result.Output.GetTypeByMetadataName("E")!).Should().Equal("A", "B");
+        ErrorRecoveryTests.SchemaMembers(result.Output.GetTypeByMetadataName("T")!).Should().Equal("E");
+        ErrorRecoveryTests.SchemaMembers(result.Output.GetTypeByMetadataName("S")!).Should().Equal("X");
+        ErrorRecoveryTests.SchemaMembers(result.Output.GetTypeByMetadataName("U")!).Should().Equal("T", "S");
     }
 
     [Theory]

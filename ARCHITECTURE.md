@@ -103,7 +103,7 @@ Models come out of the binder with schema names, and nothing in them is specific
 1. builds a tree of namespaces from the models, in which each namespace keeps its nested namespaces and declarations in order of first appearance;
 2. walks the tree from the root with an explicit stack, claiming names in a `NameScope` per namespace, so each namespace's target name is known before its children are named. A namespace's target name is a `TargetNamespace`, a chain of segments that becomes a string only for namespaces with declarations, so a namespace with very many segments takes neither deep recursion nor time quadratic in its depth (DIA-001);
 3. renames enum members, so it can rewrite enum defaults that refer to them;
-4. rewrites every model: its namespace and name, the full names in its `TypeModel` references, and its members, in a `NameScope` per type that starts with the target's fixed member names.
+4. rewrites every model: its namespace and name, the full names in its `TypeModel` references, and its members, in a `NameScope` per type that starts with the target's fixed member names. A table field that is `deprecated` (SCH-005) is named like any other, so that deprecating a field renames no other, and then removed, so no emitter ever sees one. Its slot stays unused, because every emitter writes and reads fields by their own `Slot`.
 
 `NameScope.Claim` adds a leading `_` to a candidate starting with a digit, then trailing `_`s until the name is usable and free. Names claimed as files are compared ignoring case too. Each renamed element records its schema name in `RenamedFrom`, which emitters put in its documentation: a declaration in a renamed namespace records its full schema name.
 

@@ -31,6 +31,7 @@ internal static class DiagnosticIds
     public const string DeclarationOrder = "BQ2022";
     public const string FieldNameClash = "BQ2023";
     public const string DuplicateFile = "BQ2024";
+    public const string DeprecatedStructField = "BQ2025";
     public const string UnsupportedFeature = "BQ3001";
 
     // BQ4001 (generated name conflict) is removed: names are renamed instead (NAM-001)

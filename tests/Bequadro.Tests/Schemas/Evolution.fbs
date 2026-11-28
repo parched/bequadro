@@ -1,0 +1,25 @@
+// SCH-005: a table before and after some of its fields are deprecated. The two have the same slots, so each reads the
+// other's buffers. A cross-language fixture parses Before's buffer as After in every language.
+namespace Bequadro.Tests.Evolution;
+
+table Leaf { n: int; }
+
+union Item { Leaf }
+
+table Before
+{
+    kept: int;
+    removed: string;
+    removed_item: Item;
+    later: string;
+    removed_last: Leaf;
+}
+
+table After
+{
+    kept: int;
+    removed: string (deprecated);
+    removed_item: Item (deprecated);
+    later: string;
+    removed_last: Leaf (deprecated);
+}
