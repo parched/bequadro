@@ -92,8 +92,8 @@ public sealed class PythonTests : IDisposable
     [InlineData("enum E : ubyte { None }", "    None_ = 0")]
     [InlineData("enum E : ubyte { name, value }", "    name_ = 0")]
     [InlineData("enum E : ubyte { name, value }", "    value_ = 1")]
-    [InlineData("enum E : ubyte { _x_ }", "    _x__ = 0")]
-    [InlineData("enum E : ubyte { __y }", "    __y___ = 0")]
+    [InlineData("enum E : ubyte { _x_ }", "    _x__: _bq_typing.ClassVar[_bq_typing.Self] = 0")]
+    [InlineData("enum E : ubyte { __y }", "    __y___: _bq_typing.ClassVar[_bq_typing.Self] = 0")]
     public void Generate_Names_FollowThePythonRules(string schema, string expected)
     {
         Module(schema).Should().Contain(expected);

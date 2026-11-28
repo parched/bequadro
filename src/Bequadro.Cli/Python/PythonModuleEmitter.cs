@@ -48,13 +48,28 @@ internal sealed class PythonModuleEmitter(string ns, Dictionary<string, Declarat
         w.Line();
         w.Line("from __future__ import annotations");
         w.Line();
+        var enums = models.OfType<EnumModel>().ToList();
+        var memberNames = enums.SelectMany(e => e.Members).Select(m => m.Name).ToHashSet(StringComparer.Ordinal);
+        var typing = "_bq_typing";
+        if (memberNames.Any(NeedsEnumAnnotation))
+        {
+            // The annotation is in the enum body, where a member can shadow the imported module.
+            while (memberNames.Contains(typing))
+            {
+                typing += "0";
+            }
+
+            w.Line($"import typing as {typing}");
+            w.Line();
+        }
+
         w.Line($"from {RootDots(ns)} import bequadro as _bq");
 
-        foreach (var model in models.OfType<EnumModel>())
+        foreach (var model in enums)
         {
             w.Line();
             w.Line();
-            EmitEnum(w, model);
+            EmitEnum(w, model, typing);
         }
 
         if (_aliases.Count > 0)
@@ -142,19 +157,35 @@ internal sealed class PythonModuleEmitter(string ns, Dictionary<string, Declarat
 
     // Enums (PY-006)
 
-    private static void EmitEnum(SourceWriter w, EnumModel model)
+    private static void EmitEnum(SourceWriter w, EnumModel model, string typing)
     {
         w.Line($"class {model.Name}(_bq.IntEnum):");
         w.Indent();
         Docstring(w, model.Documentation, model.RenamedFrom);
         foreach (var member in model.Members)
         {
-            w.Line($"{member.Name} = {member.Value.ToString(CultureInfo.InvariantCulture)}");
+            var value = member.Value.ToString(CultureInfo.InvariantCulture);
+            if (NeedsEnumAnnotation(member.Name))
+            {
+                // mypy also reports an explicit annotation on a name such as _x__, even though it infers int for it.
+                var errors = member.Name.StartsWith("__", StringComparison.Ordinal) ? "assignment" : "assignment,misc";
+                w.Line($"{member.Name}: {typing}.ClassVar[{typing}.Self] = {value}  # type: ignore[{errors}]");
+            }
+            else
+            {
+                w.Line($"{member.Name} = {value}");
+            }
+
             Docstring(w, member.Documentation, member.RenamedFrom, blankAfter: false);
         }
 
         w.Unindent();
     }
+
+    // After renaming, both __x and _x_ start with an underscore and end with at least two. Type checkers infer int
+    // for those names, although EnumMeta replaces the integer with the member.
+    private static bool NeedsEnumAnnotation(string name) =>
+        name.StartsWith('_') && name.EndsWith("__", StringComparison.Ordinal);
 
     // Structs (PY-005)
 

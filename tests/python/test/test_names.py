@@ -53,6 +53,18 @@ def test_enum_values_named_like_int_attributes_are_renamed() -> None:
     assert PyNames.UsesNames().attribute is PyNames.IntAttributes.imag_
 
 
+def test_renamed_underscore_members_have_the_enum_type() -> None:
+    value = PyNames.UsesNames(
+        mangled=PyNames.Mangled.__b___,
+        flag=PyNames.Flag._x__,  # pyright: ignore[reportPrivateUsage]
+    )
+    parsed = bequadro.parse(PyNames.UsesNames, bequadro.write(value))
+    assert parsed.mangled is PyNames.Mangled(1)
+    assert parsed.flag is PyNames.Flag(0)
+    mixed: PyNames.Mixed = PyNames.Mixed.__x___
+    assert mixed is PyNames.Mixed(1)
+
+
 def test_declarations_named_like_module_bindings_are_renamed() -> None:
     assert PyNames.annotations_(a=1).a == 1
     assert importlib.import_module("generated.PyNames.Sub.annotations_").Inner(a=1).a == 1

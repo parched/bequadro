@@ -123,6 +123,7 @@ class Color(_bq.IntEnum):
 Acceptance criteria:
 
 - An enum derives from the runtime's `IntEnum`, a subclass of `enum.IntEnum`, with every value written explicitly.
+- A named member can be passed to a field of its enum type, including `__x___` (schema name `__x`) and `_x__` (schema name `_x_`).
 - Generated code refers to a member whose name starts with `_` by its value, `Color(0)`, because type checkers don't treat such names as members.
 - Parsing a value the schema doesn't define is not an error (SER-009). It returns an instance of the enum class with that value, which equals the raw `int` but isn't one of the class's members. Code that matches on an enum should have a `case _` branch for values added by newer schemas.
 - Such an instance's `name` is its value in decimal, a `str` as `enum` declares it: `Color(9).name` is `"9"`, its `repr` is `<Color.9: 9>`, and `str` and `format` give `9`, as for members.
@@ -130,6 +131,7 @@ Acceptance criteria:
 
 Design decisions:
 
+- A generated member name that starts with an underscore and ends with at least two gets a `ClassVar[Self]` annotation. This gives type checkers the enum type that Python creates from its integer initializer.
 - `IntEnum` compares and converts like an `int`, as an enum on the wire does.
 - Type checkers treat a `match` over every member as exhaustive, so the value from a newer schema isn't in the static type, as in C# and TypeScript (TS-006).
 - The value as its name, because `name` is typed `str`, and it is what C#'s `ToString` gives for a value the enum doesn't define.

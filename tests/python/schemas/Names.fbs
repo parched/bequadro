@@ -32,6 +32,11 @@ enum IntAttributes : int
     value,
 }
 
+// Both the renamed members and the typing import must work in an enum's class scope.
+enum Mangled : byte { __a, __b__ }
+enum Mixed : byte { _bq_typing, __x, Mixed }
+enum Flag : byte { _x_ }
+
 /// Named like the name `from __future__ import annotations` binds in every generated module.
 table annotations
 {
@@ -43,6 +48,8 @@ table UsesNames
     field_annotations: annotations;
     attribute: IntAttributes = imag;
     attributes: [IntAttributes];
+    mangled: Mangled;
+    flag: Flag = null;
     nested: PyNames.Sub.annotations.Inner;
 }
 
